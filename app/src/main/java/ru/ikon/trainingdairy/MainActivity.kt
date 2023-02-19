@@ -2,7 +2,7 @@ package ru.ikon.trainingdairy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.databinding.ActivityMainBinding
 
@@ -13,6 +13,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Принудительно запрещаем приложению переключаться в ночной режим,
+        // чтобы тема всегда была светлой
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -43,5 +48,4 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fragment_holder, fragment)
             .commit()
     }
-
 }
