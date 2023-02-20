@@ -1,10 +1,11 @@
-package ru.ikon.trainingdairy
+package ru.ikon.trainingdairy.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import ru.ikon.trainingdairy.R
 
 class ProgramsListFragment : Fragment() {
 
