@@ -1,9 +1,10 @@
-package ru.ikon.trainingdairy
+package ru.ikon.trainingdairy.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -13,13 +14,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Принудительно запрещаем приложению переключаться в ночной режим,
+        // чтобы тема всегда была светлой
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         if(savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragment_holder, ProgramsListFragment.newInstance())
+                .replace(
+                    R.id.fragment_holder,
+                    ProgramsListFragment.newInstance()
+                )
                 .commit()
         }
 
@@ -29,8 +38,12 @@ class MainActivity : AppCompatActivity() {
     private fun initBottomNavigationBar() {
         binding.bottomNavigationBar.setOnItemSelectedListener { item ->
             when(item.itemId) {
-                R.id.action_bottom_navigation_bar_programs -> startFragment(ProgramsListFragment.newInstance())
-                R.id.action_bottom_navigation_bar_trainings -> startFragment(MonthFragment.newInstance())
+                R.id.action_bottom_navigation_bar_programs -> startFragment(
+                    ProgramsListFragment.newInstance()
+                )
+                R.id.action_bottom_navigation_bar_trainings -> startFragment(
+                    MonthFragment.newInstance()
+                )
             }
 
             true
@@ -44,5 +57,4 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fragment_holder, fragment)
             .commit()
     }
-
 }
