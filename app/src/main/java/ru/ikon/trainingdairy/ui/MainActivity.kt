@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.ActivityMainBinding
 import ru.ikon.trainingdairy.ui.month.MonthFragment
+import ru.ikon.trainingdairy.ui.programslist.ProgramsListFragment
 
 class MainActivity : AppCompatActivity() {
 
