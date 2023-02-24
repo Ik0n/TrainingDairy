@@ -3,21 +3,25 @@ package ru.ikon.trainingdairy.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.ActivityMainBinding
 import ru.ikon.trainingdairy.ui.month.MonthFragment
+import ru.ikon.trainingdairy.ui.userparameters.UserParametersContract
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES_NAME
+import ru.ikon.trainingdairy.ui.userparameters.UserParametersPresenter
 
-class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClickListener {
+class MainActivity : AppCompatActivity(), UserParametersPresenter.ReadyButtonClickListener {
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding get() { return _binding!! }
 
-    private var userParametersFragment = UserParametersFragment.newInstance()
+    private var userParametersFragment = UserParametersFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +36,11 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
         if(getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE).getString(APP_PREFERENCES_NAME, "") == "") {
             binding.bottomNavigationBar.visibility = View.GONE
 
-            (userParametersFragment as UserParametersFragment).setReadyButtonClickListener(this)
+            userParametersFragment.setOnClickListener(this)
 
             startFragment(userParametersFragment)
         } else {
+            binding.bottomNavigationBar.visibility = View.VISIBLE
             startFragment(ProgramsListFragment.newInstance())
         }
 
@@ -43,6 +48,7 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
 
         initBottomNavigationBar()
     }
+
 
     private fun initBottomNavigationBar() {
         binding.bottomNavigationBar.setOnItemSelectedListener { item ->
@@ -68,7 +74,6 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
     }
 
     override fun readyButtonClick() {
-        binding.bottomNavigationBar.visibility = View.VISIBLE
-        startFragment(ProgramsListFragment.newInstance())
+        userParametersFragment.onReadyButtonClick(supportFragmentManager)
     }
 }
