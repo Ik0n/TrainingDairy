@@ -16,7 +16,8 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding get() { return _binding!! }
-    private var userParametersFragment = UserParametersFragment()
+
+    private var userParametersFragment = UserParametersFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,18 +30,18 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
         setContentView(binding.root)
 
         if(getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE).getString(APP_PREFERENCES_NAME, "") == "") {
-
             binding.bottomNavigationBar.visibility = View.GONE
 
-            userParametersFragment.setReadyButtonClickListener(this)
+            (userParametersFragment as UserParametersFragment).setReadyButtonClickListener(this)
 
-            startFragment(UserParametersFragment.newInstance())
+            startFragment(userParametersFragment)
         } else {
             startFragment(ProgramsListFragment.newInstance())
-            initBottomNavigationBar()
         }
 
 
+
+        initBottomNavigationBar()
     }
 
     private fun initBottomNavigationBar() {
