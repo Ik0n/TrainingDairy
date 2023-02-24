@@ -13,11 +13,7 @@ class UserParametersFragment : Fragment() {
 
     private var _binding: FragmentUserParametersBinding? = null
     private val binding: FragmentUserParametersBinding get() { return _binding!! }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
