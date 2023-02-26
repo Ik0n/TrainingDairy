@@ -23,6 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:labelVisibilityMode="auto"
         app:menu="@menu/menu_bottom_navigation_bar"
+
         />
 
 

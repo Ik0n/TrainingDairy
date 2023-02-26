@@ -10,6 +10,7 @@ import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.ActivityMainBinding
 import ru.ikon.trainingdairy.ui.month.MonthFragment
+
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersContract
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES
