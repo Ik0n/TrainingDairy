@@ -16,7 +16,7 @@ import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES_NAME
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersPresenter
 
-class MainActivity : AppCompatActivity(), UserParametersPresenter.ReadyButtonClickListener {
+class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClickListener {
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding get() { return _binding!! }
@@ -36,9 +36,10 @@ class MainActivity : AppCompatActivity(), UserParametersPresenter.ReadyButtonCli
         if(getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE).getString(APP_PREFERENCES_NAME, "") == "") {
             binding.bottomNavigationBar.visibility = View.GONE
 
-            userParametersFragment.setOnClickListener(this)
-
             startFragment(userParametersFragment)
+
+            userParametersFragment.setReadyButtonClickListener(this)
+
         } else {
             binding.bottomNavigationBar.visibility = View.VISIBLE
             startFragment(ProgramsListFragment.newInstance())
@@ -74,6 +75,7 @@ class MainActivity : AppCompatActivity(), UserParametersPresenter.ReadyButtonCli
     }
 
     override fun readyButtonClick() {
+        binding.bottomNavigationBar.visibility = View.VISIBLE
         userParametersFragment.onReadyButtonClick(supportFragmentManager)
     }
 }

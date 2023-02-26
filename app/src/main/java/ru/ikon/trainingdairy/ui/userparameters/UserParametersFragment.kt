@@ -19,6 +19,8 @@ class UserParametersFragment : Fragment(), UserParametersContract.View {
     private val binding: FragmentUserParametersBinding get() { return _binding!! }
 
     private var presenter: UserParametersContract.Presenter = UserParametersPresenter()
+
+    private lateinit var listener : ReadyButtonClickListener
     
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +50,7 @@ class UserParametersFragment : Fragment(), UserParametersContract.View {
                         weightEditText.text.toString()
                     )
                     onReadyButtonClick(this@UserParametersFragment.parentFragmentManager)
+                    listener.readyButtonClick()
                 }
             }
         }
@@ -69,10 +72,6 @@ class UserParametersFragment : Fragment(), UserParametersContract.View {
 
     }
 
-    override fun setOnClickListener(listener: UserParametersPresenter.ReadyButtonClickListener) {
-        presenter.setOnClickListener(listener)
-    }
-
     override fun onReadyButtonClick(manager: FragmentManager) {
         presenter.onReadyButtonClick(manager)
     }
@@ -80,5 +79,14 @@ class UserParametersFragment : Fragment(), UserParametersContract.View {
     override fun savePreferences(name: String, age: String, weight: String) {
         presenter.savePreferences(name, age, weight)
     }
+
+    interface ReadyButtonClickListener {
+        fun readyButtonClick()
+    }
+
+    fun setReadyButtonClickListener(listener : ReadyButtonClickListener) {
+        this.listener = listener
+    }
+
 
 }

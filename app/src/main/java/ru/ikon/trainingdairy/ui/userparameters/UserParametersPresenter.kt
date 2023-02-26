@@ -14,14 +14,12 @@ class UserParametersPresenter : UserParametersContract.Presenter {
 
     private var view : UserParametersContract.View? = null
 
-    private lateinit var listener : ReadyButtonClickListener
-
     override fun attach(view: UserParametersContract.View) {
         this.view = view
     }
 
     override fun onCreate() {
-        setReadyButtonClickListener(listener)
+
     }
 
     override fun detach() {
@@ -36,25 +34,12 @@ class UserParametersPresenter : UserParametersContract.Presenter {
             .commit()
     }
 
-    override fun setOnClickListener(listener: ReadyButtonClickListener) {
-        view?.setOnClickListener(listener)
-        setReadyButtonClickListener(listener)
-    }
-
     override fun savePreferences(name: String, age: String, weight: String) {
         App.instance?.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)?.edit {
             putString(UserParametersFragment.APP_PREFERENCES_NAME, name)
             putString(UserParametersFragment.APP_PREFERENCES_AGE, age)
             putString(UserParametersFragment.APP_PREFERENCES_WEIGHT, weight)
         }
-    }
-
-    interface ReadyButtonClickListener {
-        fun readyButtonClick()
-    }
-
-    private fun setReadyButtonClickListener(listener : ReadyButtonClickListener) {
-        this.listener = listener
     }
 
 }
