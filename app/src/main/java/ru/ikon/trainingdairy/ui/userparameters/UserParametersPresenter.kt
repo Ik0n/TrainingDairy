@@ -1,13 +1,11 @@
 package ru.ikon.trainingdairy.ui.userparameters
 
-import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import android.widget.Toast
 import androidx.core.content.edit
 import androidx.fragment.app.FragmentManager
 import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.R
-import ru.ikon.trainingdairy.ui.ProgramsListFragment
+import ru.ikon.trainingdairy.ui.programslist.ProgramsListFragment
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES
 
 class UserParametersPresenter : UserParametersContract.Presenter {
