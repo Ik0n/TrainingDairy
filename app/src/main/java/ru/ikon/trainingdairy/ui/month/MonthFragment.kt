@@ -1,31 +1,54 @@
 package ru.ikon.trainingdairy.ui.month
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.github.sundeepk.compactcalendarview.CompactCalendarView.CompactCalendarViewListener
+import com.github.sundeepk.compactcalendarview.domain.Event
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.databinding.FragmentMonthBinding
+import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
+import ru.ikon.trainingdairy.domain.model.MeasureModel
+import ru.ikon.trainingdairy.domain.model.NoteModel
+import ru.ikon.trainingdairy.domain.model.TrainingModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MonthFragment : Fragment(), MonthContract.View {
 
     private lateinit var presenter: MonthContract.Presenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private var _binding: FragmentMonthBinding? = null
+    private val binding: FragmentMonthBinding get() { return _binding!! }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         presenter = MonthPresenter()
         presenter.attach(this)
-        presenter.onCreate()
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_month, container, false)
+        _binding = FragmentMonthBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Инициализируем элемент CompactCalendarView. Этот метод оставляем здесь,
+        // так как происходит инициализация конкретного элемента на макете, и она
+        // никак не связана с данными
+        initializeCalendar()
+
+        // Передаём в Presenter сообщение о том, что фрагмент создан, чтобы получить данные
+        presenter.onCreate()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
@@ -35,7 +58,125 @@ class MonthFragment : Fragment(), MonthContract.View {
         }
     }
 
-    override fun showData(data: String) {
-        Toast.makeText(context, data, Toast.LENGTH_SHORT).show()
+    /** Инициализирует элемент compactCalendarView на макете  */
+    private fun initializeCalendar() {
+        // Инициализируем календарь
+        binding.compactCalendarView.setUseThreeLetterAbbreviation(true)
+
+        // Получаем первый день текущего месяца (для определения месяца)
+        val firstDayOfMonth: Date = binding.compactCalendarView.firstDayOfCurrentMonth
+        setHeading(firstDayOfMonth)
+
+        // Добавляем обработчики событий выбора дня и прокрутки месяца
+        binding.compactCalendarView.setListener(object : CompactCalendarViewListener {
+            override fun onDayClick(dateClicked: Date) {
+                // При нажатии на конкретный день
+                // запускаем операцию DayActivity, предварительно передав туда выбранную дату в строковом формате
+                // TODO: Реализовать нажатие на день!
+//                val context: Context = getApplicationContext()
+//                val intent = Intent(context, DayActivity::class.java)
+//                val simpleDateFormat =
+//                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss")
+//                val dateString = simpleDateFormat.format(dateClicked)
+//                intent.putExtra("date", dateString)
+//                startActivity(intent)
+            }
+
+            override fun onMonthScroll(firstDayOfNewMonth: Date) {
+                // При прокрутке на другой месяц меняем заголовок календаря
+                setHeading(firstDayOfNewMonth)
+            }
+        })
+
+        // Инициализируем кнопки для перехода к предыдущему/следующему месяцам
+        // и устанавливаем им обработчики нажатия
+        binding.buttonPreviousMonth.setOnClickListener { binding.compactCalendarView.scrollLeft() }
+        binding.buttonNextMonth.setOnClickListener { binding.compactCalendarView.scrollRight() }
+    }
+
+    /**
+     * Устанавливает заголовок календаря в формате "Май 2023"
+     * @param firstDayOfMonth Дата, соответствующая первому дню месяца, для определения текущего месяца
+     * @return Заголовок для календаря в строковой форме
+     */
+    private fun setHeading(firstDayOfMonth: Date) {
+        // Инициализируем строку-результат
+        var resultString = String()
+
+        // Определяем индекс месяца (от 0 до 1)
+        when (firstDayOfMonth.month) {
+            0 -> resultString = "Январь"
+            1 -> resultString = "Февраль"
+            2 -> resultString = "Март"
+            3 -> resultString = "Апрель"
+            4 -> resultString = "Май"
+            5 -> resultString = "Июнь"
+            6 -> resultString = "Июль"
+            7 -> resultString = "Август"
+            8 -> resultString = "Сентябрь"
+            9 -> resultString = "Октябрь"
+            10 -> resultString = "Ноябрь"
+            11 -> resultString = "Декабрь"
+        }
+
+        // Добавляем пробел между месяцем и годом
+        resultString = "$resultString "
+
+        // Определяем год
+        // Метод getYear возвращает годы с 1900 года, поэтому, чтобы получить 2023 год,
+        // к полученному числу нужно прибавить 1900
+        val year = firstDayOfMonth.year + 1900
+
+        // Добавляем год к строке-результату
+        resultString += year
+
+        // Устанавливаем строку-результат в качестве заголовка календаря
+        binding.textViewMonth.text = resultString
+    }
+
+    override fun showData(data: ArrayList<DiaryEntryModel>) {
+        fillCalendar(data)
+    }
+
+    /**
+     * Заполняет календарь на главном экране данными из списка entryList
+     * @param entryList Список записей для отображения их в календаре
+     */
+    private fun fillCalendar(entryList: ArrayList<DiaryEntryModel>) {
+        // Удаляем из календаря все существующие события
+        binding.compactCalendarView.removeAllEvents()
+
+        // Проходим циклом по всему списку mEntryList
+        for (i in entryList.indices) {
+            // Инициализируем запись (тренировку, измерение или заметку), с которой будем работать
+            val entryModel = entryList[i]
+
+            // Получаем дату и время этой записи в виде числи миллисекунд,
+            // поскольку для вставки в календарь требуется именно такое представление
+            val timeInMilliseconds: Long = entryModel.date?.time ?: 0
+
+            // Создаём и инициализируем переменную color, котораи будет хранить цвет маркера
+            var color = -1
+
+            // Определяем тип записи и в зависимости от него назначаем цвет
+            when (entryModel) {
+                is TrainingModel -> {
+                    color = resources.getColor(R.color.blue)
+                }
+                is MeasureModel -> {
+                    color = resources.getColor(R.color.green)
+                }
+                is NoteModel -> {
+                    color = resources.getColor(R.color.orange)
+                }
+            }
+
+            // Если в переменной color изменилось значение,
+            // значит, тип записи удалось определить
+            if (color != -1) {
+                // Добавляем в календарь новое событие с указанным цветом и временем в миллисекундах
+                binding.compactCalendarView.addEvent(Event(color, timeInMilliseconds, null))
+            }
+        }
     }
 }

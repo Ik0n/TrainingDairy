@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">TrainingDairy</string>
-    <string name="action_bottom_navigation_bar_programs">Программы</string>
-    <string name="action_bottom_navigation_bar_trainings">Тренировки</string>
+    <string name="action_bottom_navigation_bar_programs">Programs</string>
+    <string name="action_bottom_navigation_bar_trainings">Trainings</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="previous_month">Назад</string>
+    <string name="next_month">Вперёд</string>
     <string name="hello_text">Приветствую вас</string>
     <string name="label_for_name_edit_text">Ваше имя</string>
     <string name="label_for_age_edit_text">Ваш возраст</string>
