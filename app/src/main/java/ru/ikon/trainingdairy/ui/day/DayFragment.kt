@@ -6,11 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.databinding.FragmentDayBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
-import ru.ikon.trainingdairy.domain.model.MeasureModel
-import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
 import ru.ikon.trainingdairy.ui.month.MonthFragment
@@ -50,17 +47,12 @@ class DayFragment : Fragment(), DayContract.View {
 
         parentFragmentManager.setFragmentResultListener("DATE", this) { key, bundle ->
             binding.dateTextView.text = bundle.getString("DATE", "error").toString()
+
+            binding.recyclerView.adapter = adapter.apply {
+                setData(bundle.get("EVENTS") as MutableList<DiaryEntryModel>)
+            }
         }
 
-        binding.recyclerView.adapter = adapter.apply {
-            setData(mutableListOf(
-                Pair(TrainingModel(GregorianCalendar(2023, Calendar.FEBRUARY, 1).time, "Руки"), false),
-                Pair(TrainingModel(GregorianCalendar(2023, Calendar.FEBRUARY, 1).time, "Ноги/плечи"), false),
-                Pair(MeasureModel(GregorianCalendar(2023, Calendar.FEBRUARY, 1).time), false),
-                Pair(NoteModel(GregorianCalendar(2023, Calendar.FEBRUARY, 1).time, "Заметка от 27 июня"), false)
-            ))
-
-        }
 
     }
 

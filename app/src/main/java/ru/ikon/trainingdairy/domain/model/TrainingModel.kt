@@ -7,7 +7,7 @@ import kotlin.collections.ArrayList
 /**
  * Класс, представляющий собой дневниковую запись о тренировке
  */
-data class TrainingModel(override val date: Date?, val text: String? = null) : DiaryEntryModel(date, TYPE_TRAINING) {
+data class TrainingModel(override val date: Date?, val text: String? = null) : DiaryEntryModel(date) {
     /** Название тренировки */
     var name: String? = null
 

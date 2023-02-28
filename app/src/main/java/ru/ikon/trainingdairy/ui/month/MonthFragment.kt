@@ -1,6 +1,7 @@
 package ru.ikon.trainingdairy.ui.month
 
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.github.sundeepk.compactcalendarview.domain.Event
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentMonthBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
+
 import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
@@ -83,7 +85,24 @@ class MonthFragment : Fragment(), MonthContract.View {
                 val dateString = simpleDateFormat.format(dateClicked)
 //                intent.putExtra("date", dateString)
 //                startActivity(intent)
-                startFragment(DayFragment.newInstance(), dateString)
+
+                val temp = mutableListOf<DiaryEntryModel>()
+
+                for (event in binding.compactCalendarView.getEvents(dateClicked)) {
+                    when(event.color) {
+                        resources.getColor(R.color.blue) -> {
+                            temp.add((event.data as TrainingModel))
+                        }
+                        resources.getColor(R.color.green) -> {
+                            temp.add((event.data as MeasureModel))
+                        }
+                        resources.getColor(R.color.orange) -> {
+                            temp.add((event.data as NoteModel))
+                        }
+                    }
+                }
+
+                startFragment(DayFragment.newInstance(), dateString, temp)
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date) {
@@ -179,15 +198,15 @@ class MonthFragment : Fragment(), MonthContract.View {
             // значит, тип записи удалось определить
             if (color != -1) {
                 // Добавляем в календарь новое событие с указанным цветом и временем в миллисекундах
-                binding.compactCalendarView.addEvent(Event(color, timeInMilliseconds, null))
+                binding.compactCalendarView.addEvent(Event(color, timeInMilliseconds, entryModel))
             }
         }
     }
 
-    private fun startFragment(fragment: Fragment, date: String) {
+    private fun startFragment(fragment: Fragment, date: String, events : List<DiaryEntryModel>) {
         parentFragmentManager
             .apply {
-                setFragmentResult("DATE", bundleOf("DATE" to date))
+                setFragmentResult("DATE", bundleOf("DATE" to date, "EVENTS" to events))
             }
             .beginTransaction()
             .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)

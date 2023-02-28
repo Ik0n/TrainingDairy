@@ -6,4 +6,4 @@ import java.util.*
 /**
  * Класс, представляющий собой дневниковую запись об измерении
  */
-class MeasureModel(date: Date?) : DiaryEntryModel(date, TYPE_MEASURE)
+class MeasureModel(date: Date?) : DiaryEntryModel(date)
