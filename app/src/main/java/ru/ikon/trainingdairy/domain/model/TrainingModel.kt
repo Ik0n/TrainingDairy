@@ -1,5 +1,6 @@
 package ru.ikon.trainingdairy.domain.model
 
+import ru.ikon.trainingdairy.ui.day.recycler.TYPE_TRAINING
 import java.util.*
 import kotlin.collections.ArrayList
 

@@ -1,18 +1,24 @@
 package ru.ikon.trainingdairy.ui.month
 
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.github.sundeepk.compactcalendarview.CompactCalendarView.CompactCalendarViewListener
 import com.github.sundeepk.compactcalendarview.domain.Event
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentMonthBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
+
 import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
+import ru.ikon.trainingdairy.ui.day.DayFragment
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -75,11 +81,28 @@ class MonthFragment : Fragment(), MonthContract.View {
                 // TODO: Реализовать нажатие на день!
 //                val context: Context = getApplicationContext()
 //                val intent = Intent(context, DayActivity::class.java)
-//                val simpleDateFormat =
-//                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss")
-//                val dateString = simpleDateFormat.format(dateClicked)
+                val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss")
+                val dateString = simpleDateFormat.format(dateClicked)
 //                intent.putExtra("date", dateString)
 //                startActivity(intent)
+
+                val temp = mutableListOf<DiaryEntryModel>()
+
+                for (event in binding.compactCalendarView.getEvents(dateClicked)) {
+                    when(event.color) {
+                        resources.getColor(R.color.blue) -> {
+                            temp.add((event.data as TrainingModel))
+                        }
+                        resources.getColor(R.color.green) -> {
+                            temp.add((event.data as MeasureModel))
+                        }
+                        resources.getColor(R.color.orange) -> {
+                            temp.add((event.data as NoteModel))
+                        }
+                    }
+                }
+
+                startFragment(DayFragment.newInstance(), dateString, temp)
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date) {
@@ -103,7 +126,7 @@ class MonthFragment : Fragment(), MonthContract.View {
         // Инициализируем строку-результат
         var resultString = String()
 
-        // Определяем индекс месяца (от 0 до 1)
+        // Определяем индекс месяца (от 0 до 11)
         when (firstDayOfMonth.month) {
             0 -> resultString = "Январь"
             1 -> resultString = "Февраль"
@@ -175,8 +198,20 @@ class MonthFragment : Fragment(), MonthContract.View {
             // значит, тип записи удалось определить
             if (color != -1) {
                 // Добавляем в календарь новое событие с указанным цветом и временем в миллисекундах
-                binding.compactCalendarView.addEvent(Event(color, timeInMilliseconds, null))
+                binding.compactCalendarView.addEvent(Event(color, timeInMilliseconds, entryModel))
             }
         }
+    }
+
+    private fun startFragment(fragment: Fragment, date: String, events : List<DiaryEntryModel>) {
+        parentFragmentManager
+            .apply {
+                setFragmentResult("DATE", bundleOf("DATE" to date, "EVENTS" to events))
+            }
+            .beginTransaction()
+            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
+            .addToBackStack("")
+            .replace(R.id.fragment_holder, fragment)
+            .commit()
     }
 }

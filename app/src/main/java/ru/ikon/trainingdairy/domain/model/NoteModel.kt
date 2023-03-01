@@ -1,5 +1,6 @@
 package ru.ikon.trainingdairy.domain.model
 
+import ru.ikon.trainingdairy.ui.day.recycler.TYPE_NOTE
 import java.util.*
 
 /**
