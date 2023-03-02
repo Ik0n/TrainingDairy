@@ -1,26 +1,20 @@
 package ru.ikon.trainingdairy.ui.month
 
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.github.sundeepk.compactcalendarview.CompactCalendarView.CompactCalendarViewListener
 import com.github.sundeepk.compactcalendarview.domain.Event
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentMonthBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
-
 import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.DayFragment
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MonthFragment : Fragment(), MonthContract.View {
 
@@ -76,33 +70,12 @@ class MonthFragment : Fragment(), MonthContract.View {
         // Добавляем обработчики событий выбора дня и прокрутки месяца
         binding.compactCalendarView.setListener(object : CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date) {
-                // При нажатии на конкретный день
-                // запускаем операцию DayActivity, предварительно передав туда выбранную дату в строковом формате
-                // TODO: Реализовать нажатие на день!
-//                val context: Context = getApplicationContext()
-//                val intent = Intent(context, DayActivity::class.java)
-                val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss")
-                val dateString = simpleDateFormat.format(dateClicked)
-//                intent.putExtra("date", dateString)
-//                startActivity(intent)
+                // При нажатии на конкретный день открываем фрагмент DayFragment,
+                // передавая туда кликнутую дату (безо всякого формата). DayFragment
+                // при открытии сам запросит из репозитория данные на эту дату.
+                val dayFragment = DayFragment.newInstance(dateClicked)
 
-                val temp = mutableListOf<DiaryEntryModel>()
-
-                for (event in binding.compactCalendarView.getEvents(dateClicked)) {
-                    when(event.color) {
-                        resources.getColor(R.color.blue) -> {
-                            temp.add((event.data as TrainingModel))
-                        }
-                        resources.getColor(R.color.green) -> {
-                            temp.add((event.data as MeasureModel))
-                        }
-                        resources.getColor(R.color.orange) -> {
-                            temp.add((event.data as NoteModel))
-                        }
-                    }
-                }
-
-                startFragment(DayFragment.newInstance(), dateString, temp)
+                startFragment(dayFragment)
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date) {
@@ -176,7 +149,7 @@ class MonthFragment : Fragment(), MonthContract.View {
 
             // Получаем дату и время этой записи в виде числи миллисекунд,
             // поскольку для вставки в календарь требуется именно такое представление
-            val timeInMilliseconds: Long = entryModel.date?.time ?: 0
+            val timeInMilliseconds: Long = entryModel.date.time
 
             // Создаём и инициализируем переменную color, котораи будет хранить цвет маркера
             var color = -1
@@ -203,11 +176,8 @@ class MonthFragment : Fragment(), MonthContract.View {
         }
     }
 
-    private fun startFragment(fragment: Fragment, date: String, events : List<DiaryEntryModel>) {
+    private fun startFragment(fragment: Fragment) {
         parentFragmentManager
-            .apply {
-                setFragmentResult("DATE", bundleOf("DATE" to date, "EVENTS" to events))
-            }
             .beginTransaction()
             .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
             .addToBackStack("")

@@ -383,4 +383,8 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
     override fun getEntries(): List<DiaryEntryModel> {
         return entriesList
     }
+
+    override fun getEntries(date: Date): List<DiaryEntryModel> {
+        return entriesList.filter { x -> x.date == date }
+    }
 }

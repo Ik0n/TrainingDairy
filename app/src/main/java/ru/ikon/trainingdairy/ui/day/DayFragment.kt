@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.databinding.FragmentDayBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
-import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
-import ru.ikon.trainingdairy.ui.month.MonthFragment
 import java.util.*
-import kotlin.collections.ArrayList
+
+private const val DATE = "date"
 
 class DayFragment : Fragment(), DayContract.View {
 
@@ -23,10 +21,32 @@ class DayFragment : Fragment(), DayContract.View {
 
     private val adapter = EntryCardAdapter()
 
+    private lateinit var date : Date
+
     companion object {
         @JvmStatic
-        fun newInstance() : Fragment {
-            return DayFragment()
+        fun newInstance(date: Date) : Fragment {
+            return DayFragment().apply {
+
+                // Добавляем в аргументы фрагмента дату. Правда, в Bundle нельзя
+                // положить Date, поэтому предварительно вытаскиваем из даты
+                // миллисекунды в формате Long и засовываем в аргументы их
+                arguments = Bundle().apply {
+                    putLong(DATE, date.time)
+                }
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // При создании фрагмента извлекаем миллисекунды
+        // из Bundle и снова преобразуем их к типу Date.
+        // Полученное значение помещаем в поле date
+        arguments?.let {
+            val milliseconds = it.getLong(DATE)
+            date = Date(milliseconds)
         }
     }
 
@@ -34,7 +54,7 @@ class DayFragment : Fragment(), DayContract.View {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         presenter = DayPresenter()
         presenter.attach(this)
 
@@ -45,19 +65,15 @@ class DayFragment : Fragment(), DayContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        parentFragmentManager.setFragmentResultListener("DATE", this) { key, bundle ->
-            binding.dateTextView.text = bundle.getString("DATE", "error").toString()
-
-            binding.recyclerView.adapter = adapter.apply {
-                setData(bundle.get("EVENTS") as MutableList<DiaryEntryModel>)
-            }
-        }
-
-
+        // Вызываем у презентера метод onCreate, передавая туда дату, чтобы он
+        // запросил из репозитория список записей за эту дату
+        presenter.onCreate(date)
     }
 
-
-    override fun showData(data: ArrayList<DiaryEntryModel>) {
-        TODO("Not yet implemented")
+    override fun showData(data: List<DiaryEntryModel>) {
+        // Презентер вернул данные, отображаем их с помошью адаптера
+        binding.recyclerView.adapter = adapter.apply {
+            setData(data)
+        }
     }
 }

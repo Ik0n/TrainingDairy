@@ -3,10 +3,7 @@ package ru.ikon.trainingdairy.ui.day.recycler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.databinding.CardMeasureItemBinding
 import ru.ikon.trainingdairy.databinding.CardNoteItemBinding
 import ru.ikon.trainingdairy.databinding.CardTrainingItemBinding
@@ -14,7 +11,6 @@ import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
-import java.io.Serializable
 
 const val TYPE_MEASURE = 0
 const val TYPE_NOTE = 1
@@ -40,7 +36,7 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
         return temp
     }
 
-    fun setData(data: MutableList<DiaryEntryModel>) {
+    fun setData(data: List<DiaryEntryModel>) {
         this.data.clear()
         this.data.addAll(data)
         notifyDataSetChanged()

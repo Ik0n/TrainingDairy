@@ -10,7 +10,7 @@ class MonthPresenter : MonthContract.Presenter {
     }
 
     override fun onCreate() {
-        // Создаём список с тестовыми данными. Позднее здесь будет загрузка данных
+        // Создаём репозиторий с тестовыми данными. Позднее здесь будет загрузка данных
         // из базы, а пока - загрузка из тестового репозитория
         val repository = DummyDiaryEntryRepositoryImpl()
         val entriesList = repository.getEntries()
