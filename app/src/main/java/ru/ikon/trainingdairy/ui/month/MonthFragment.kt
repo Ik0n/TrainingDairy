@@ -157,7 +157,7 @@ class MonthFragment : Fragment(), MonthContract.View {
         binding.textViewMonth.text = resultString
     }
 
-    override fun showData(data: ArrayList<DiaryEntryModel>) {
+    override fun showData(data: List<DiaryEntryModel>) {
         fillCalendar(data)
     }
 
@@ -165,7 +165,7 @@ class MonthFragment : Fragment(), MonthContract.View {
      * Заполняет календарь на главном экране данными из списка entryList
      * @param entryList Список записей для отображения их в календаре
      */
-    private fun fillCalendar(entryList: ArrayList<DiaryEntryModel>) {
+    private fun fillCalendar(entryList: List<DiaryEntryModel>) {
         // Удаляем из календаря все существующие события
         binding.compactCalendarView.removeAllEvents()
 

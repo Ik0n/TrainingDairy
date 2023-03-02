@@ -7,7 +7,7 @@ import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
  */
 class MonthContract {
     interface View {
-        fun showData(data: ArrayList<DiaryEntryModel>)
+        fun showData(data: List<DiaryEntryModel>)
     }
 
     interface Presenter {
