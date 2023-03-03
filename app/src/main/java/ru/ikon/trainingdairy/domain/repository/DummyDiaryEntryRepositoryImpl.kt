@@ -13,6 +13,11 @@ import kotlin.collections.ArrayList
 class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
     private val entriesList : ArrayList<DiaryEntryModel> = ArrayList()
 
+    companion object {
+        @JvmStatic
+        fun newInstance() = DummyDiaryEntryRepositoryImpl()
+    }
+
     init {
         // Создадим несколько записей об измерениях, тренировках и заметках
         entriesList.add(

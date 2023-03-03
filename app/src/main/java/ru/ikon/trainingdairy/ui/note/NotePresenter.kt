@@ -17,8 +17,7 @@ class NotePresenter : NoteContract.Presenter {
     }
 
     override fun saveNote(date: Date, text: String) {
-        val repository = DummyDiaryEntryRepositoryImpl()
-        repository.addNote(
+        DummyDiaryEntryRepositoryImpl.newInstance().addNote(
                 NoteModel(
                     GregorianCalendar(
                         date.year,

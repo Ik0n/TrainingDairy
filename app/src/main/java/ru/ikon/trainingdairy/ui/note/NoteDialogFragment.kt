@@ -10,10 +10,12 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.DialogFragmentNoteBinding
+import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
+import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.ui.month.MonthContract
 import java.util.*
 
-class NoteDialogFragment(var date: Date = Date()) : DialogFragment(), NoteContract.View {
+class NoteDialogFragment(var data: DiaryEntryModel = DiaryEntryModel(Date())) : DialogFragment(), NoteContract.View {
 
     private var _binding: DialogFragmentNoteBinding? = null
     private val binding: DialogFragmentNoteBinding get() { return _binding!! }
@@ -32,10 +34,20 @@ class NoteDialogFragment(var date: Date = Date()) : DialogFragment(), NoteContra
     ): View {
         presenter = NotePresenter()
         presenter.attach(this)
-
         _binding = DialogFragmentNoteBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.editTextDate.setText(data.date.toString())
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
