@@ -387,4 +387,10 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
     override fun getEntries(date: Date): List<DiaryEntryModel> {
         return entriesList.filter { x -> x.date == date }
     }
+
+    override fun addNote(note: NoteModel) {
+        entriesList.add(
+            note
+        )
+    }
 }

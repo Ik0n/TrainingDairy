@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.databinding.FragmentDayBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 private const val DATE = "date"
@@ -68,6 +72,9 @@ class DayFragment : Fragment(), DayContract.View {
         // Вызываем у презентера метод onCreate, передавая туда дату, чтобы он
         // запросил из репозитория список записей за эту дату
         presenter.onCreate(date)
+
+        (activity as AppCompatActivity).supportActionBar?.title = SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(date)
+
     }
 
     override fun showData(data: List<DiaryEntryModel>) {

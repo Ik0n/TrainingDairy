@@ -1,6 +1,7 @@
 package ru.ikon.trainingdairy.domain.repository
 
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
+import ru.ikon.trainingdairy.domain.model.NoteModel
 import java.util.*
 
 /**
@@ -18,4 +19,6 @@ interface DiaryEntryRepository {
      * @return Список записей за эту дату     *
      */
     fun getEntries(date: Date) : List<DiaryEntryModel>
+
+    fun addNote(note: NoteModel)
 }
