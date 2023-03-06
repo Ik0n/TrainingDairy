@@ -1,5 +1,6 @@
 package ru.ikon.trainingdairy.ui.month
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,8 @@ import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.DayFragment
+import ru.ikon.trainingdairy.ui.training.TrainingFragment
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MonthFragment : Fragment(), MonthContract.View {
@@ -41,6 +44,11 @@ class MonthFragment : Fragment(), MonthContract.View {
         // так как происходит инициализация конкретного элемента на макете, и она
         // никак не связана с данными
         initializeCalendar()
+
+        // Инициализируем меню из плавающих кнопок действия и сами эти кнопки
+
+        // Инициализируем меню из плавающих кнопок действия и сами эти кнопки
+        initializeFloatingActionButtons()
 
         // Передаём в Presenter сообщение о том, что фрагмент создан, чтобы получить данные
         presenter.onCreate()
@@ -128,6 +136,19 @@ class MonthFragment : Fragment(), MonthContract.View {
 
         // Устанавливаем строку-результат в качестве заголовка календаря
         binding.textViewMonth.text = resultString
+    }
+
+    /**
+     * Инициализирует плавающие кнопки действия и устанавливает им обработчики нажатия
+     */
+    private fun initializeFloatingActionButtons() {
+        // Устанавливаем обработчики нажатия плавающим кнопкам действия
+        binding.trainingButton.setOnClickListener {
+            binding.floatingActionMenu.close(true)
+
+            val trainingFragment = TrainingFragment.newInstance("temp", "temp");
+            startFragment(trainingFragment)
+        }
     }
 
     override fun showData(data: List<DiaryEntryModel>) {

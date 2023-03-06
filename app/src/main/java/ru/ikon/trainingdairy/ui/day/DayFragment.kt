@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentDayBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
+import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.util.*
 
 private const val DATE = "date"
@@ -65,9 +67,40 @@ class DayFragment : Fragment(), DayContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Инициализируем меню из плавающих кнопок действия и сами эти кнопки
+        initializeFloatingActionButtons()
+
         // Вызываем у презентера метод onCreate, передавая туда дату, чтобы он
         // запросил из репозитория список записей за эту дату
         presenter.onCreate(date)
+    }
+
+    /**
+     * Инициализирует плавающие кнопки действия и устанавливает им обработчики нажатия
+     */
+    private fun initializeFloatingActionButtons() {
+        // Устанавливаем обработчики нажатия плавающим кнопкам действия
+        binding.trainingButton.setOnClickListener {
+            binding.floatingActionMenu.close(true)
+
+            val trainingFragment = TrainingFragment.newInstance("temp", "temp");
+            startFragment(trainingFragment)
+        }
+    }
+
+    private fun startFragment(fragment: Fragment) {
+        parentFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
+            .addToBackStack("")
+            .replace(R.id.fragment_holder, fragment)
+            .commit()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 
     override fun showData(data: List<DiaryEntryModel>) {
