@@ -11,4 +11,5 @@
     <string name="label_for_age_edit_text">Ваш возраст</string>
     <string name="label_for_weight_edit_text">Ваш вес</string>
     <string name="ready_button">Готово</string>
+    <string name="action_ok_button">ok</string>
 </resources>

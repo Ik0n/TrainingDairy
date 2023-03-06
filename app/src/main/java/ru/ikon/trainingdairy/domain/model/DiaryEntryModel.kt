@@ -8,7 +8,7 @@ import java.util.*
 open class DiaryEntryModel(open val date: Date) {
 
     /** ID карточки */
-    var id: Long = 0
+    var id: Long = 39
 
 
 

@@ -398,4 +398,8 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             note
         )
     }
+
+    override fun getNote(id: Long): NoteModel {
+        return entriesList[id.toInt()] as NoteModel
+    }
 }

@@ -21,4 +21,5 @@ interface DiaryEntryRepository {
     fun getEntries(date: Date) : List<DiaryEntryModel>
 
     fun addNote(note: NoteModel)
+    fun getNote(id: Long) : NoteModel
 }

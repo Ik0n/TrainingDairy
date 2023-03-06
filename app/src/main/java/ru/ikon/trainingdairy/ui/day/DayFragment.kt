@@ -99,8 +99,8 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
         }
     }
 
-    override fun onNoteClick(data: DiaryEntryModel) {
-        NoteDialogFragment(data).show(
+    override fun onNoteClick(id: Long) {
+        NoteDialogFragment(id).show(
             childFragmentManager, NoteDialogFragment.TAG
         )
     }

@@ -1,5 +1,6 @@
 package ru.ikon.trainingdairy.ui.note
 
+import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
 import java.util.*
@@ -16,16 +17,18 @@ class NotePresenter : NoteContract.Presenter {
         TODO("Not yet implemented")
     }
 
+
+
     override fun saveNote(date: Date, text: String) {
         DummyDiaryEntryRepositoryImpl.newInstance().addNote(
                 NoteModel(
-                    GregorianCalendar(
-                        date.year,
-                        date.month,
-                        date.day
-                    ).time, text
+                    date, text
                 )
             )
+    }
+
+    override fun getNote(id: Long): NoteModel {
+        return DummyDiaryEntryRepositoryImpl.newInstance().getNote(id)
     }
 
     override fun detach() {

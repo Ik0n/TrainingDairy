@@ -60,7 +60,7 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
         override fun bind(data: DiaryEntryModel) {
             binding.textViewBody.text = (data as NoteModel).text.toString()
             binding.cardView.setOnClickListener {
-                this@EntryCardAdapter.listener.onNoteClick(data)
+                this@EntryCardAdapter.listener.onNoteClick(data.id)
             }
         }
 

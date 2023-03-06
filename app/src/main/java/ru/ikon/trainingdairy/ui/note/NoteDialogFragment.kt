@@ -1,27 +1,30 @@
 package ru.ikon.trainingdairy.ui.note
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.DialogFragmentNoteBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
+import ru.ikon.trainingdairy.ui.day.DayFragment
 import ru.ikon.trainingdairy.ui.month.MonthContract
+import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteDialogFragment(var data: DiaryEntryModel = DiaryEntryModel(Date())) : DialogFragment(), NoteContract.View {
+class NoteDialogFragment(var id: Long? = null, var currentDate: Date? = null) : DialogFragment(), NoteContract.View{
 
     private var _binding: DialogFragmentNoteBinding? = null
     private val binding: DialogFragmentNoteBinding get() { return _binding!! }
 
     private lateinit var presenter: NoteContract.Presenter
-
 
     override fun showData() {
         TODO("Not yet implemented")
@@ -41,24 +44,43 @@ class NoteDialogFragment(var data: DiaryEntryModel = DiaryEntryModel(Date())) : 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.editTextDate.setText(data.date.toString())
-    }
+        var dateTemp = Date()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+        if (currentDate != null) {
+            binding.editTextDate.setText(currentDate?.let {
+                SimpleDateFormat(
+                    "dd MMMM yyyy",
+                    Locale.ENGLISH
+                ).format(it)
+            })
+        }
 
+        id?.let {
+            binding.editTextDate.setText(SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(presenter.getNote(it).date))
+            binding.editTextBody.setText(presenter.getNote(it).text)
+        }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(requireContext())
-                .setMessage("Заметка")
-                .setPositiveButton("Сохранить") {_,_ ->
-                    presenter.saveNote(Date(), binding.editTextBody.text.toString())
+        with(binding) {
+            editTextDate.setOnClickListener {
+                Calendar.getInstance().get(Calendar.YEAR)
+                DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                    editTextDate.setText("" + day + "/" + month + "/" + year)
+                    dateTemp = GregorianCalendar(year, month, day).time
+                }, Calendar.getInstance().get(Calendar.YEAR),
+                    Calendar.getInstance().get(Calendar.MONTH),
+                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
+
+            okButton.setOnClickListener {
+                if (editTextDate.text.toString() != "" && editTextBody.text.toString() != "") {
+                    presenter.saveNote(dateTemp, editTextBody.text.toString())
+                    dismiss()
                 }
-                .setView(R.layout.dialog_fragment_note)
-                .create()
-    }
+            }
+        }
 
+    }
 
     companion object {
         const val TAG = "NoteDialogFragment"
