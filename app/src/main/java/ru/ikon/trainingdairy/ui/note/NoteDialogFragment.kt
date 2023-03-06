@@ -62,7 +62,6 @@ class NoteDialogFragment(var id: Long? = null, var currentDate: Date? = null) : 
 
         with(binding) {
             editTextDate.setOnClickListener {
-                Calendar.getInstance().get(Calendar.YEAR)
                 DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, month, day ->
                     editTextDate.setText("" + day + "/" + month + "/" + year)
                     dateTemp = GregorianCalendar(year, month, day).time
@@ -73,7 +72,7 @@ class NoteDialogFragment(var id: Long? = null, var currentDate: Date? = null) : 
             }
 
             okButton.setOnClickListener {
-                if (editTextDate.text.toString() != "" && editTextBody.text.toString() != "") {
+                if (editTextDate.text.toString() != "" || editTextBody.text.toString() != "") {
                     presenter.saveNote(dateTemp, editTextBody.text.toString())
                     dismiss()
                 }
