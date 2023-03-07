@@ -1,16 +1,13 @@
 package ru.ikon.trainingdairy.ui.training
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.ikon.trainingdairy.R
-import ru.ikon.trainingdairy.databinding.FragmentDayBinding
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.databinding.FragmentTrainingBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
-import ru.ikon.trainingdairy.ui.day.DayContract
-import ru.ikon.trainingdairy.ui.day.DayPresenter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,12 +40,25 @@ class TrainingFragment : Fragment(), TrainingContract.View {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         presenter = TrainingPresenter()
         presenter.attach(this)
 
         _binding = FragmentTrainingBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Поскольку этот фрагмент имеет свой собственный Toolbar с тремя полями,
+        // при открытии этого фрагмента мы обращаемся к Activity и скрываем у неё основной Toolbar
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // При закрытии этого фрагмента снова отображаем у Activity основной Toolbar
+        (activity as AppCompatActivity).supportActionBar?.show()
     }
 
     override fun onDestroyView() {

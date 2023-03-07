@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import ru.ikon.trainingdairy.App
+import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentDayBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
-import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import ru.ikon.trainingdairy.ui.day.recycler.OnNoteClickListener
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
-import java.text.DateFormat
+import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -79,7 +78,6 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
         // запросил из репозитория список записей за эту дату
         presenter.onCreate(date)
 
-        initializeControlButtons()
         adapter.setOnNoteClickListener(this)
 
         (activity as AppCompatActivity).supportActionBar?.title = SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(date)
@@ -91,11 +89,21 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
      */
     private fun initializeFloatingActionButtons() {
         // Устанавливаем обработчики нажатия плавающим кнопкам действия
-        binding.trainingButton.setOnClickListener {
-            binding.floatingActionMenu.close(true)
+        with(binding) {
+            noteButton.setOnClickListener {
+                floatingActionMenu.close(true)
 
-            val trainingFragment = TrainingFragment.newInstance("temp", "temp");
-            startFragment(trainingFragment)
+                NoteDialogFragment().show(
+                    childFragmentManager, NoteDialogFragment.TAG
+                )
+            }
+
+            trainingButton.setOnClickListener {
+                floatingActionMenu.close(true)
+
+                val trainingFragment = TrainingFragment.newInstance("temp", "temp")
+                startFragment(trainingFragment)
+            }
         }
     }
 
@@ -118,16 +126,6 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
         // Презентер вернул данные, отображаем их с помошью адаптера
         binding.recyclerView.adapter = adapter.apply {
             setData(data)
-        }
-    }
-
-    private fun initializeControlButtons() {
-        with(binding) {
-            floatingActionItem3.setOnClickListener {
-                NoteDialogFragment().show(
-                    childFragmentManager, NoteDialogFragment.TAG
-                )
-            }
         }
     }
 

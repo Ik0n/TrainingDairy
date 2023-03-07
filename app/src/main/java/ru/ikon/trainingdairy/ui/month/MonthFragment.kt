@@ -1,6 +1,5 @@
 package ru.ikon.trainingdairy.ui.month
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +15,8 @@ import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.DayFragment
-import ru.ikon.trainingdairy.ui.training.TrainingFragment
-import java.text.SimpleDateFormat
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
+import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.util.*
 
 class MonthFragment : Fragment(), MonthContract.View {
@@ -49,23 +47,12 @@ class MonthFragment : Fragment(), MonthContract.View {
 
         // Инициализируем меню из плавающих кнопок действия и сами эти кнопки
         initializeFloatingActionButtons()
-        initializeControlButtons()
 
         if ((activity as AppCompatActivity).supportActionBar?.title != getString(R.string.app_name))
             (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
 
         // Передаём в Presenter сообщение о том, что фрагмент создан, чтобы получить данные
         presenter.onCreate()
-    }
-
-    private fun initializeControlButtons() {
-        with(binding) {
-            floatingActionItem3.setOnClickListener {
-                NoteDialogFragment().show(
-                    childFragmentManager, NoteDialogFragment.TAG
-                )
-            }
-        }
     }
 
     override fun onDestroyView() {
@@ -157,11 +144,21 @@ class MonthFragment : Fragment(), MonthContract.View {
      */
     private fun initializeFloatingActionButtons() {
         // Устанавливаем обработчики нажатия плавающим кнопкам действия
-        binding.trainingButton.setOnClickListener {
-            binding.floatingActionMenu.close(true)
+        with(binding) {
+            trainingButton.setOnClickListener {
+                floatingActionMenu.close(true)
 
-            val trainingFragment = TrainingFragment.newInstance("temp", "temp");
-            startFragment(trainingFragment)
+                val trainingFragment = TrainingFragment.newInstance("temp", "temp")
+                startFragment(trainingFragment)
+            }
+
+            noteButton.setOnClickListener {
+                floatingActionMenu.close(true)
+
+                NoteDialogFragment().show(
+                    childFragmentManager, NoteDialogFragment.TAG
+                )
+            }
         }
     }
 
