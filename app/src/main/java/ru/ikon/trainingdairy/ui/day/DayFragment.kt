@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentDayBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
+import ru.ikon.trainingdairy.domain.model.NoteModel
+import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
-import ru.ikon.trainingdairy.ui.day.recycler.OnNoteClickListener
+import ru.ikon.trainingdairy.ui.day.recycler.OnItemClickListener
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.text.SimpleDateFormat
@@ -18,7 +20,7 @@ import java.util.*
 
 private const val DATE = "date"
 
-class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
+class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
 
     private lateinit var presenter: DayContract.Presenter
 
@@ -129,9 +131,16 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
         }
     }
 
-    override fun onNoteClick(id: Long) {
-        NoteDialogFragment(id).show(
-            childFragmentManager, NoteDialogFragment.TAG
-        )
+    override fun onItemClick(item: DiaryEntryModel) {
+        if (item is NoteModel) {
+            NoteDialogFragment(item.id).show(
+                childFragmentManager, NoteDialogFragment.TAG
+            )
+        }
+
+        else if (item is TrainingModel) {
+            val trainingFragment = TrainingFragment.newInstance("temp", "temp")
+            startFragment(trainingFragment)
+        }
     }
 }
