@@ -14,7 +14,7 @@ class DayPresenter : DayContract.Presenter {
     override fun onCreate(date: Date) {
         // Создаём репозиторий с тестовыми данными. Позднее здесь будет загрузка данных
         // из базы, а пока - загрузка из тестового репозитория
-        val repository = DummyDiaryEntryRepositoryImpl()
+        val repository = DummyDiaryEntryRepositoryImpl.newInstance()
 
         // Получаем из репозитория все записи за указанную дату
         val entriesList = repository.getEntries(date)

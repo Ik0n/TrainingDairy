@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.databinding.CardMeasureItemBinding
 import ru.ikon.trainingdairy.databinding.CardNoteItemBinding
 import ru.ikon.trainingdairy.databinding.CardTrainingItemBinding
@@ -11,6 +12,7 @@ import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
+import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 
 const val TYPE_MEASURE = 0
 const val TYPE_NOTE = 1
@@ -19,6 +21,8 @@ const val TYPE_TRAINING = 2
 class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>() {
 
     private val data : MutableList<DiaryEntryModel> = mutableListOf()
+
+    private lateinit var listener: OnNoteClickListener
 
     override fun getItemViewType(position: Int): Int {
         var temp = -1
@@ -52,10 +56,15 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
         }
     }
 
-    class NoteViewHolder(val binding: CardNoteItemBinding) : BaseViewHolder(binding.root) {
+    inner class NoteViewHolder(val binding: CardNoteItemBinding) : BaseViewHolder(binding.root) {
         override fun bind(data: DiaryEntryModel) {
             binding.textViewBody.text = (data as NoteModel).text.toString()
+            binding.cardView.setOnClickListener {
+                this@EntryCardAdapter.listener.onNoteClick(data.id)
+            }
         }
+
+
     }
 
     class TrainingViewHolder(val binding: CardTrainingItemBinding) : BaseViewHolder(binding.root) {
@@ -89,6 +98,10 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    fun setOnNoteClickListener(listener: OnNoteClickListener) {
+        this.listener = listener
     }
 
 
