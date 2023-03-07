@@ -1,14 +1,15 @@
 package ru.ikon.trainingdairy.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.ActivityMainBinding
 import ru.ikon.trainingdairy.ui.month.MonthFragment
 import ru.ikon.trainingdairy.ui.programslist.ProgramsListFragment
+import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES_NAME
@@ -42,9 +43,15 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
             startFragment(ProgramsListFragment.newInstance())
         }
 
+        initToolbar()
+
         initBottomNavigationBar()
     }
 
+    private fun initToolbar() {
+        setSupportActionBar(binding.toolbar)
+        binding.toolbar.visibility = View.VISIBLE
+    }
 
     private fun initBottomNavigationBar() {
         binding.bottomNavigationBar.setOnItemSelectedListener { item ->
@@ -62,6 +69,10 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
     }
 
     private fun startFragment(fragment: Fragment) {
+        if (fragment is TrainingFragment) {
+            binding.toolbar.visibility = View.GONE
+        }
+
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
