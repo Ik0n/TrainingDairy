@@ -16,6 +16,7 @@ import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.DayFragment
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
+import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.util.*
 
 class MonthFragment : Fragment(), MonthContract.View {
@@ -44,23 +45,14 @@ class MonthFragment : Fragment(), MonthContract.View {
         // никак не связана с данными
         initializeCalendar()
 
-        initializeControlButtons()
+        // Инициализируем меню из плавающих кнопок действия и сами эти кнопки
+        initializeFloatingActionButtons()
 
         if ((activity as AppCompatActivity).supportActionBar?.title != getString(R.string.app_name))
             (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
 
         // Передаём в Presenter сообщение о том, что фрагмент создан, чтобы получить данные
         presenter.onCreate()
-    }
-
-    private fun initializeControlButtons() {
-        with(binding) {
-            floatingActionItem3.setOnClickListener {
-                NoteDialogFragment().show(
-                    childFragmentManager, NoteDialogFragment.TAG
-                )
-            }
-        }
     }
 
     override fun onDestroyView() {
@@ -145,6 +137,29 @@ class MonthFragment : Fragment(), MonthContract.View {
 
         // Устанавливаем строку-результат в качестве заголовка календаря
         binding.textViewMonth.text = resultString
+    }
+
+    /**
+     * Инициализирует плавающие кнопки действия и устанавливает им обработчики нажатия
+     */
+    private fun initializeFloatingActionButtons() {
+        // Устанавливаем обработчики нажатия плавающим кнопкам действия
+        with(binding) {
+            trainingButton.setOnClickListener {
+                floatingActionMenu.close(true)
+
+                val trainingFragment = TrainingFragment.newInstance(0)
+                startFragment(trainingFragment)
+            }
+
+            noteButton.setOnClickListener {
+                floatingActionMenu.close(true)
+
+                NoteDialogFragment().show(
+                    childFragmentManager, NoteDialogFragment.TAG
+                )
+            }
+        }
     }
 
     override fun showData(data: List<DiaryEntryModel>) {

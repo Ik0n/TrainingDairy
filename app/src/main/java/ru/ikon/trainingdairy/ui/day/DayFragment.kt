@@ -6,19 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import ru.ikon.trainingdairy.App
+import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentDayBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
+import ru.ikon.trainingdairy.domain.model.NoteModel
+import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
-import ru.ikon.trainingdairy.ui.day.recycler.OnNoteClickListener
+import ru.ikon.trainingdairy.ui.day.recycler.OnItemClickListener
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
-import java.text.DateFormat
+import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
 private const val DATE = "date"
 
-class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
+class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
 
     private lateinit var presenter: DayContract.Presenter
 
@@ -71,15 +73,55 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Инициализируем меню из плавающих кнопок действия и сами эти кнопки
+        initializeFloatingActionButtons()
+
         // Вызываем у презентера метод onCreate, передавая туда дату, чтобы он
         // запросил из репозитория список записей за эту дату
         presenter.onCreate(date)
 
-        initializeControlButtons()
         adapter.setOnNoteClickListener(this)
 
         (activity as AppCompatActivity).supportActionBar?.title = SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(date)
 
+    }
+
+    /**
+     * Инициализирует плавающие кнопки действия и устанавливает им обработчики нажатия
+     */
+    private fun initializeFloatingActionButtons() {
+        // Устанавливаем обработчики нажатия плавающим кнопкам действия
+        with(binding) {
+            noteButton.setOnClickListener {
+                floatingActionMenu.close(true)
+
+                NoteDialogFragment().show(
+                    childFragmentManager, NoteDialogFragment.TAG
+                )
+            }
+
+            trainingButton.setOnClickListener {
+                floatingActionMenu.close(true)
+
+                val trainingFragment = TrainingFragment.newInstance(0)
+                startFragment(trainingFragment)
+            }
+        }
+    }
+
+    private fun startFragment(fragment: Fragment) {
+        parentFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
+            .addToBackStack("")
+            .replace(R.id.fragment_holder, fragment)
+            .commit()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 
     override fun showData(data: List<DiaryEntryModel>) {
@@ -89,19 +131,16 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
         }
     }
 
-    private fun initializeControlButtons() {
-        with(binding) {
-            floatingActionItem3.setOnClickListener {
-                NoteDialogFragment().show(
-                    childFragmentManager, NoteDialogFragment.TAG
-                )
-            }
+    override fun onItemClick(item: DiaryEntryModel) {
+        if (item is NoteModel) {
+            NoteDialogFragment(item.id).show(
+                childFragmentManager, NoteDialogFragment.TAG
+            )
         }
-    }
 
-    override fun onNoteClick(id: Long) {
-        NoteDialogFragment(id).show(
-            childFragmentManager, NoteDialogFragment.TAG
-        )
+        else if (item is TrainingModel) {
+            val trainingFragment = TrainingFragment.newInstance(item.id)
+            startFragment(trainingFragment)
+        }
     }
 }

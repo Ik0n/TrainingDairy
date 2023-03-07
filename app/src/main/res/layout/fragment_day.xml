@@ -38,31 +38,31 @@
         app:menu_colorPressed="@color/orange_dark">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/training_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_label="Тренировка"
             app:fab_size="mini"
-            android:id="@+id/floating_action_item_1"
             android:src="@drawable/ic_dumbbell_white_24dp"
             app:fab_colorNormal="@color/blue"
             app:fab_colorPressed="@color/blue"/>
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/measure_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_label="Измерение"
             app:fab_size="mini"
-            android:id="@+id/floating_action_item_2"
             android:src="@drawable/ic_ruler_white_24dp"
             app:fab_colorNormal="@color/green"
             app:fab_colorPressed="@color/green"/>
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/note_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_label="Заметка"
             app:fab_size="mini"
-            android:id="@+id/floating_action_item_3"
             android:src="@drawable/ic_edit_black_24dp"
             app:fab_colorNormal="@color/orange"
             app:fab_colorPressed="@color/orange"/>

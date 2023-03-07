@@ -1,8 +1,8 @@
 package ru.ikon.trainingdairy.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
@@ -42,9 +42,10 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
             startFragment(ProgramsListFragment.newInstance())
         }
 
+        setSupportActionBar(binding.toolbar)
+
         initBottomNavigationBar()
     }
-
 
     private fun initBottomNavigationBar() {
         binding.bottomNavigationBar.setOnItemSelectedListener { item ->
