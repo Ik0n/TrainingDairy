@@ -11,14 +11,15 @@ class TrainingPresenter : TrainingContract.Presenter {
         this.view = view
     }
 
-    override fun onCreate(date: Date) {
+    override fun onCreate(id: Long) {
         // Создаём репозиторий с тестовыми данными. Позднее здесь будет загрузка данных
         // из базы, а пока - загрузка из тестового репозитория
         val repository = DummyDiaryEntryRepositoryImpl()
 
-        // Получаем из репозитория все записи за указанную дату
-        //val entriesList = repository.getEntries(date)
-
+        if (id > 0) {
+            // Получаем тренировку с указанным ID
+            val trainingModel = repository.getTraining(id)
+        }
         // Передаём эти данные во View и просим отобразить их в виде списка
         //view?.showData(entriesList)
     }

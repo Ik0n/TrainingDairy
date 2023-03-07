@@ -103,7 +103,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
             trainingButton.setOnClickListener {
                 floatingActionMenu.close(true)
 
-                val trainingFragment = TrainingFragment.newInstance("temp", "temp")
+                val trainingFragment = TrainingFragment.newInstance(0)
                 startFragment(trainingFragment)
             }
         }
@@ -139,7 +139,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
         }
 
         else if (item is TrainingModel) {
-            val trainingFragment = TrainingFragment.newInstance("temp", "temp")
+            val trainingFragment = TrainingFragment.newInstance(item.id)
             startFragment(trainingFragment)
         }
     }

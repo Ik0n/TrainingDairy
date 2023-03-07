@@ -148,7 +148,7 @@ class MonthFragment : Fragment(), MonthContract.View {
             trainingButton.setOnClickListener {
                 floatingActionMenu.close(true)
 
-                val trainingFragment = TrainingFragment.newInstance("temp", "temp")
+                val trainingFragment = TrainingFragment.newInstance(0)
                 startFragment(trainingFragment)
             }
 

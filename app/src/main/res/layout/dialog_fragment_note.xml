@@ -25,7 +25,8 @@
             android:editable="false"
             android:clickable="true"
             android:maxLines="1"
-            android:importantForAutofill="noExcludeDescendants"/>
+            android:importantForAutofill="noExcludeDescendants"
+            android:focusable="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

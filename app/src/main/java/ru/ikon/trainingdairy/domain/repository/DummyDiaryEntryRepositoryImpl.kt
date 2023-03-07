@@ -18,7 +18,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
     init {
         // Создадим несколько записей об измерениях, тренировках и заметках
         entriesList.add(
-            TrainingModel(
+            TrainingModel(1,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -27,7 +27,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(2,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -36,7 +36,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(3,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -45,7 +45,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(4,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -54,7 +54,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(5,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -63,7 +63,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(6,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -72,7 +72,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(7,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -81,7 +81,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(8,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -90,7 +90,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(9,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -99,7 +99,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(10,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -108,7 +108,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(11,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -117,7 +117,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(12,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -126,7 +126,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            MeasureModel(
+            MeasureModel(1,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -135,7 +135,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            MeasureModel(
+            MeasureModel(2,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -144,7 +144,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            MeasureModel(
+            MeasureModel(3,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -153,7 +153,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            MeasureModel(
+            MeasureModel(4,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -162,7 +162,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            NoteModel(
+            NoteModel(1,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -171,7 +171,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            NoteModel(
+            NoteModel(2,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -180,7 +180,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            NoteModel(
+            NoteModel(3,
                 GregorianCalendar(
                     2023,
                     Calendar.FEBRUARY,
@@ -192,7 +192,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
 
 
         entriesList.add(
-            TrainingModel(
+            TrainingModel(13,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -201,7 +201,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(14,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -210,7 +210,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(15,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -219,7 +219,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(16,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -228,7 +228,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(17,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -237,7 +237,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(18,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -246,7 +246,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(19,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -255,7 +255,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(20,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -264,7 +264,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(21,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -273,7 +273,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(22,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -282,7 +282,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(23,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -291,7 +291,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(24,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -300,7 +300,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            TrainingModel(
+            TrainingModel(25,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -309,7 +309,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
 
-        val measure1 = MeasureModel(
+        val measure1 = MeasureModel(5,
             GregorianCalendar(
                 2023,
                 Calendar.MARCH,
@@ -322,7 +322,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         measure1.parametersList.add(ParameterModel("Бёдра (см)", 89))
         entriesList.add(measure1)
 
-        val measure2 = MeasureModel(
+        val measure2 = MeasureModel(6,
             GregorianCalendar(
                 2023,
                 Calendar.MARCH,
@@ -335,7 +335,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         measure2.parametersList.add(ParameterModel("Бёдра (см)", 88))
         entriesList.add(measure2)
 
-        val measure3 = MeasureModel(
+        val measure3 = MeasureModel(7,
             GregorianCalendar(
                 2023,
                 Calendar.MARCH,
@@ -348,7 +348,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         measure3.parametersList.add(ParameterModel("Бёдра (см)", 87))
         entriesList.add(measure3)
 
-        val measure4 = MeasureModel(
+        val measure4 = MeasureModel(8,
             GregorianCalendar(
                 2023,
                 Calendar.MARCH,
@@ -361,7 +361,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         measure4.parametersList.add(ParameterModel("Бёдра (см)", 86))
         entriesList.add(measure4)
 
-        val measure5 = MeasureModel(
+        val measure5 = MeasureModel(9,
             GregorianCalendar(
                 2023,
                 Calendar.MARCH,
@@ -375,7 +375,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         entriesList.add(measure5)
 
         entriesList.add(
-            NoteModel(
+            NoteModel(4,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -384,7 +384,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            NoteModel(
+            NoteModel(5,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -393,7 +393,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
         entriesList.add(
-            NoteModel(
+            NoteModel(6,
                 GregorianCalendar(
                     2023,
                     Calendar.MARCH,
@@ -418,6 +418,10 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
     }
 
     override fun getNote(id: Long): NoteModel {
-        return entriesList[id.toInt()] as NoteModel
+        return entriesList.find { x -> (x is NoteModel && x.id == id) } as NoteModel
+    }
+
+    override fun getTraining(id: Long): TrainingModel {
+        return entriesList.find { x -> (x is TrainingModel && x.id == id) } as TrainingModel
     }
 }

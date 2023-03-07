@@ -10,7 +10,7 @@ class TrainingContract {
 
     interface Presenter {
         fun attach(view: View)
-        fun onCreate(date: Date)
+        fun onCreate(id: Long)
         fun detach()
     }
 }
