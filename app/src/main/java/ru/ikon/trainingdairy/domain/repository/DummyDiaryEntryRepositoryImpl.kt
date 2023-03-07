@@ -1,9 +1,6 @@
 package ru.ikon.trainingdairy.domain.repository
 
-import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
-import ru.ikon.trainingdairy.domain.model.MeasureModel
-import ru.ikon.trainingdairy.domain.model.NoteModel
-import ru.ikon.trainingdairy.domain.model.TrainingModel
+import ru.ikon.trainingdairy.domain.model.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -311,51 +308,72 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
                 ).time, "Руки"
             )
         )
-        entriesList.add(
-            MeasureModel(
-                GregorianCalendar(
-                    2023,
-                    Calendar.MARCH,
-                    1
-                ).time
-            )
+
+        val measure1 = MeasureModel(
+            GregorianCalendar(
+                2023,
+                Calendar.MARCH,
+                1
+            ).time
         )
-        entriesList.add(
-            MeasureModel(
-                GregorianCalendar(
-                    2023,
-                    Calendar.MARCH,
-                    8
-                ).time
-            )
+        measure1.parametersList.add(ParameterModel("Вес (кг)", 64))
+        measure1.parametersList.add(ParameterModel("Грудь (см)", 89))
+        measure1.parametersList.add(ParameterModel("Талия (см)", 59))
+        measure1.parametersList.add(ParameterModel("Бёдра (см)", 89))
+        entriesList.add(measure1)
+
+        val measure2 = MeasureModel(
+            GregorianCalendar(
+                2023,
+                Calendar.MARCH,
+                8
+            ).time
         )
-        entriesList.add(
-            MeasureModel(
-                GregorianCalendar(
-                    2023,
-                    Calendar.MARCH,
-                    15
-                ).time
-            )
+        measure2.parametersList.add(ParameterModel("Вес (кг)", 63))
+        measure2.parametersList.add(ParameterModel("Грудь (см)", 88))
+        measure2.parametersList.add(ParameterModel("Талия (см)", 58))
+        measure2.parametersList.add(ParameterModel("Бёдра (см)", 88))
+        entriesList.add(measure2)
+
+        val measure3 = MeasureModel(
+            GregorianCalendar(
+                2023,
+                Calendar.MARCH,
+                15
+            ).time
         )
-        entriesList.add(
-            MeasureModel(
-                GregorianCalendar(
-                    2023,
-                    Calendar.MARCH,
-                    22
-                ).time
-            )
+        measure3.parametersList.add(ParameterModel("Вес (кг)", 62))
+        measure3.parametersList.add(ParameterModel("Грудь (см)", 87))
+        measure3.parametersList.add(ParameterModel("Талия (см)", 57))
+        measure3.parametersList.add(ParameterModel("Бёдра (см)", 87))
+        entriesList.add(measure3)
+
+        val measure4 = MeasureModel(
+            GregorianCalendar(
+                2023,
+                Calendar.MARCH,
+                22
+            ).time
         )
-        entriesList.add(
-            MeasureModel(
-                GregorianCalendar(
-                    2023,
-                    Calendar.MARCH,
-                    29
-                ).time
-            )
+        measure4.parametersList.add(ParameterModel("Вес (кг)", 61))
+        measure4.parametersList.add(ParameterModel("Грудь (см)", 86))
+        measure4.parametersList.add(ParameterModel("Талия (см)", 56))
+        measure4.parametersList.add(ParameterModel("Бёдра (см)", 86))
+        entriesList.add(measure4)
+
+        val measure5 = MeasureModel(
+            GregorianCalendar(
+                2023,
+                Calendar.MARCH,
+                22
+            ).time
         )
+        measure5.parametersList.add(ParameterModel("Вес (кг)", 60))
+        measure5.parametersList.add(ParameterModel("Грудь (см)", 85))
+        measure5.parametersList.add(ParameterModel("Талия (см)", 55))
+        measure5.parametersList.add(ParameterModel("Бёдра (см)", 85))
+        entriesList.add(measure5)
+
         entriesList.add(
             NoteModel(
                 GregorianCalendar(
