@@ -1,6 +1,7 @@
 package ru.ikon.trainingdairy
 
 import android.app.Application
+import androidx.fragment.app.Fragment
 
 class App : Application() {
 

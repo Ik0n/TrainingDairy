@@ -15,6 +15,7 @@ import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.DayFragment
+import ru.ikon.trainingdairy.ui.measure.MeasureFragment
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 import java.util.*
 
@@ -46,6 +47,8 @@ class MonthFragment : Fragment(), MonthContract.View {
 
         initializeControlButtons()
 
+        (activity as AppCompatActivity).supportActionBar?.show()
+
         if ((activity as AppCompatActivity).supportActionBar?.title != getString(R.string.app_name))
             (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
 
@@ -59,6 +62,9 @@ class MonthFragment : Fragment(), MonthContract.View {
                 NoteDialogFragment().show(
                     childFragmentManager, NoteDialogFragment.TAG
                 )
+            }
+            floatingActionItem2.setOnClickListener {
+                startFragment(MeasureFragment.newInstance())
             }
         }
     }

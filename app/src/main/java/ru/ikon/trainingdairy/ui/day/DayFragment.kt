@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.App
+import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentDayBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
+import ru.ikon.trainingdairy.ui.day.recycler.OnMeasureClickListener
 import ru.ikon.trainingdairy.ui.day.recycler.OnNoteClickListener
+import ru.ikon.trainingdairy.ui.measure.MeasureFragment
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -18,7 +21,7 @@ import java.util.*
 
 private const val DATE = "date"
 
-class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
+class DayFragment : Fragment(), DayContract.View, OnNoteClickListener, OnMeasureClickListener {
 
     private lateinit var presenter: DayContract.Presenter
 
@@ -77,6 +80,9 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
 
         initializeControlButtons()
         adapter.setOnNoteClickListener(this)
+        adapter.setOnMeasureClickListener(this)
+
+        (activity as AppCompatActivity).supportActionBar?.show()
 
         (activity as AppCompatActivity).supportActionBar?.title = SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(date)
 
@@ -96,6 +102,9 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
                     childFragmentManager, NoteDialogFragment.TAG
                 )
             }
+            floatingActionItem2.setOnClickListener {
+                startFragment(MeasureFragment.newInstance())
+            }
         }
     }
 
@@ -103,5 +112,18 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener {
         NoteDialogFragment(id).show(
             childFragmentManager, NoteDialogFragment.TAG
         )
+    }
+
+    private fun startFragment(fragment: Fragment) {
+        parentFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
+            .addToBackStack("")
+            .replace(R.id.fragment_holder, fragment)
+            .commit()
+    }
+
+    override fun onMeasureClick() {
+        startFragment(MeasureFragment.newInstance())
     }
 }
