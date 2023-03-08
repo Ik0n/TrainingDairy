@@ -14,6 +14,7 @@ import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
 import ru.ikon.trainingdairy.ui.day.recycler.OnMeasureClickListener
 import ru.ikon.trainingdairy.ui.day.recycler.OnNoteClickListener
 import ru.ikon.trainingdairy.ui.measure.MeasureFragment
+import ru.ikon.trainingdairy.ui.day.recycler.OnItemClickListener
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -21,7 +22,7 @@ import java.util.*
 
 private const val DATE = "date"
 
-class DayFragment : Fragment(), DayContract.View, OnNoteClickListener, OnMeasureClickListener {
+class DayFragment : Fragment(), DayContract.View, OnNoteClickListener, OnItemClickListener, OnMeasureClickListener {
 
     private lateinit var presenter: DayContract.Presenter
 
@@ -74,6 +75,9 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener, OnMeasure
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Инициализируем меню из плавающих кнопок действия и сами эти кнопки
+        initializeFloatingActionButtons()
+
         // Вызываем у презентера метод onCreate, передавая туда дату, чтобы он
         // запросил из репозитория список записей за эту дату
         presenter.onCreate(date)
@@ -86,6 +90,44 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener, OnMeasure
 
         (activity as AppCompatActivity).supportActionBar?.title = SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(date)
 
+    }
+
+    /**
+     * Инициализирует плавающие кнопки действия и устанавливает им обработчики нажатия
+     */
+    private fun initializeFloatingActionButtons() {
+        // Устанавливаем обработчики нажатия плавающим кнопкам действия
+        with(binding) {
+            noteButton.setOnClickListener {
+                floatingActionMenu.close(true)
+
+                NoteDialogFragment().show(
+                    childFragmentManager, NoteDialogFragment.TAG
+                )
+            }
+
+            trainingButton.setOnClickListener {
+                floatingActionMenu.close(true)
+
+                val trainingFragment = TrainingFragment.newInstance(0)
+                startFragment(trainingFragment)
+            }
+        }
+    }
+
+    private fun startFragment(fragment: Fragment) {
+        parentFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
+            .addToBackStack("")
+            .replace(R.id.fragment_holder, fragment)
+            .commit()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 
     override fun showData(data: List<DiaryEntryModel>) {
@@ -105,6 +147,16 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener, OnMeasure
             floatingActionItem2.setOnClickListener {
                 startFragment(MeasureFragment.newInstance())
             }
+    override fun onItemClick(item: DiaryEntryModel) {
+        if (item is NoteModel) {
+            NoteDialogFragment(item.id).show(
+                childFragmentManager, NoteDialogFragment.TAG
+            )
+        }
+
+        else if (item is TrainingModel) {
+            val trainingFragment = TrainingFragment.newInstance(item.id)
+            startFragment(trainingFragment)
         }
     }
 

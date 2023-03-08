@@ -23,4 +23,6 @@
 
     <!--Цвет текущей даты для календаря -->
     <color name="gray">#E6E6E6</color>
+
+    <color name="divider">#BDBDBD</color>
 </resources>

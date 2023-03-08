@@ -15,7 +15,6 @@ import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.DayFragment
-import ru.ikon.trainingdairy.ui.measure.MeasureFragment
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 import java.util.*
 
@@ -46,6 +45,9 @@ class MonthFragment : Fragment(), MonthContract.View {
         initializeCalendar()
 
         initializeControlButtons()
+
+        // Инициализируем меню из плавающих кнопок действия и сами эти кнопки
+        initializeFloatingActionButtons()
 
         (activity as AppCompatActivity).supportActionBar?.show()
 
@@ -151,6 +153,29 @@ class MonthFragment : Fragment(), MonthContract.View {
 
         // Устанавливаем строку-результат в качестве заголовка календаря
         binding.textViewMonth.text = resultString
+    }
+
+    /**
+     * Инициализирует плавающие кнопки действия и устанавливает им обработчики нажатия
+     */
+    private fun initializeFloatingActionButtons() {
+        // Устанавливаем обработчики нажатия плавающим кнопкам действия
+        with(binding) {
+            trainingButton.setOnClickListener {
+                floatingActionMenu.close(true)
+
+                val trainingFragment = TrainingFragment.newInstance(0)
+                startFragment(trainingFragment)
+            }
+
+            noteButton.setOnClickListener {
+                floatingActionMenu.close(true)
+
+                NoteDialogFragment().show(
+                    childFragmentManager, NoteDialogFragment.TAG
+                )
+            }
+        }
     }
 
     override fun showData(data: List<DiaryEntryModel>) {

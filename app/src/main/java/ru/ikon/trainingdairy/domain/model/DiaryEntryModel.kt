@@ -5,11 +5,4 @@ import java.util.*
 /**
  * Класс, представляющий собой дневниковую запись
  */
-open class DiaryEntryModel(open val date: Date) {
-
-    /** ID карточки */
-    var id: Long = 39
-
-
-
-}
+open class DiaryEntryModel(open val id: Long, open val date: Date)
