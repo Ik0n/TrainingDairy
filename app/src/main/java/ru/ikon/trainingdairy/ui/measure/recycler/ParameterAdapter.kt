@@ -9,6 +9,7 @@ import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.databinding.CardMeasureParameterItemBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.domain.model.ParameterModel
+import ru.ikon.trainingdairy.ui.measure.DeleteParameterDialogFragment
 
 class ParameterAdapter : RecyclerView.Adapter<ParameterAdapter.ViewHolder>() {
 
