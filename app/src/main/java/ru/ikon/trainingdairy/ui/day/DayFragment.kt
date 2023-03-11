@@ -6,36 +6,39 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentDayBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
+import ru.ikon.trainingdairy.domain.model.MeasureModel
+import ru.ikon.trainingdairy.domain.model.NoteModel
+import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
-import ru.ikon.trainingdairy.ui.day.recycler.OnMeasureClickListener
-import ru.ikon.trainingdairy.ui.day.recycler.OnNoteClickListener
-import ru.ikon.trainingdairy.ui.measure.MeasureFragment
 import ru.ikon.trainingdairy.ui.day.recycler.OnItemClickListener
+import ru.ikon.trainingdairy.ui.measure.MeasureFragment
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
-import java.text.DateFormat
+import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
 private const val DATE = "date"
 
-class DayFragment : Fragment(), DayContract.View, OnNoteClickListener, OnItemClickListener, OnMeasureClickListener {
+class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
 
     private lateinit var presenter: DayContract.Presenter
 
     private var _binding: FragmentDayBinding? = null
-    private val binding: FragmentDayBinding get() { return _binding!! }
+    private val binding: FragmentDayBinding
+        get() {
+            return _binding!!
+        }
 
     private val adapter = EntryCardAdapter()
 
-    private lateinit var date : Date
+    private lateinit var date: Date
 
     companion object {
         @JvmStatic
-        fun newInstance(date: Date) : Fragment {
+        fun newInstance(date: Date): Fragment {
             return DayFragment().apply {
 
                 // Добавляем в аргументы фрагмента дату. Правда, в Bundle нельзя
@@ -82,13 +85,12 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener, OnItemCli
         // запросил из репозитория список записей за эту дату
         presenter.onCreate(date)
 
-        initializeControlButtons()
-        adapter.setOnNoteClickListener(this)
-        adapter.setOnMeasureClickListener(this)
+        adapter.setOnItemClickListener(this)
 
         (activity as AppCompatActivity).supportActionBar?.show()
 
-        (activity as AppCompatActivity).supportActionBar?.title = SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(date)
+        (activity as AppCompatActivity).supportActionBar?.title =
+            SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(date)
 
     }
 
@@ -105,23 +107,17 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener, OnItemCli
                     childFragmentManager, NoteDialogFragment.TAG
                 )
             }
-
             trainingButton.setOnClickListener {
                 floatingActionMenu.close(true)
 
                 val trainingFragment = TrainingFragment.newInstance(0)
                 startFragment(trainingFragment)
             }
+            measureButton.setOnClickListener {
+                floatingActionMenu.close(true)
+                startFragment(MeasureFragment.newInstance())
+            }
         }
-    }
-
-    private fun startFragment(fragment: Fragment) {
-        parentFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
-            .addToBackStack("")
-            .replace(R.id.fragment_holder, fragment)
-            .commit()
     }
 
     override fun onDestroyView() {
@@ -137,35 +133,6 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener, OnItemCli
         }
     }
 
-    private fun initializeControlButtons() {
-        with(binding) {
-            floatingActionItem3.setOnClickListener {
-                NoteDialogFragment().show(
-                    childFragmentManager, NoteDialogFragment.TAG
-                )
-            }
-            floatingActionItem2.setOnClickListener {
-                startFragment(MeasureFragment.newInstance())
-            }
-    override fun onItemClick(item: DiaryEntryModel) {
-        if (item is NoteModel) {
-            NoteDialogFragment(item.id).show(
-                childFragmentManager, NoteDialogFragment.TAG
-            )
-        }
-
-        else if (item is TrainingModel) {
-            val trainingFragment = TrainingFragment.newInstance(item.id)
-            startFragment(trainingFragment)
-        }
-    }
-
-    override fun onNoteClick(id: Long) {
-        NoteDialogFragment(id).show(
-            childFragmentManager, NoteDialogFragment.TAG
-        )
-    }
-
     private fun startFragment(fragment: Fragment) {
         parentFragmentManager
             .beginTransaction()
@@ -175,7 +142,16 @@ class DayFragment : Fragment(), DayContract.View, OnNoteClickListener, OnItemCli
             .commit()
     }
 
-    override fun onMeasureClick() {
-        startFragment(MeasureFragment.newInstance())
+    override fun onItemClick(item: DiaryEntryModel) {
+        if (item is NoteModel) {
+            NoteDialogFragment(item.id).show(
+                childFragmentManager, NoteDialogFragment.TAG
+            )
+        } else if (item is TrainingModel) {
+            val trainingFragment = TrainingFragment.newInstance(item.id)
+            startFragment(trainingFragment)
+        } else if (item is MeasureModel) {
+            startFragment(MeasureFragment.newInstance(item.id))
+        }
     }
 }

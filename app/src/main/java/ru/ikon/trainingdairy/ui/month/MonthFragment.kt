@@ -15,7 +15,9 @@ import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.DayFragment
+import ru.ikon.trainingdairy.ui.measure.MeasureFragment
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
+import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.util.*
 
 class MonthFragment : Fragment(), MonthContract.View {
@@ -44,8 +46,6 @@ class MonthFragment : Fragment(), MonthContract.View {
         // никак не связана с данными
         initializeCalendar()
 
-        initializeControlButtons()
-
         // Инициализируем меню из плавающих кнопок действия и сами эти кнопки
         initializeFloatingActionButtons()
 
@@ -56,19 +56,6 @@ class MonthFragment : Fragment(), MonthContract.View {
 
         // Передаём в Presenter сообщение о том, что фрагмент создан, чтобы получить данные
         presenter.onCreate()
-    }
-
-    private fun initializeControlButtons() {
-        with(binding) {
-            floatingActionItem3.setOnClickListener {
-                NoteDialogFragment().show(
-                    childFragmentManager, NoteDialogFragment.TAG
-                )
-            }
-            floatingActionItem2.setOnClickListener {
-                startFragment(MeasureFragment.newInstance())
-            }
-        }
     }
 
     override fun onDestroyView() {
@@ -167,13 +154,17 @@ class MonthFragment : Fragment(), MonthContract.View {
                 val trainingFragment = TrainingFragment.newInstance(0)
                 startFragment(trainingFragment)
             }
-
             noteButton.setOnClickListener {
                 floatingActionMenu.close(true)
 
                 NoteDialogFragment().show(
                     childFragmentManager, NoteDialogFragment.TAG
                 )
+            }
+            measureButton.setOnClickListener {
+                floatingActionMenu.close(true)
+
+                startFragment(MeasureFragment.newInstance())
             }
         }
     }

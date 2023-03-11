@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.databinding.CardMeasureItemBinding
 import ru.ikon.trainingdairy.databinding.CardNoteItemBinding
 import ru.ikon.trainingdairy.databinding.CardTrainingItemBinding
@@ -12,7 +11,6 @@ import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
-import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 
 const val TYPE_MEASURE = 0
 const val TYPE_NOTE = 1
@@ -22,8 +20,6 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
 
     private val data : MutableList<DiaryEntryModel> = mutableListOf()
 
-    private lateinit var onNoteClickListener: OnNoteClickListener
-    private lateinit var onMeasureClickListener: OnMeasureClickListener
     private lateinit var listener: OnItemClickListener
 
     override fun getItemViewType(position: Int): Int {
@@ -56,7 +52,7 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
         override fun bind(data: DiaryEntryModel) {
             binding.textViewMeasureHeading.text = (data as MeasureModel).date.toString()
             binding.cardView.setOnClickListener {
-                this@EntryCardAdapter.onMeasureClickListener.onMeasureClick()
+                this@EntryCardAdapter.listener.onItemClick(data)
             }
         }
     }
@@ -65,7 +61,6 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
         override fun bind(data: DiaryEntryModel) {
             binding.textViewBody.text = (data as NoteModel).text.toString()
             binding.cardView.setOnClickListener {
-                this@EntryCardAdapter.onNoteClickListener.onNoteClick(data.id)
                 this@EntryCardAdapter.listener.onItemClick(data)
             }
         }
@@ -110,17 +105,9 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
         return data.size
     }
 
-    fun setOnNoteClickListener(listener: OnNoteClickListener) {
-        this.onNoteClickListener = listener
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
     }
-
-    fun setOnMeasureClickListener(listener: OnMeasureClickListener) {
-        this.onMeasureClickListener = listener
-    }
-
-//    fun setOnNoteClickListener(listener: OnItemClickListener) {
-//        this.listener = listener
-//    }
 
 
 }
