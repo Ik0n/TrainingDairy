@@ -6,14 +6,17 @@ import android.system.Os.close
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentMeasureBinding
 import ru.ikon.trainingdairy.domain.model.ParameterModel
 import ru.ikon.trainingdairy.ui.measure.recycler.OnDeleteButtonClickListener
 import ru.ikon.trainingdairy.ui.measure.recycler.ParameterAdapter
+import ru.ikon.trainingdairy.ui.parameters.ParametersFragment
 import java.util.*
 
 class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickListener {
@@ -27,22 +30,24 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
 
     private val adapter = ParameterAdapter()
 
+    private lateinit var date: Date
+
     companion object {
 
-        private const val ARG_ID = "id"
+            private const val ARG_ID = "id"
 
-        @JvmStatic
-        fun newInstance(measureId: Long) : Fragment {
-            return MeasureFragment().apply {
-                arguments = Bundle().apply {
-                    putLong(ARG_ID, measureId)
+            @JvmStatic
+            fun newInstance(measureId: Long) : Fragment {
+                return MeasureFragment().apply {
+                    arguments = Bundle().apply {
+                        putLong(ARG_ID, measureId)
+                    }
                 }
             }
-        }
-        @JvmStatic
-        fun newInstance() : Fragment {
-            return MeasureFragment()
-        }
+            @JvmStatic
+            fun newInstance() : Fragment {
+                return MeasureFragment()
+            }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +60,9 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
     override fun onResume() {
         super.onResume()
         (activity as AppCompatActivity).supportActionBar?.hide()
+
+        adapter.setData(presenter.getParameters(measureId))
+
     }
 
     override fun onStop() {
@@ -86,10 +94,20 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         binding.editTextDate.setOnClickListener {
             DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, month, day ->
                 binding.editTextDate.setText("" + day + "/" + month + "/" + year)
+
+                date = GregorianCalendar(year, month, day).time
+
             }, Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
             ).show()
+        }
+
+        binding.fab.setOnClickListener {
+            if (measureId.toInt() == 0) {
+                measureId = presenter.saveMeasure(date)
+            }
+            startFragment(ParametersFragment.newInstance(measureId))
         }
 
         adapter.setOnDeleteButtonClickListener(this)
@@ -108,6 +126,15 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
     override fun onDetach() {
         super.onDetach()
         presenter.detach()
+    }
+
+    private fun startFragment(fragment: Fragment) {
+        parentFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
+            .addToBackStack("")
+            .replace(R.id.fragment_holder, fragment)
+            .commit()
     }
 
 }

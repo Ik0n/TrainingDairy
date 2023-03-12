@@ -23,6 +23,8 @@ class NoteDialogFragment(var id: Long? = null, var currentDate: Date? = null) :
 
     private var dateTemp = Date()
 
+    private lateinit var listener: OnOkButtonClickListener
+
     /** Календарь, который будет использован для выбора даты  */
     private var mCalendar = Calendar.getInstance()
 
@@ -74,7 +76,10 @@ class NoteDialogFragment(var id: Long? = null, var currentDate: Date? = null) :
 
             okButton.setOnClickListener {
                 if (editTextDate.text.toString() != "" || editTextBody.text.toString() != "") {
-                    presenter.saveNote(dateTemp, editTextBody.text.toString())
+                    id?.let { id ->
+                        presenter.updateNote(id, dateTemp, editTextBody.text.toString())
+                    } ?: presenter.saveNote(dateTemp, editTextBody.text.toString())
+                    listener.onOkButtonClick(dateTemp)
                     dismiss()
                 }
             }
@@ -104,6 +109,10 @@ class NoteDialogFragment(var id: Long? = null, var currentDate: Date? = null) :
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
             ).show()
         }
+    }
+
+    fun setOnOkButtonClickListener(listener: OnOkButtonClickListener) {
+        this.listener = listener
     }
 
     companion object {

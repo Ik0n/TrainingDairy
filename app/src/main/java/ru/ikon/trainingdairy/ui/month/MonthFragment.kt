@@ -17,15 +17,18 @@ import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.day.DayFragment
 import ru.ikon.trainingdairy.ui.measure.MeasureFragment
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
+import ru.ikon.trainingdairy.ui.note.OnOkButtonClickListener
 import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.util.*
 
-class MonthFragment : Fragment(), MonthContract.View {
+class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
 
     private lateinit var presenter: MonthContract.Presenter
 
     private var _binding: FragmentMonthBinding? = null
     private val binding: FragmentMonthBinding get() { return _binding!! }
+
+    private val noteDialogFragment = NoteDialogFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +51,8 @@ class MonthFragment : Fragment(), MonthContract.View {
 
         // Инициализируем меню из плавающих кнопок действия и сами эти кнопки
         initializeFloatingActionButtons()
+
+        noteDialogFragment.setOnOkButtonClickListener(this)
 
         (activity as AppCompatActivity).supportActionBar?.show()
 
@@ -157,7 +162,7 @@ class MonthFragment : Fragment(), MonthContract.View {
             noteButton.setOnClickListener {
                 floatingActionMenu.close(true)
 
-                NoteDialogFragment().show(
+                noteDialogFragment.show(
                     childFragmentManager, NoteDialogFragment.TAG
                 )
             }
@@ -222,5 +227,9 @@ class MonthFragment : Fragment(), MonthContract.View {
             .addToBackStack("")
             .replace(R.id.fragment_holder, fragment)
             .commit()
+    }
+
+    override fun onOkButtonClick(date: Date) {
+        presenter.onCreate()
     }
 }
