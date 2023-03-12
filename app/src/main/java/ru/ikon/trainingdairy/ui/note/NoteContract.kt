@@ -15,5 +15,6 @@ class NoteContract {
         fun detach()
         fun saveNote(date: Date, text: String)
         fun getNote(id: Long): NoteModel
+        fun updateNote(id: Long, date: Date, text: String)
     }
 }

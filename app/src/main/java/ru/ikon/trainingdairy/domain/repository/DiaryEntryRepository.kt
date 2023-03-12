@@ -1,8 +1,6 @@
 package ru.ikon.trainingdairy.domain.repository
 
-import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
-import ru.ikon.trainingdairy.domain.model.NoteModel
-import ru.ikon.trainingdairy.domain.model.TrainingModel
+import ru.ikon.trainingdairy.domain.model.*
 import java.util.*
 
 /**
@@ -23,5 +21,10 @@ interface DiaryEntryRepository {
 
     fun addNote(note: NoteModel)
     fun getNote(id: Long) : NoteModel
+    fun updateNote(id: Long, date: Date, text: String)
     fun getTraining(id: Long): TrainingModel
+    fun getParameters(id: Long) : List<ParameterModel>
+    fun deleteParameter(parameterId: Long, measureId: Long)
+    fun addParameters(measureId: Long,list: List<ParameterModel>)
+    fun addMeasure(date: Date): Long
 }

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/parameters_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/background_light"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edit_text1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:hint="Бёдра (см)"
+                    android:importantForAutofill="noExcludeDescendants"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edit_text2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:hint="Бицепс, лев. (см)"
+                    android:importantForAutofill="noExcludeDescendants"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_layout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edit_text3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:hint="Бицепс, прав. (см)"
+                    android:importantForAutofill="noExcludeDescendants"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_layout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edit_text4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:hint="Вес (кг)"
+                    android:importantForAutofill="noExcludeDescendants"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_layout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edit_text5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:hint="Голень, лев. (см)"
+                    android:importantForAutofill="noExcludeDescendants"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_layout6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edit_text6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:hint="Голень, прав. (см)"
+                    android:importantForAutofill="noExcludeDescendants"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_layout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edit_text7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:hint="Грудь (см)"
+                    android:importantForAutofill="noExcludeDescendants"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_layout8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edit_text8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:hint="Жировая ткань (%)"
+                    android:importantForAutofill="noExcludeDescendants"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_layout9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edit_text9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:hint="Мышечная ткань (%)"
+                    android:importantForAutofill="noExcludeDescendants"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_layout10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edit_text10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:hint="Талия (см)"
+                    android:importantForAutofill="noExcludeDescendants"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
