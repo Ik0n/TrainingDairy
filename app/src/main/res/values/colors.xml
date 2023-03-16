@@ -14,6 +14,10 @@
     <color name="orange_light">#ffc947</color>
     <color name="orange_dark">#c66900</color>
 
+
+    <color name="primary">#2196F3</color>
+    <color name="background">#E6E6E6</color>
+
     <!--Цвет заметки-->
     <color name="green">#4caf50</color>
 

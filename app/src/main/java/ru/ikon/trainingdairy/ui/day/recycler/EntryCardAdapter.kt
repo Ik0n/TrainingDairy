@@ -48,9 +48,12 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
         abstract fun bind(data: DiaryEntryModel)
     }
 
-    class MeasureViewHolder(private val binding: CardMeasureItemBinding) : BaseViewHolder(binding.root) {
+    inner class MeasureViewHolder(private val binding: CardMeasureItemBinding) : BaseViewHolder(binding.root) {
         override fun bind(data: DiaryEntryModel) {
             binding.textViewMeasureHeading.text = (data as MeasureModel).date.toString()
+            binding.cardView.setOnClickListener {
+                this@EntryCardAdapter.listener.onItemClick(data)
+            }
         }
     }
 
@@ -61,9 +64,11 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
                 this@EntryCardAdapter.listener.onItemClick(data)
             }
         }
+
+
     }
 
-    inner class TrainingViewHolder(val binding: CardTrainingItemBinding) : BaseViewHolder(binding.root) {
+    inner class TrainingViewHolder(private val binding: CardTrainingItemBinding) : BaseViewHolder(binding.root) {
         override fun bind(data: DiaryEntryModel) {
             binding.textViewMeasureHeading.text = (data as TrainingModel).text.toString()
             binding.textViewSubheading.text = data.date.toString()
@@ -72,6 +77,7 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
                 this@EntryCardAdapter.listener.onItemClick(data)
             }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -99,8 +105,10 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
         return data.size
     }
 
-    fun setOnNoteClickListener(listener: OnItemClickListener) {
+    fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
+
+
 }
 
