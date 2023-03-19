@@ -57,7 +57,6 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
                     MonthFragment.newInstance()
                 )
             }
-
             true
         }
     }
