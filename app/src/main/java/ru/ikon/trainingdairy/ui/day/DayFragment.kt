@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
@@ -16,13 +17,14 @@ import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
 import ru.ikon.trainingdairy.ui.day.recycler.OnItemClickListener
 import ru.ikon.trainingdairy.ui.measure.MeasureFragment
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
+import ru.ikon.trainingdairy.ui.note.OnOkButtonClickListener
 import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
 private const val DATE = "date"
 
-class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
+class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButtonClickListener {
 
     private lateinit var presenter: DayContract.Presenter
 
@@ -35,6 +37,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
     private val adapter = EntryCardAdapter()
 
     private lateinit var date: Date
+    private val noteDialogFragment = NoteDialogFragment()
 
     companion object {
         @JvmStatic
@@ -86,6 +89,8 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
         presenter.onCreate(date)
 
         adapter.setOnItemClickListener(this)
+        noteDialogFragment.setOnOkButtonClickListener(this)
+
 
         (activity as AppCompatActivity).supportActionBar?.show()
 
@@ -102,8 +107,8 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
         with(binding) {
             noteButton.setOnClickListener {
                 floatingActionMenu.close(true)
-
-                NoteDialogFragment().show(
+                noteDialogFragment.currentDate = date
+                noteDialogFragment.show(
                     childFragmentManager, NoteDialogFragment.TAG
                 )
             }
@@ -118,6 +123,10 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
                 startFragment(MeasureFragment.newInstance())
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     override fun onDestroyView() {
@@ -144,7 +153,8 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
 
     override fun onItemClick(item: DiaryEntryModel) {
         if (item is NoteModel) {
-            NoteDialogFragment(item.id).show(
+            noteDialogFragment.id = item.id
+            noteDialogFragment.show(
                 childFragmentManager, NoteDialogFragment.TAG
             )
         } else if (item is TrainingModel) {
@@ -153,5 +163,9 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener {
         } else if (item is MeasureModel) {
             startFragment(MeasureFragment.newInstance(item.id))
         }
+    }
+
+    override fun onOkButtonClick(date: Date) {
+        presenter.onCreate(date)
     }
 }

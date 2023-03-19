@@ -31,6 +31,10 @@ class NotePresenter : NoteContract.Presenter {
         return DummyDiaryEntryRepositoryImpl.newInstance().getNote(id)
     }
 
+    override fun updateNote(id: Long, date: Date, text: String) {
+        DummyDiaryEntryRepositoryImpl.newInstance().updateNote(id, date, text)
+    }
+
     override fun detach() {
         this.view = null
     }
