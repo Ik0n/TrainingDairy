@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.databinding.FragmentTrainingBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
+import ru.ikon.trainingdairy.domain.model.TrainingModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -65,8 +66,11 @@ class TrainingFragment : Fragment(), TrainingContract.View {
         }
     }
 
-    override fun showData(data: List<DiaryEntryModel>) {
-        TODO("Not yet implemented")
+    override fun showData(data: TrainingModel) {
+        with(binding) {
+            editTextName.setText(data.name)
+            editTextComment.setText(data.comment)
+        }
     }
 
     /**

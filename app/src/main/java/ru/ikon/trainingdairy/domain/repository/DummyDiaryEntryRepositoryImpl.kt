@@ -189,17 +189,18 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
         )
 
-
-
-        entriesList.add(
-            TrainingModel(13,
-                GregorianCalendar(
-                    2023,
-                    Calendar.MARCH,
-                    1
-                ).time, "Руки"
-            )
+        var trainingModel1 = TrainingModel(13,
+            GregorianCalendar(
+                2023,
+                Calendar.MARCH,
+                1
+            ).time, "Руки"
         )
+        trainingModel1.comment = "Сегодня первый день весны!"
+        entriesList.add(
+            trainingModel1
+        )
+
         entriesList.add(
             TrainingModel(14,
                 GregorianCalendar(

@@ -19,9 +19,10 @@ class TrainingPresenter : TrainingContract.Presenter {
         if (id > 0) {
             // Получаем тренировку с указанным ID
             val trainingModel = repository.getTraining(id)
+
+            // Передаём эти данные во View и просим отобразить их в виде списка
+            view?.showData(trainingModel)
         }
-        // Передаём эти данные во View и просим отобразить их в виде списка
-        //view?.showData(entriesList)
     }
 
     override fun detach() {

@@ -1,11 +1,10 @@
 package ru.ikon.trainingdairy.ui.training
 
-import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
-import java.util.*
+import ru.ikon.trainingdairy.domain.model.TrainingModel
 
 class TrainingContract {
     interface View {
-        fun showData(data: List<DiaryEntryModel>)
+        fun showData(data: TrainingModel)
     }
 
     interface Presenter {

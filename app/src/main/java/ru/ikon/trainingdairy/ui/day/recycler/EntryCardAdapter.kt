@@ -65,7 +65,7 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
 
     inner class TrainingViewHolder(val binding: CardTrainingItemBinding) : BaseViewHolder(binding.root) {
         override fun bind(data: DiaryEntryModel) {
-            binding.textViewMeasureHeading.text = (data as TrainingModel).text.toString()
+            binding.textViewMeasureHeading.text = (data as TrainingModel).name.toString()
             binding.textViewSubheading.text = data.date.toString()
 
             binding.cardView.setOnClickListener {
