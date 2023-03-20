@@ -93,7 +93,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         (activity as AppCompatActivity).supportActionBar?.show()
 
         (activity as AppCompatActivity).supportActionBar?.title =
-            SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(date)
+            SimpleDateFormat("dd MMMM yyyy", Locale("ru")).format(date)
 
     }
 
@@ -171,6 +171,6 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         (activity as AppCompatActivity).supportActionBar?.show()
 
         (activity as AppCompatActivity).supportActionBar?.title =
-            SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(date)
+            SimpleDateFormat("dd MMMM yyyy", Locale("ru")).format(date)
     }
 }

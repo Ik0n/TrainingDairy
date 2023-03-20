@@ -113,7 +113,7 @@
 
     </FrameLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -122,7 +122,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:tint="@android:color/white"
-        app:srcCompat="@drawable/ic_ruler_white_24dp"
+        android:src="@drawable/ic_ruler_white_24dp"
+        app:fab_colorNormal="@color/green"
+        app:fab_colorPressed="@color/green"
         app:fab_size="normal"
         android:elevation="8dp"
         android:layout_alignParentEnd="true"
