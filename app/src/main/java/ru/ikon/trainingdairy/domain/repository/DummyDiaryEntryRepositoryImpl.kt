@@ -415,10 +415,8 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         return entriesList.filter { x -> x.date == date }
     }
 
-    override fun addNote(note: NoteModel) {
-        entriesList.add(
-            note
-        )
+    override fun addNote(date: Date, text: String) {
+        entriesList.add(NoteModel(Random.nextLong(), date, text))
     }
 
     override fun getNote(id: Long): NoteModel {
@@ -426,7 +424,10 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
     }
 
     override fun updateNote(id: Long, date: Date, text: String) {
-        getNote(id).text = text
+        getNote(id).apply {
+            this.text = text
+            this.date = date
+        }
     }
 
     override fun getTraining(id: Long): TrainingModel {

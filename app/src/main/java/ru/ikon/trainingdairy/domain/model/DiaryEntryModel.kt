@@ -5,4 +5,4 @@ import java.util.*
 /**
  * Класс, представляющий собой дневниковую запись
  */
-open class DiaryEntryModel(open val id: Long, open val date: Date)
+open class DiaryEntryModel(open val id: Long, open var date: Date)
