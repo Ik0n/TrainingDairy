@@ -212,7 +212,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             )
 
 
-            var trainingModel1 = TrainingModel(
+            val trainingModel1 = TrainingModel(
                 13,
                 GregorianCalendar(
                     2023,
@@ -353,10 +353,10 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
                     1
                 ).time
             )
-            measure1.parametersList.add(ParameterModel("Вес (кг)", 64))
-            measure1.parametersList.add(ParameterModel("Грудь (см)", 89))
-            measure1.parametersList.add(ParameterModel("Талия (см)", 59))
-            measure1.parametersList.add(ParameterModel("Бёдра (см)", 89))
+            measure1.parametersList.add(ParameterModel(0, "Вес (кг)", 64))
+            measure1.parametersList.add(ParameterModel(1, "Грудь (см)", 89))
+            measure1.parametersList.add(ParameterModel(2, "Талия (см)", 59))
+            measure1.parametersList.add(ParameterModel(3, "Бёдра (см)", 89))
             entriesList.add(measure1)
 
             val measure2 = MeasureModel(
@@ -367,10 +367,10 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
                     8
                 ).time
             )
-            measure2.parametersList.add(ParameterModel("Вес (кг)", 63))
-            measure2.parametersList.add(ParameterModel("Грудь (см)", 88))
-            measure2.parametersList.add(ParameterModel("Талия (см)", 58))
-            measure2.parametersList.add(ParameterModel("Бёдра (см)", 88))
+            measure2.parametersList.add(ParameterModel(4, "Вес (кг)", 63))
+            measure2.parametersList.add(ParameterModel(5, "Грудь (см)", 88))
+            measure2.parametersList.add(ParameterModel(6, "Талия (см)", 58))
+            measure2.parametersList.add(ParameterModel(7, "Бёдра (см)", 88))
             entriesList.add(measure2)
 
             val measure3 = MeasureModel(
@@ -381,10 +381,10 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
                     15
                 ).time
             )
-            measure3.parametersList.add(ParameterModel("Вес (кг)", 62))
-            measure3.parametersList.add(ParameterModel("Грудь (см)", 87))
-            measure3.parametersList.add(ParameterModel("Талия (см)", 57))
-            measure3.parametersList.add(ParameterModel("Бёдра (см)", 87))
+            measure3.parametersList.add(ParameterModel(8, "Вес (кг)", 62))
+            measure3.parametersList.add(ParameterModel(9, "Грудь (см)", 87))
+            measure3.parametersList.add(ParameterModel(10, "Талия (см)", 57))
+            measure3.parametersList.add(ParameterModel(11, "Бёдра (см)", 87))
             entriesList.add(measure3)
 
             val measure4 = MeasureModel(
@@ -395,10 +395,10 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
                     22
                 ).time
             )
-            measure4.parametersList.add(ParameterModel("Вес (кг)", 61))
-            measure4.parametersList.add(ParameterModel("Грудь (см)", 86))
-            measure4.parametersList.add(ParameterModel("Талия (см)", 56))
-            measure4.parametersList.add(ParameterModel("Бёдра (см)", 86))
+            measure4.parametersList.add(ParameterModel(12, "Вес (кг)", 61))
+            measure4.parametersList.add(ParameterModel(13, "Грудь (см)", 86))
+            measure4.parametersList.add(ParameterModel(14, "Талия (см)", 56))
+            measure4.parametersList.add(ParameterModel(15, "Бёдра (см)", 86))
             entriesList.add(measure4)
 
             val measure5 = MeasureModel(
@@ -409,10 +409,10 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
                     22
                 ).time
             )
-            measure5.parametersList.add(ParameterModel("Вес (кг)", 60))
-            measure5.parametersList.add(ParameterModel("Грудь (см)", 85))
-            measure5.parametersList.add(ParameterModel("Талия (см)", 55))
-            measure5.parametersList.add(ParameterModel("Бёдра (см)", 85))
+            measure5.parametersList.add(ParameterModel(16, "Вес (кг)", 60))
+            measure5.parametersList.add(ParameterModel(17, "Грудь (см)", 85))
+            measure5.parametersList.add(ParameterModel(18, "Талия (см)", 55))
+            measure5.parametersList.add(ParameterModel(19, "Бёдра (см)", 85))
             entriesList.add(measure5)
 
             entriesList.add(
@@ -492,10 +492,8 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
     }
 
     override fun addMeasure(date: Date) : Long {
-        var measureId = Random.nextLong()
+        val measureId = Random.nextLong()
         entriesList.add(MeasureModel(measureId, date))
         return measureId
     }
-
-
 }

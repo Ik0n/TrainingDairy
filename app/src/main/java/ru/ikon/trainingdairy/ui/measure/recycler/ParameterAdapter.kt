@@ -24,7 +24,7 @@ class ParameterAdapter : RecyclerView.Adapter<ParameterAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(CardMeasureParameterItemBinding.inflate(LayoutInflater.from(parent.context)))
+        return ViewHolder(CardMeasureParameterItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

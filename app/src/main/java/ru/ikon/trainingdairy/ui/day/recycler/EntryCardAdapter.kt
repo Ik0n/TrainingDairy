@@ -64,13 +64,11 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
                 this@EntryCardAdapter.listener.onItemClick(data)
             }
         }
-
-
     }
 
     inner class TrainingViewHolder(private val binding: CardTrainingItemBinding) : BaseViewHolder(binding.root) {
         override fun bind(data: DiaryEntryModel) {
-            binding.textViewMeasureHeading.text = (data as TrainingModel).name.toString()
+            binding.textViewMeasureHeading.text = (data as TrainingModel).name
             binding.textViewSubheading.text = data.date.toString()
 
             binding.cardView.setOnClickListener {
@@ -86,7 +84,7 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
                 MeasureViewHolder(CardMeasureItemBinding.inflate(LayoutInflater.from(parent.context)))
             }
             TYPE_NOTE -> {
-                NoteViewHolder(CardNoteItemBinding.inflate(LayoutInflater.from(parent.context)))
+                NoteViewHolder(CardNoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             }
             TYPE_TRAINING -> {
                 TrainingViewHolder(CardTrainingItemBinding.inflate(LayoutInflater.from(parent.context)))
