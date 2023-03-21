@@ -37,7 +37,6 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
     private val adapter = EntryCardAdapter()
 
     private lateinit var date: Date
-    private val noteDialogFragment = NoteDialogFragment()
 
     companion object {
         @JvmStatic
@@ -89,13 +88,12 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         presenter.onCreate(date)
 
         adapter.setOnItemClickListener(this)
-        noteDialogFragment.setOnOkButtonClickListener(this)
-
+        NoteDialogFragment.setOnOkButtonClickListener(this)
 
         (activity as AppCompatActivity).supportActionBar?.show()
 
         (activity as AppCompatActivity).supportActionBar?.title =
-            SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(date)
+            SimpleDateFormat("dd MMMM yyyy", Locale("ru")).format(date)
 
     }
 
@@ -107,8 +105,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         with(binding) {
             noteButton.setOnClickListener {
                 floatingActionMenu.close(true)
-                noteDialogFragment.currentDate = date
-                noteDialogFragment.show(
+                NoteDialogFragment.newInstance(date).show(
                     childFragmentManager, NoteDialogFragment.TAG
                 )
             }
@@ -127,6 +124,8 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
 
     override fun onResume() {
         super.onResume()
+        presenter.onCreate(date)
+        adapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
@@ -153,8 +152,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
 
     override fun onItemClick(item: DiaryEntryModel) {
         if (item is NoteModel) {
-            noteDialogFragment.id = item.id
-            noteDialogFragment.show(
+            NoteDialogFragment.newInstance(date, item.id).show(
                 childFragmentManager, NoteDialogFragment.TAG
             )
         } else if (item is TrainingModel) {
@@ -167,5 +165,12 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
 
     override fun onOkButtonClick(date: Date) {
         presenter.onCreate(date)
+        this.date = date
+        adapter.notifyDataSetChanged()
+
+        (activity as AppCompatActivity).supportActionBar?.show()
+
+        (activity as AppCompatActivity).supportActionBar?.title =
+            SimpleDateFormat("dd MMMM yyyy", Locale("ru")).format(date)
     }
 }

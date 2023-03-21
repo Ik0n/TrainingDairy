@@ -20,11 +20,7 @@ class NotePresenter : NoteContract.Presenter {
 
 
     override fun saveNote(date: Date, text: String) {
-        DummyDiaryEntryRepositoryImpl.newInstance().addNote(
-                NoteModel(
-                    0, date, text
-                )
-            )
+        DummyDiaryEntryRepositoryImpl.newInstance().addNote(date, text)
     }
 
     override fun getNote(id: Long): NoteModel {

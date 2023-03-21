@@ -28,8 +28,6 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
     private var _binding: FragmentMonthBinding? = null
     private val binding: FragmentMonthBinding get() { return _binding!! }
 
-    private val noteDialogFragment = NoteDialogFragment()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,7 +50,7 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
         // Инициализируем меню из плавающих кнопок действия и сами эти кнопки
         initializeFloatingActionButtons()
 
-        noteDialogFragment.setOnOkButtonClickListener(this)
+        NoteDialogFragment.setOnOkButtonClickListener(this)
 
         (activity as AppCompatActivity).supportActionBar?.show()
 
@@ -162,7 +160,7 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
             noteButton.setOnClickListener {
                 floatingActionMenu.close(true)
 
-                noteDialogFragment.show(
+                NoteDialogFragment.newInstance(Calendar.getInstance().time).show(
                     childFragmentManager, NoteDialogFragment.TAG
                 )
             }

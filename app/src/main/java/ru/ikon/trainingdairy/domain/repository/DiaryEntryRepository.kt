@@ -19,12 +19,15 @@ interface DiaryEntryRepository {
      */
     fun getEntries(date: Date) : List<DiaryEntryModel>
 
-    fun addNote(note: NoteModel)
+    fun addNote(date: Date, text: String)
     fun getNote(id: Long) : NoteModel
     fun updateNote(id: Long, date: Date, text: String)
+
     fun getTraining(id: Long): TrainingModel
+
     fun getParameters(id: Long) : List<ParameterModel>
     fun deleteParameter(parameterId: Long, measureId: Long)
     fun addParameters(measureId: Long,list: List<ParameterModel>)
+
     fun addMeasure(date: Date): Long
 }
