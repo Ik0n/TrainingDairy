@@ -3,19 +3,24 @@ package ru.ikon.trainingdairy.ui.training
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentTrainingBinding
+import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.MainActivity
+import ru.ikon.trainingdairy.ui.exercise.ExerciseFragment
+import ru.ikon.trainingdairy.ui.training.recycler.ExerciseTrainingAdapter
+import ru.ikon.trainingdairy.ui.training.recycler.OnDeleteButtonClickListener
 import java.text.SimpleDateFormat
 import java.util.*
 
 private const val ARG_ID = "id"
 private const val ARG_DATE = "date"
 
-class TrainingFragment : Fragment(), TrainingContract.View {
+class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickListener {
     private var trainingId: Long = 0
     private lateinit var trainingDate: Date
 
@@ -26,6 +31,12 @@ class TrainingFragment : Fragment(), TrainingContract.View {
         get() {
             return _binding!!
         }
+
+    //private val adapter = ExerciseTrainingAdapter(this?.context)
+
+    private lateinit var adapter: ExerciseTrainingAdapter
+
+
 
     /** Календарь, который будет использован для выбора даты  */
     private var mCalendar = Calendar.getInstance()
@@ -42,6 +53,7 @@ class TrainingFragment : Fragment(), TrainingContract.View {
             val dateMillis = it.getLong(ARG_DATE)
             trainingDate = Date(dateMillis)
         }
+        adapter = ExerciseTrainingAdapter(this.requireContext())
     }
 
     override fun onCreateView(
@@ -54,20 +66,6 @@ class TrainingFragment : Fragment(), TrainingContract.View {
         _binding = FragmentTrainingBinding.inflate(inflater, container, false)
 
         initializeActionBar()
-
-        if (trainingId == 0L) {
-            // Создаём новую тренировку
-            mTraining = TrainingModel(trainingDate)
-
-            // Приводим дату к строке для отображения
-            // и выводим на экран в элемент mDateEditText
-            val outputFormat = SimpleDateFormat("dd.MM.yyyy")
-            val outputDateString = outputFormat.format(trainingDate)
-            binding.editTextDate.setText(outputDateString)
-        } else {
-            // Загружаем уже существующую тренировку из репозитория
-
-        }
 
         return binding.root
     }
@@ -106,6 +104,19 @@ class TrainingFragment : Fragment(), TrainingContract.View {
             editTextDate.setOnClickListener {
                 onDateEditTextClicked()
             }
+            fab.setOnClickListener {
+                if (trainingId != 0L) {
+                    startFragment(ExerciseFragment.newInstance(trainingId))
+                } else {
+                    trainingId = presenter.saveTraining(
+                        name = editTextName.text.toString(),
+                        date = trainingDate,
+                        comment = editTextComment.text.toString()
+                    )
+                    startFragment(ExerciseFragment.newInstance(trainingId))
+                }
+            }
+            adapter.setOnDeleteButtonClickListener(this@TrainingFragment)
         }
     }
 
@@ -118,6 +129,20 @@ class TrainingFragment : Fragment(), TrainingContract.View {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             // При нажатии на кнопку Назад "закрываем" текущий фрагмент, удаляя его из бэк-стека
+            (activity as AppCompatActivity)
+                .supportFragmentManager
+                .popBackStack()
+        }
+        if (item.itemId == R.id.action_save) {
+            if (trainingId != 0L) {
+                presenter.updateTraining(trainingId, binding.editTextName.text.toString(), trainingDate, binding.editTextComment.text.toString())
+            } else {
+                presenter.saveTraining(
+                    name = binding.editTextName.text.toString(),
+                    date = trainingDate,
+                    comment = binding.editTextComment.text.toString()
+                )
+            }
             (activity as AppCompatActivity)
                 .supportFragmentManager
                 .popBackStack()
@@ -136,6 +161,9 @@ class TrainingFragment : Fragment(), TrainingContract.View {
             editTextName.setText(data.name)
             editTextDate.setText(outputDateString)
             editTextComment.setText(data.comment)
+            listViewExercises.adapter = adapter.apply {
+                setData(data.exerciseList)
+            }
         }
     }
 
@@ -153,8 +181,7 @@ class TrainingFragment : Fragment(), TrainingContract.View {
                     val sdf = SimpleDateFormat("dd.MM.yyyy")
                     editTextDate.setText(sdf.format(mCalendar.time))
 
-                    currentDate =
-                        GregorianCalendar(year, monthOfYear, dayOfMonth).time
+                    trainingDate = GregorianCalendar(year, monthOfYear, dayOfMonth).time
                 }
 
             DatePickerDialog(
@@ -165,6 +192,11 @@ class TrainingFragment : Fragment(), TrainingContract.View {
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
             ).show()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Toast.makeText(context, "onResume", Toast.LENGTH_SHORT).show()
     }
 
     override fun onStop() {
@@ -180,6 +212,10 @@ class TrainingFragment : Fragment(), TrainingContract.View {
     }
 
     companion object {
+
+        @JvmStatic
+        fun newInstance() = TrainingFragment()
+
         @JvmStatic
         fun newInstance(trainingId: Long, date: Long) =
             TrainingFragment().apply {
@@ -188,5 +224,18 @@ class TrainingFragment : Fragment(), TrainingContract.View {
                     putLong(ARG_DATE, date)
                 }
             }
+    }
+
+    private fun startFragment(fragment: Fragment) {
+        parentFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
+            .addToBackStack("")
+            .replace(R.id.fragment_holder, fragment)
+            .commit()
+    }
+
+    override fun onClick(data: ExerciseModel) {
+        presenter.deleteExercise(data.id, trainingId)
     }
 }

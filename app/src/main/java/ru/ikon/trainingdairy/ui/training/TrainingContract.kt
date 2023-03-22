@@ -13,5 +13,8 @@ class TrainingContract {
         fun onCreate(id: Long, date: Date)
         fun getTraining(trainingId: Long): TrainingModel
         fun detach()
+        fun saveTraining(name: String, date: Date, comment: String) : Long
+        fun updateTraining(id: Long, name: String, date: Date, comment: String)
+        fun deleteExercise(exerciseId: Long, trainingId: Long)
     }
 }

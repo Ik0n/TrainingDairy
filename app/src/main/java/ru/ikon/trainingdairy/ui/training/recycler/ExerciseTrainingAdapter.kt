@@ -22,6 +22,8 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
 
     private val data : MutableList<ExerciseModel> = mutableListOf()
 
+    private lateinit var listener: OnDeleteButtonClickListener
+
     fun setData(data: List<ExerciseModel>) {
         this.data.clear()
         this.data.addAll(data)
@@ -97,6 +99,7 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
                             // При выборе пункта меню "Удалить"
                             // отображаем диалог подтверждения удаления
                             showDeleteConfirmationDialog(exercise)
+                            listener.onClick(exercise)
                             true
                         }
                         else -> false
@@ -271,5 +274,9 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
             val alertDialog = builder.create()
             alertDialog.show()
         }
+    }
+
+    fun setOnDeleteButtonClickListener(listener: OnDeleteButtonClickListener) {
+        this.listener = listener
     }
 }

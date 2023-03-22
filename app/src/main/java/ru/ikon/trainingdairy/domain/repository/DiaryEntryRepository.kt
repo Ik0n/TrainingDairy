@@ -24,10 +24,16 @@ interface DiaryEntryRepository {
     fun updateNote(id: Long, date: Date, text: String)
 
     fun getTraining(id: Long): TrainingModel
+    fun addTraining(name: String, date: Date, comment: String) : Long
+    fun updateTraining(id: Long, name: String, date: Date, comment: String)
 
     fun getParameters(id: Long) : List<ParameterModel>
     fun deleteParameter(parameterId: Long, measureId: Long)
     fun addParameters(measureId: Long,list: List<ParameterModel>)
 
     fun addMeasure(date: Date): Long
+
+    fun getExercises(trainingId: Long): List<ExerciseModel>
+    fun addExercises(trainingId: Long, exerciseList: ArrayList<ExerciseModel>)
+    fun deleteExercise(exerciseId: Long, trainingId: Long)
 }
