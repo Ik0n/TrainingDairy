@@ -73,4 +73,24 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
         binding.bottomNavigationBar.visibility = View.VISIBLE
         userParametersFragment.onReadyButtonClick(supportFragmentManager)
     }
+
+    /**
+     * Скрывает основной ActionBar у Activity. Вызывается из фрагментов,
+     * которые имеют свой собственный ToolBar.
+     */
+    fun hideActionBar() {
+        supportActionBar?.hide()
+    }
+
+    /**
+     * Снова отображает основной ActionBar у Activity. Вызывается из фрагментов,
+     * которые имеют свой собственный ToolBar, при их закрытии. Поскольку такие
+     * фрагменты устанавливают свой собственный ToolBar в качестве SupportActionBar,
+     * то здесь мы обратно устанавливаем ToolBar этой активности в качестве
+     * SupportActionBar и только потом отображаем его.
+     */
+    fun showActionBar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.show()
+    }
 }

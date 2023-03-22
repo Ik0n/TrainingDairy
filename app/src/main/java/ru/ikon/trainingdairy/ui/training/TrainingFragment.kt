@@ -2,14 +2,13 @@ package ru.ikon.trainingdairy.ui.training
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentTrainingBinding
-import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
+import ru.ikon.trainingdairy.ui.MainActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,7 +46,31 @@ class TrainingFragment : Fragment(), TrainingContract.View {
         presenter.attach(this)
 
         _binding = FragmentTrainingBinding.inflate(inflater, container, false)
+
+        initializeActionBar()
+
         return binding.root
+    }
+
+    /**
+     * Добавляет на панель действий иконку "Назад"
+     * и инициализирует текстовые поля, находящиеся на ней
+     */
+    private fun initializeActionBar() {
+        // Поскольку этот фрагмент имеет свой собственный Toolbar с тремя полями,
+        // при открытии этого фрагмента мы обращаемся к Activity и скрываем у неё основной Toolbar
+        (activity as MainActivity).hideActionBar()
+
+        // Устанавливаем наш кастомный Toolbar в качестве SupportActionBar,
+        // чтобы отобразить на нём кнопки Назад и Сохранить
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+
+        // Для отображения системной кнопки Назад
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        // Для отображения меню (которое в нашем случае состоит только из одного пункта - сохранить)
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,6 +87,23 @@ class TrainingFragment : Fragment(), TrainingContract.View {
                 onDateEditTextClicked()
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // Используем меню menu_save, в котором присутствует только один пункт - Сохранить
+        inflater.inflate(R.menu.menu_save, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            // При нажатии на кнопку Назад "закрываем" текущий фрагмент, удаляя его из бэк-стека
+            (activity as AppCompatActivity)
+                .supportFragmentManager
+                .popBackStack()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun showData(data: TrainingModel) {
@@ -101,17 +141,10 @@ class TrainingFragment : Fragment(), TrainingContract.View {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        // Поскольку этот фрагмент имеет свой собственный Toolbar с тремя полями,
-        // при открытии этого фрагмента мы обращаемся к Activity и скрываем у неё основной Toolbar
-        (activity as AppCompatActivity).supportActionBar?.hide()
-    }
-
     override fun onStop() {
         super.onStop()
         // При закрытии этого фрагмента снова отображаем у Activity основной Toolbar
-        (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as MainActivity).showActionBar()
     }
 
     override fun onDestroyView() {
