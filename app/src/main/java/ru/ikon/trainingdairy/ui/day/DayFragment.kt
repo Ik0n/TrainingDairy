@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
@@ -112,7 +111,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
             trainingButton.setOnClickListener {
                 floatingActionMenu.close(true)
 
-                val trainingFragment = TrainingFragment.newInstance(0)
+                val trainingFragment = TrainingFragment.newInstance(0, date.time)
                 startFragment(trainingFragment)
             }
             measureButton.setOnClickListener {
@@ -156,7 +155,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
                 childFragmentManager, NoteDialogFragment.TAG
             )
         } else if (item is TrainingModel) {
-            val trainingFragment = TrainingFragment.newInstance(item.id)
+            val trainingFragment = TrainingFragment.newInstance(item.id, date.time)
             startFragment(trainingFragment)
         } else if (item is MeasureModel) {
             startFragment(MeasureFragment.newInstance(item.id))

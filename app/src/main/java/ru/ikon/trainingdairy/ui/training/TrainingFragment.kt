@@ -13,10 +13,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 private const val ARG_ID = "id"
-
+private const val ARG_DATE = "date"
 
 class TrainingFragment : Fragment(), TrainingContract.View {
     private var trainingId: Long = 0
+    private lateinit var trainingDate: Date
 
     private lateinit var presenter: TrainingContract.Presenter
 
@@ -31,10 +32,15 @@ class TrainingFragment : Fragment(), TrainingContract.View {
 
     private var currentDate = Date()
 
+    /** Модель тренировки, данные которой отображаются на экране  */
+    var mTraining: TrainingModel? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             trainingId = it.getLong(ARG_ID)
+            val dateMillis = it.getLong(ARG_DATE)
+            trainingDate = Date(dateMillis)
         }
     }
 
@@ -48,6 +54,20 @@ class TrainingFragment : Fragment(), TrainingContract.View {
         _binding = FragmentTrainingBinding.inflate(inflater, container, false)
 
         initializeActionBar()
+
+        if (trainingId == 0L) {
+            // Создаём новую тренировку
+            mTraining = TrainingModel(trainingDate)
+
+            // Приводим дату к строке для отображения
+            // и выводим на экран в элемент mDateEditText
+            val outputFormat = SimpleDateFormat("dd.MM.yyyy")
+            val outputDateString = outputFormat.format(trainingDate)
+            binding.editTextDate.setText(outputDateString)
+        } else {
+            // Загружаем уже существующую тренировку из репозитория
+
+        }
 
         return binding.root
     }
@@ -76,7 +96,7 @@ class TrainingFragment : Fragment(), TrainingContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter.onCreate(trainingId)
+        presenter.onCreate(trainingId, trainingDate)
 
         with(binding) {
             dateLayout.setOnClickListener {
@@ -107,8 +127,14 @@ class TrainingFragment : Fragment(), TrainingContract.View {
     }
 
     override fun showData(data: TrainingModel) {
+        // Приводим дату к строке для отображения
+        // и выводим на экран в элемент
+        val outputFormat = SimpleDateFormat("dd.MM.yyyy")
+        val outputDateString = outputFormat.format(data.date)
+
         with(binding) {
             editTextName.setText(data.name)
+            editTextDate.setText(outputDateString)
             editTextComment.setText(data.comment)
         }
     }
@@ -155,10 +181,11 @@ class TrainingFragment : Fragment(), TrainingContract.View {
 
     companion object {
         @JvmStatic
-        fun newInstance(trainingId: Long) =
+        fun newInstance(trainingId: Long, date: Long) =
             TrainingFragment().apply {
                 arguments = Bundle().apply {
                     putLong(ARG_ID, trainingId)
+                    putLong(ARG_DATE, date)
                 }
             }
     }

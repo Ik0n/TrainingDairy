@@ -1,6 +1,7 @@
 package ru.ikon.trainingdairy.ui.training
 
 import ru.ikon.trainingdairy.domain.model.TrainingModel
+import java.util.*
 
 class TrainingContract {
     interface View {
@@ -9,7 +10,8 @@ class TrainingContract {
 
     interface Presenter {
         fun attach(view: View)
-        fun onCreate(id: Long)
+        fun onCreate(id: Long, date: Date)
+        fun getTraining(trainingId: Long): TrainingModel
         fun detach()
     }
 }
