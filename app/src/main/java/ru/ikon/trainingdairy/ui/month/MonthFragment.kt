@@ -154,7 +154,9 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
             trainingButton.setOnClickListener {
                 floatingActionMenu.close(true)
 
-                val trainingFragment = TrainingFragment.newInstance(0)
+                val currentDate = Date()
+
+                val trainingFragment = TrainingFragment.newInstance(0, currentDate.time)
                 startFragment(trainingFragment)
             }
             noteButton.setOnClickListener {

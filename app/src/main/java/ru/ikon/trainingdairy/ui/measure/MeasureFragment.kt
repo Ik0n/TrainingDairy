@@ -2,18 +2,13 @@ package ru.ikon.trainingdairy.ui.measure
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.system.Os.close
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AlertDialog
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentMeasureBinding
 import ru.ikon.trainingdairy.domain.model.ParameterModel
+import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.measure.recycler.OnDeleteButtonClickListener
 import ru.ikon.trainingdairy.ui.measure.recycler.ParameterAdapter
 import ru.ikon.trainingdairy.ui.parameters.ParametersFragment
@@ -59,15 +54,12 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
 
     override fun onResume() {
         super.onResume()
-        (activity as AppCompatActivity).supportActionBar?.hide()
-
         adapter.setData(presenter.getParameters(measureId))
-
     }
 
     override fun onStop() {
         super.onStop()
-        (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as MainActivity).showActionBar()
     }
 
     override fun onCreateView(
@@ -79,7 +71,31 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         presenter.attach(this)
 
         _binding = FragmentMeasureBinding.inflate(inflater, container, false)
+
+        initializeActionBar()
+
         return binding.root
+    }
+
+    /**
+     * Добавляет на панель действий иконку "Назад"
+     * и инициализирует текстовые поля, находящиеся на ней
+     */
+    private fun initializeActionBar() {
+        // Поскольку этот фрагмент имеет свой собственный Toolbar с тремя полями,
+        // при открытии этого фрагмента мы обращаемся к Activity и скрываем у неё основной Toolbar
+        (activity as MainActivity).hideActionBar()
+
+        // Устанавливаем наш кастомный Toolbar в качестве SupportActionBar,
+        // чтобы отобразить на нём кнопки Назад и Сохранить
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+
+        // Для отображения системной кнопки Назад
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        // Для отображения меню (которое в нашем случае состоит только из одного пункта - сохранить)
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,7 +108,7 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         }
 
         binding.editTextDate.setOnClickListener {
-            DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, month, day ->
+            DatePickerDialog(requireContext(), { _, year, month, day ->
                 binding.editTextDate.setText("" + day + "/" + month + "/" + year)
 
                 date = GregorianCalendar(year, month, day).time
@@ -111,6 +127,23 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         }
 
         adapter.setOnDeleteButtonClickListener(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // Используем меню menu_save, в котором присутствует только один пункт - Сохранить
+        inflater.inflate(R.menu.menu_save, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            // При нажатии на кнопку Назад "закрываем" текущий фрагмент, удаляя его из бэк-стека
+            (activity as AppCompatActivity)
+                .supportFragmentManager
+                .popBackStack()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onClick(data: ParameterModel) {
