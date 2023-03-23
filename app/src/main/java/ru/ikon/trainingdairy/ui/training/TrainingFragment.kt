@@ -12,15 +12,17 @@ import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.exercise.ExerciseFragment
+import ru.ikon.trainingdairy.ui.exerciseattempts.ExerciseAttemptsFragment
 import ru.ikon.trainingdairy.ui.training.recycler.ExerciseTrainingAdapter
 import ru.ikon.trainingdairy.ui.training.recycler.OnDeleteButtonClickListener
+import ru.ikon.trainingdairy.ui.training.recycler.OnItemClickListener
 import java.text.SimpleDateFormat
 import java.util.*
 
 private const val ARG_ID = "id"
 private const val ARG_DATE = "date"
 
-class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickListener {
+class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickListener, OnItemClickListener {
     private var trainingId: Long = 0
     private lateinit var trainingDate: Date
 
@@ -117,6 +119,7 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
                 }
             }
             adapter.setOnDeleteButtonClickListener(this@TrainingFragment)
+            adapter.setOnItemClickListener(this@TrainingFragment)
         }
     }
 
@@ -158,6 +161,11 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
         val outputDateString = outputFormat.format(data.date)
 
         with(binding) {
+
+            if (!data.exerciseList.isEmpty()) {
+                emptyTitleText.visibility = View.GONE
+            }
+
             editTextName.setText(data.name)
             editTextDate.setText(outputDateString)
             editTextComment.setText(data.comment)
@@ -192,11 +200,6 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
             ).show()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Toast.makeText(context, "onResume", Toast.LENGTH_SHORT).show()
     }
 
     override fun onStop() {
@@ -237,5 +240,9 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
 
     override fun onClick(data: ExerciseModel) {
         presenter.deleteExercise(data.id, trainingId)
+    }
+
+    override fun onItemClick(item: ExerciseModel) {
+        startFragment(ExerciseAttemptsFragment.newInstance(item.trainingId, item.id))
     }
 }

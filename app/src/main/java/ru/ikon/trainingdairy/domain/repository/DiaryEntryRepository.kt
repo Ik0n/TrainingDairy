@@ -36,4 +36,11 @@ interface DiaryEntryRepository {
     fun getExercises(trainingId: Long): List<ExerciseModel>
     fun addExercises(trainingId: Long, exerciseList: ArrayList<ExerciseModel>)
     fun deleteExercise(exerciseId: Long, trainingId: Long)
+    fun getExercise(trainingId: Long, exerciseId: Long): ExerciseModel
+
+    fun getAttempts(trainingId: Long,exerciseId: Long): List<AttemptModel>
+    fun getAttempt(trainingId: Long, exerciseId: Long, attemptId: Long): AttemptModel
+    fun addAttempt(trainingId: Long, exerciseId: Long, weight: Int, count: Int)
+    fun updateAttempt(trainingId: Long, exerciseId: Long, attemptId: Long, weight: Int, count: Int)
+    fun deleteAttempt(trainingId: Long, exerciseId: Long, attemptId: Long)
 }

@@ -40,7 +40,6 @@ class ExerciseFragment : Fragment(), ExerciseContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         arguments?.let {
             trainingId = it.getLong(TRAINING_ID)
         }
@@ -81,6 +80,7 @@ class ExerciseFragment : Fragment(), ExerciseContract.View {
         // Устанавливаем наш кастомный Toolbar в качестве SupportActionBar,
         // чтобы отобразить на нём кнопки Назад и Сохранить
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).setTitle("Выберите упражнения")
 
         // Для отображения системной кнопки Назад
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)

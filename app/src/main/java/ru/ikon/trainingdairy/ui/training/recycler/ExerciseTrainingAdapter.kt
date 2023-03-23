@@ -22,7 +22,8 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
 
     private val data : MutableList<ExerciseModel> = mutableListOf()
 
-    private lateinit var listener: OnDeleteButtonClickListener
+    private lateinit var onDeleteButtonClickListener: OnDeleteButtonClickListener
+    private lateinit var onItemClickListener: OnItemClickListener
 
     fun setData(data: List<ExerciseModel>) {
         this.data.clear()
@@ -92,14 +93,14 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
                             // При выборе пункта меню "Редактировать"
                             // запускаем операцию TrainingActivity,
                             // предварительно передав ID записи, по которой щёлкнули
-                            // TODO: Открыть ExerciseFragment
+                            onItemClickListener.onItemClick(exercise)
                             true
                         }
                         R.id.action_delete -> {
                             // При выборе пункта меню "Удалить"
                             // отображаем диалог подтверждения удаления
                             showDeleteConfirmationDialog(exercise)
-                            listener.onClick(exercise)
+                            onDeleteButtonClickListener.onClick(exercise)
                             true
                         }
                         else -> false
@@ -113,7 +114,7 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
                 // Запускаем операцию ExerciseActivity,
                 // предварительно передав в неё имя упражнения для отображения в заголовке
                 // и список подходов
-                // TODO: Открыть ExerciseFragment
+                onItemClickListener.onItemClick(exercise)
             }
         }
 
@@ -277,6 +278,10 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
     }
 
     fun setOnDeleteButtonClickListener(listener: OnDeleteButtonClickListener) {
-        this.listener = listener
+        this.onDeleteButtonClickListener = listener
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.onItemClickListener = listener
     }
 }

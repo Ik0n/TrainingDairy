@@ -52,7 +52,7 @@ class ExercisePresenter : ExerciseContract.Presenter {
                 list.apply {
                     add(
                         ExerciseModel(it.name).apply {
-                            this.id = Random.nextLong()
+                        this.id = Random.nextLong()
                             this.isChecked = it.isChecked
                             this.trainingId = trainingId
                         }
