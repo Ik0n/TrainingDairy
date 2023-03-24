@@ -101,11 +101,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_below="@+id/appbar"
             android:id="@+id/list_view_exercises"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:scrollbars="vertical"/>
 
         <RelativeLayout android:id="@+id/empty_view"

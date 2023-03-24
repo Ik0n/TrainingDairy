@@ -5,7 +5,7 @@ import java.util.*
 /**
  * Класс, представляющий собой упражнение
  */
-data class ExerciseModel(val name: String?) {
+data class ExerciseModel(val name: String) {
     /** ID упражнения */
     var id: Long = 0
 
