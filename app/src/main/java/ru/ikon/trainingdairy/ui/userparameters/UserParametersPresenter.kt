@@ -27,7 +27,6 @@ class UserParametersPresenter : UserParametersContract.Presenter {
     override fun onReadyButtonClick(manager: FragmentManager) {
         manager
             .beginTransaction()
-            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
             .replace(R.id.fragment_holder, ProgramsListFragment.newInstance())
             .commit()
     }

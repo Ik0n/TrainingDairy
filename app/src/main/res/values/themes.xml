@@ -11,6 +11,10 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">?attr/colorSecondary</item>
+        <item name="colorControlHighlight">?attr/colorSecondary</item>
     </style>
 
     <!-- Стиль NoActionBar наследует стиль AppTheme -->

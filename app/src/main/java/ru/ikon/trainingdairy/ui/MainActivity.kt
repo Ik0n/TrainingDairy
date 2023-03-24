@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
     private fun startFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
             .replace(R.id.fragment_holder, fragment)
             .commit()
     }

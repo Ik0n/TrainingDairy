@@ -39,7 +39,7 @@
             android:layout_marginBottom="0dp"
             app:errorEnabled="true">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_weight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +48,8 @@
                 android:hint="Вес (кг)"
                 android:maxLength="6"
                 android:inputType="number"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:background="@android:color/transparent"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -60,7 +61,7 @@
             android:layout_marginBottom="8dp"
             app:errorEnabled="true">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,7 +71,8 @@
                 android:hint="Количество (раз)"
                 android:inputType="number"
                 android:maxLength="6"
-                android:clickable="true"/>
+                android:clickable="true"
+                android:background="@android:color/transparent"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 

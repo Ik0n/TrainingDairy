@@ -223,7 +223,6 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
     private fun startFragment(fragment: Fragment) {
         parentFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
             .addToBackStack("")
             .replace(R.id.fragment_holder, fragment)
             .commit()

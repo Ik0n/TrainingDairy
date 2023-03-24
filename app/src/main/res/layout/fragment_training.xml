@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/background"
     tools:context="ru.ikon.trainingdairy.ui.training.TrainingFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -47,7 +48,8 @@
                         android:textSize="24sp"
                         android:hint="Название"
                         android:importantForAutofill="noExcludeDescendants"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
