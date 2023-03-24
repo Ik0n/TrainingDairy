@@ -12,6 +12,7 @@ import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.measure.recycler.OnDeleteButtonClickListener
 import ru.ikon.trainingdairy.ui.measure.recycler.ParameterAdapter
 import ru.ikon.trainingdairy.ui.parameters.ParametersFragment
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickListener {
@@ -26,6 +27,9 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
     private val adapter = ParameterAdapter()
 
     private lateinit var date: Date
+
+    /** Календарь, который будет использован для выбора даты  */
+    private var mCalendar = Calendar.getInstance()
 
     companion object {
 
@@ -109,7 +113,13 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
 
         binding.editTextDate.setOnClickListener {
             DatePickerDialog(requireContext(), { _, year, month, day ->
-                binding.editTextDate.setText("" + day + "/" + month + "/" + year)
+                mCalendar[Calendar.YEAR] = year
+                mCalendar[Calendar.MONTH] = month
+                mCalendar[Calendar.DAY_OF_MONTH] = day
+
+                val sdf = SimpleDateFormat("dd.MM.yyyy")
+                val dateFormatted = sdf.format(mCalendar.time)
+                binding.editTextDate.setText(dateFormatted)
 
                 date = GregorianCalendar(year, month, day).time
 

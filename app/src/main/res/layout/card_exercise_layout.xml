@@ -73,6 +73,7 @@
                         android:layout_gravity="center_horizontal">
 
                         <TextView
+                            android:visibility="gone"
                             tools:text="Мера"
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="4dp"
@@ -96,6 +97,7 @@
                         android:layout_gravity="center_horizontal">
 
                         <TextView
+                            android:visibility="gone"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             tools:text="Вес (кг)"
@@ -122,6 +124,7 @@
                         android:layout_gravity="center_horizontal">
 
                         <TextView
+                            android:visibility="gone"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             tools:text="Повторения (раз)"
