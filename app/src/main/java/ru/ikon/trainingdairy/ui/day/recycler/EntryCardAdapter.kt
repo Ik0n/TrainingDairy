@@ -7,10 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.ikon.trainingdairy.databinding.CardMeasureItemBinding
 import ru.ikon.trainingdairy.databinding.CardNoteItemBinding
 import ru.ikon.trainingdairy.databinding.CardTrainingItemBinding
-import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
-import ru.ikon.trainingdairy.domain.model.MeasureModel
-import ru.ikon.trainingdairy.domain.model.NoteModel
-import ru.ikon.trainingdairy.domain.model.TrainingModel
+import ru.ikon.trainingdairy.domain.model.*
+import java.text.SimpleDateFormat
 
 const val TYPE_MEASURE = 0
 const val TYPE_NOTE = 1
@@ -50,7 +48,28 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
 
     inner class MeasureViewHolder(private val binding: CardMeasureItemBinding) : BaseViewHolder(binding.root) {
         override fun bind(data: DiaryEntryModel) {
-            binding.textViewMeasureHeading.text = (data as MeasureModel).date.toString()
+            val measure = data as MeasureModel
+
+            var headingString = ""
+
+            if (measure.parametersList.size == 0) {
+                headingString = "Нет значений"
+            }
+
+            for (i in 0 until measure.parametersList.size) {
+                val parameterModel: ParameterModel = measure.parametersList.get(i)
+                val name: String = parameterModel.name
+                val valueString: String =
+                    java.lang.String.valueOf(parameterModel.value)
+                headingString += "$name: $valueString. "
+            }
+
+            binding.textViewMeasureHeading.text = headingString
+
+            val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+            val dateString = simpleDateFormat.format(measure.date)
+            binding.textViewMeasureSubheading.text = dateString
+
             binding.cardView.setOnClickListener {
                 this@EntryCardAdapter.listener.onItemClick(data)
             }
@@ -68,8 +87,12 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
 
     inner class TrainingViewHolder(private val binding: CardTrainingItemBinding) : BaseViewHolder(binding.root) {
         override fun bind(data: DiaryEntryModel) {
-            binding.textViewMeasureHeading.text = (data as TrainingModel).name
-            binding.textViewSubheading.text = data.date.toString()
+            val training = (data as TrainingModel)
+            binding.textViewMeasureHeading.text = training.name
+
+            val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+            val dateString = simpleDateFormat.format(training.date)
+            binding.textViewSubheading.text = dateString
 
             binding.cardView.setOnClickListener {
                 this@EntryCardAdapter.listener.onItemClick(data)

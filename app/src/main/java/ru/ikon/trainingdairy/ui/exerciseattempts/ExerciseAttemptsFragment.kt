@@ -1,15 +1,14 @@
 package ru.ikon.trainingdairy.ui.exerciseattempts
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentExerciseAttemptsBinding
 import ru.ikon.trainingdairy.domain.model.AttemptModel
+import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.attempt.AttemptFragment
 import ru.ikon.trainingdairy.ui.exerciseattempts.recycler.AttemptsAdapter
@@ -111,6 +110,26 @@ class ExerciseAttemptsFragment : Fragment(), ExerciseAttemptsContract.View, OnIt
 
         // Для отображения меню (которое в нашем случае состоит только из одного пункта - сохранить)
         setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // Используем меню menu_save, в котором присутствует только один пункт - Сохранить
+        inflater.inflate(R.menu.menu_save, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            // При нажатии на кнопку Назад "закрываем" текущий фрагмент, удаляя его из бэк-стека
+            (activity as AppCompatActivity)
+                .supportFragmentManager
+                .popBackStack()
+        }
+        if (item.itemId == R.id.action_save) {
+            // TODO: Реализовать сохранение
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onItemClick(attempt: AttemptModel) {

@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
             userParametersFragment.setReadyButtonClickListener(this)
 
         } else {
-            binding.bottomNavigationBar.visibility = View.VISIBLE
-            startFragment(ProgramsListFragment.newInstance())
+            //binding.bottomNavigationBar.visibility = View.VISIBLE
+            startFragment(MonthFragment.newInstance())
         }
 
         setSupportActionBar(binding.toolbar)
