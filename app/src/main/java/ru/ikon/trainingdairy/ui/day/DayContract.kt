@@ -13,5 +13,8 @@ class DayContract {
         fun attach(view: View)
         fun onCreate(date: Date)
         fun detach()
+        fun onTrainingDeleted(trainingId: Long)
+        fun onMeasureDeleted(measureId: Long)
+        fun onNoteDeleted(noteId: Long)
     }
 }

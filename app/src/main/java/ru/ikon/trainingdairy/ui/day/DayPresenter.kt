@@ -5,16 +5,16 @@ import java.util.*
 
 class DayPresenter : DayContract.Presenter {
 
-    private var  view: DayContract.View? = null
+    private var view: DayContract.View? = null
+    private val repository = DummyDiaryEntryRepositoryImpl.newInstance()
+    private lateinit var date: Date
 
     override fun attach(view: DayContract.View) {
         this.view = view
     }
 
     override fun onCreate(date: Date) {
-        // Создаём репозиторий с тестовыми данными. Позднее здесь будет загрузка данных
-        // из базы, а пока - загрузка из тестового репозитория
-        val repository = DummyDiaryEntryRepositoryImpl.newInstance()
+        this.date = date
 
         // Получаем из репозитория все записи за указанную дату
         val entriesList = repository.getEntries(date)
@@ -27,5 +27,21 @@ class DayPresenter : DayContract.Presenter {
         this.view = null
     }
 
+    override fun onTrainingDeleted(trainingId: Long) {
+        repository.deleteTraining(trainingId)
+        val entriesList = repository.getEntries(date)
+        view?.showData(entriesList)
+    }
 
+    override fun onMeasureDeleted(measureId: Long) {
+        repository.deleteMeasure(measureId)
+        val entriesList = repository.getEntries(date)
+        view?.showData(entriesList)
+    }
+
+    override fun onNoteDeleted(noteId: Long) {
+        repository.deleteNote(noteId)
+        val entriesList = repository.getEntries(date)
+        view?.showData(entriesList)
+    }
 }

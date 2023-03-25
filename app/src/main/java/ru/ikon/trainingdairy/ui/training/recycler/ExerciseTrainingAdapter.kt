@@ -1,6 +1,5 @@
 package ru.ikon.trainingdairy.ui.training.recycler
 
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Typeface
 import android.util.TypedValue

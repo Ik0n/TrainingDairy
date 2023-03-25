@@ -19,19 +19,24 @@ interface DiaryEntryRepository {
      */
     fun getEntries(date: Date) : List<DiaryEntryModel>
 
+
     fun addNote(date: Date, text: String)
     fun getNote(id: Long) : NoteModel
     fun updateNote(id: Long, date: Date, text: String)
+    fun deleteNote(id: Long)
 
     fun getTraining(id: Long): TrainingModel
     fun addTraining(name: String, date: Date, comment: String) : Long
     fun updateTraining(id: Long, name: String, date: Date, comment: String)
+    fun deleteTraining(id: Long)
 
     fun getParameters(id: Long) : List<ParameterModel>
     fun deleteParameter(parameterId: Long, measureId: Long)
     fun addParameters(measureId: Long,list: List<ParameterModel>)
 
+    fun getMeasure(id: Long): MeasureModel
     fun addMeasure(date: Date): Long
+    fun deleteMeasure(id: Long)
 
     fun getExercises(trainingId: Long): List<ExerciseModel>
     fun addExercises(trainingId: Long, exerciseList: ArrayList<ExerciseModel>)
@@ -43,4 +48,6 @@ interface DiaryEntryRepository {
     fun addAttempt(trainingId: Long, exerciseId: Long, weight: Int, count: Int)
     fun updateAttempt(trainingId: Long, exerciseId: Long, attemptId: Long, weight: Int, count: Int)
     fun deleteAttempt(trainingId: Long, exerciseId: Long, attemptId: Long)
+
+
 }

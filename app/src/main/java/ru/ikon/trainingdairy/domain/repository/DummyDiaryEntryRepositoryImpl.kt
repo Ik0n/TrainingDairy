@@ -491,14 +491,17 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         }
     }
 
+    override fun deleteNote(id: Long) {
+        entriesList.remove(getNote(id))
+    }
+
     override fun getTraining(id: Long): TrainingModel {
         return entriesList.find { x -> (x is TrainingModel && x.id == id) } as TrainingModel
     }
 
     override fun addTraining(name: String, date: Date, comment: String) : Long {
         val id = Random.nextLong()
-        entriesList.add(TrainingModel(id = id, date = date).apply {
-            this.name = name
+        entriesList.add(TrainingModel(id = id, date = date, name = name).apply {
             this.comment = comment
         })
         return id
@@ -510,6 +513,10 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
             this.name = name
             this.comment = comment
         }
+    }
+
+    override fun deleteTraining(id: Long) {
+        entriesList.remove(getTraining(id))
     }
 
 
@@ -528,10 +535,18 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         (entriesList.find { x -> x is MeasureModel && x.id == measureId } as MeasureModel).parametersList.addAll(list)
     }
 
+    override fun getMeasure(id: Long): MeasureModel {
+        return entriesList.find { x -> (x is MeasureModel && x.id == id) } as MeasureModel
+    }
+
     override fun addMeasure(date: Date) : Long {
         val measureId = Random.nextLong()
         entriesList.add(MeasureModel(measureId, date))
         return measureId
+    }
+
+    override fun deleteMeasure(id: Long) {
+        entriesList.remove(getMeasure(id))
     }
 
     override fun getExercises(trainingId: Long): List<ExerciseModel> {

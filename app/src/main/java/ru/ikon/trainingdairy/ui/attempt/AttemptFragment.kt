@@ -97,6 +97,28 @@ class AttemptFragment : Fragment(), AttemptContract.View {
                 .popBackStack()
         }
         if (item.itemId == R.id.action_save) {
+            // Получаем значения веса и количества из полей ввода
+            val weightString: String = binding.editTextWeight.text.toString()
+            val countString: String = binding.editTextCount.text.toString()
+
+            // Проверяем поля на заполеность.
+            // Если какое-либо из них не заполнено, отображаем под ним ошибку.
+            val weightLayout = binding.weightLayout
+            if (weightString.isEmpty()) {
+                weightLayout.error = "Введите вес"
+                return false
+            } else {
+                weightLayout.error = null
+            }
+
+            val countLayout = binding.countLayout
+            if (countString.isEmpty()) {
+                countLayout.error = "Введите количество"
+                return false
+            } else {
+                countLayout.error = null
+            }
+
             presenter.saveAttempt(
                 trainingId,
                 exerciseId,
