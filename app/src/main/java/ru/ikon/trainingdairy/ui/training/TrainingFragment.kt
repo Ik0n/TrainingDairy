@@ -162,7 +162,9 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
 
         with(binding) {
 
-            if (!training.exerciseList.isEmpty()) {
+            if (training.exerciseList.isEmpty()) {
+                emptyTitleText.visibility = View.VISIBLE
+            } else {
                 emptyTitleText.visibility = View.GONE
             }
 

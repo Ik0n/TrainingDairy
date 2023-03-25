@@ -16,6 +16,9 @@ import ru.ikon.trainingdairy.ui.parameters.ParametersFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
+private const val ARG_ID = "id"
+private const val ARG_DATE = "date"
+
 class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickListener {
 
     private var measureId: Long = 0
@@ -34,19 +37,14 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
 
     companion object {
 
-            private const val ARG_ID = "id"
-
             @JvmStatic
-            fun newInstance(measureId: Long) : Fragment {
+            fun newInstance(measureId: Long, date: Long) : Fragment {
                 return MeasureFragment().apply {
                     arguments = Bundle().apply {
                         putLong(ARG_ID, measureId)
+                        putLong(ARG_DATE, date)
                     }
                 }
-            }
-            @JvmStatic
-            fun newInstance() : Fragment {
-                return MeasureFragment()
             }
     }
 
@@ -54,6 +52,8 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         super.onCreate(savedInstanceState)
         arguments?.let {
             measureId = it.getLong(ARG_ID)
+            val dateMillis = it.getLong(ARG_DATE)
+            date = Date(dateMillis)
         }
     }
 
@@ -107,10 +107,6 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         super.onViewCreated(view, savedInstanceState)
 
         presenter.onCreate(measureId)
-
-        arguments?.let {
-            binding.emptyTitleText.visibility = View.GONE
-        }
 
         binding.editTextDate.setOnClickListener {
             DatePickerDialog(requireContext(), { _, year, month, day ->

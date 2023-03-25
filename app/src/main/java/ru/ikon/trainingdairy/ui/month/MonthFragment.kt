@@ -151,10 +151,10 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
     private fun initializeFloatingActionButtons() {
         // Устанавливаем обработчики нажатия плавающим кнопкам действия
         with(binding) {
+            val currentDate = Date()
+
             trainingButton.setOnClickListener {
                 floatingActionMenu.close(true)
-
-                val currentDate = Date()
 
                 val trainingFragment = TrainingFragment.newInstance(0, currentDate.time)
                 startFragment(trainingFragment)
@@ -169,7 +169,7 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
             measureButton.setOnClickListener {
                 floatingActionMenu.close(true)
 
-                startFragment(MeasureFragment.newInstance())
+                startFragment(MeasureFragment.newInstance(0, currentDate.time))
             }
         }
     }

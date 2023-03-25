@@ -116,7 +116,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
             }
             measureButton.setOnClickListener {
                 floatingActionMenu.close(true)
-                startFragment(MeasureFragment.newInstance())
+                startFragment(MeasureFragment.newInstance(0, date.time))
             }
         }
     }
@@ -148,6 +148,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
             .commit()
     }
 
+    // TODO: Для чего этот метод?
     override fun onItemClick(item: DiaryEntryModel) {
         if (item is NoteModel) {
             NoteDialogFragment.newInstance(date, item.id).show(
@@ -157,7 +158,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
             val trainingFragment = TrainingFragment.newInstance(item.id, date.time)
             startFragment(trainingFragment)
         } else if (item is MeasureModel) {
-            startFragment(MeasureFragment.newInstance(item.id))
+            startFragment(MeasureFragment.newInstance(item.id, date.time))
         }
     }
 

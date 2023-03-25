@@ -33,8 +33,8 @@ class ParameterAdapter : RecyclerView.Adapter<ParameterAdapter.ViewHolder>() {
     inner class ViewHolder(private val binding: CardMeasureParameterItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ParameterModel) {
             with(binding) {
-                textViewMeasureHeading.text = data.name
-                textViewMeasureSubheading.text = data.value.toString()
+                textViewMeasureHeading.text = data.value.toString()
+                textViewMeasureSubheading.text = data.name
                 buttonDelete.setOnClickListener {
                     listener.onDeleteButtonClick(data)
                 }
