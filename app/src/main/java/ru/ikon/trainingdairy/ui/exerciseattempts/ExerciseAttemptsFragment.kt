@@ -1,14 +1,13 @@
 package ru.ikon.trainingdairy.ui.exerciseattempts
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.FragmentExerciseAttemptsBinding
 import ru.ikon.trainingdairy.domain.model.AttemptModel
-import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.attempt.AttemptFragment
 import ru.ikon.trainingdairy.ui.exerciseattempts.recycler.AttemptsAdapter
@@ -24,8 +23,10 @@ class ExerciseAttemptsFragment : Fragment(), ExerciseAttemptsContract.View, OnIt
 
     private lateinit var adapter: AttemptsAdapter
 
-    override fun showData(data: List<AttemptModel>) {
-        if (!data.isEmpty()) {
+    override fun showAttempts(data: List<AttemptModel>) {
+        if (data.isEmpty()) {
+            binding.emptyTitleText.visibility = View.VISIBLE
+        } else {
             binding.emptyTitleText.visibility = View.GONE
         }
         binding.listViewAttempts.adapter = adapter.apply {
@@ -85,10 +86,6 @@ class ExerciseAttemptsFragment : Fragment(), ExerciseAttemptsContract.View, OnIt
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun onDetach() {
         super.onDetach()
         presenter.detach()
@@ -145,6 +142,32 @@ class ExerciseAttemptsFragment : Fragment(), ExerciseAttemptsContract.View, OnIt
     }
 
     override fun onDeleteButtonClick(attempt: AttemptModel) {
-        presenter.deleteAttempt(trainingId, exerciseId, attempt.id)
+        showDeleteConfirmationDialog(attempt)
+    }
+
+    /**
+     * Отображает диалог подтверждения удаления для данного подхода
+     * @param attempt Удаляемый подход
+     */
+    private fun showDeleteConfirmationDialog(attempt: AttemptModel) {
+        // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
+        // для положительной и отрицательной кнопок
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("Удалить подход?")
+        builder.setPositiveButton(
+            "Удалить"
+        ) { _, _ ->
+            // При нажатии кнопки "Удалить" оповещаем презентер
+            presenter.onAttemptDeleted(trainingId, exerciseId, attempt.id)
+        }
+        builder.setNegativeButton(
+            "Отмена"
+        ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
+            dialog?.dismiss()
+        }
+
+        // Создаём и показываем AlertDialog
+        val alertDialog = builder.create()
+        alertDialog.show()
     }
 }

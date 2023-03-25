@@ -5,15 +5,14 @@ import ru.ikon.trainingdairy.domain.model.AttemptModel
 class ExerciseAttemptsContract {
 
     interface View {
-        fun showData(data: List<AttemptModel>)
+        fun showAttempts(data: List<AttemptModel>)
     }
 
     interface Presenter {
-        fun attach(view: ExerciseAttemptsContract.View)
+        fun attach(view: View)
         fun onCreate(trainingId: Long, exerciseId: Long)
         fun detach()
         fun getExerciseName(trainingId: Long, exerciseId: Long): String
-        fun deleteAttempt(trainingId: Long, exerciseId: Long, attemptId: Long)
+        fun onAttemptDeleted(trainingId: Long, exerciseId: Long, attemptId: Long)
     }
-
 }

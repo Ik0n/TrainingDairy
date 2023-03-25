@@ -8,6 +8,7 @@ import java.util.*
 class TrainingPresenter : TrainingContract.Presenter {
 
     private var view: TrainingContract.View? = null
+    private val repository = DummyDiaryEntryRepositoryImpl.newInstance()
 
     override fun attach(view: TrainingContract.View) {
         this.view = view
@@ -32,7 +33,7 @@ class TrainingPresenter : TrainingContract.Presenter {
     }
 
     override fun getTraining(trainingId: Long): TrainingModel {
-        return DummyDiaryEntryRepositoryImpl.newInstance().getTraining(trainingId)
+        return repository.getTraining(trainingId)
     }
 
     override fun detach() {
@@ -40,16 +41,16 @@ class TrainingPresenter : TrainingContract.Presenter {
     }
 
     override fun saveTraining(name: String, date: Date, comment: String) : Long {
-        return DummyDiaryEntryRepositoryImpl.newInstance().addTraining(name, date, comment)
+        return repository.addTraining(name, date, comment)
     }
 
     override fun updateTraining(id: Long, name: String, date: Date, comment: String) {
-        DummyDiaryEntryRepositoryImpl.newInstance().updateTraining(id, name, date, comment)
+        repository.updateTraining(id, name, date, comment)
     }
 
-    override fun deleteExercise(exerciseId: Long, trainingId: Long) {
-        DummyDiaryEntryRepositoryImpl.newInstance().deleteExercise(exerciseId, trainingId)
+    override fun onExerciseDeleted(exerciseId: Long, trainingId: Long) {
+        repository.deleteExercise(exerciseId, trainingId)
+        val exerciseList = repository.getExercises(trainingId)
+        view?.showExercises(exerciseList)
     }
-
-
 }

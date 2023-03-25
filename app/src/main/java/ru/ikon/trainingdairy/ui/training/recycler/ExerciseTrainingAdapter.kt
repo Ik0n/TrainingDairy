@@ -99,8 +99,7 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
                         R.id.action_delete -> {
                             // При выборе пункта меню "Удалить"
                             // отображаем диалог подтверждения удаления
-                            showDeleteConfirmationDialog(exercise)
-                            onDeleteButtonClickListener.onClick(exercise)
+                            onDeleteButtonClickListener.onDeleteButtonClick(exercise)
                             true
                         }
                         else -> false
@@ -321,36 +320,7 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
             return (dp * scale + 0.5f).toInt()
         }
 
-        /**
-         * Отображает диалог подтверждения удаления для данного упражнения
-         * @param exercise Удаляемое упражнение
-         */
-        private fun showDeleteConfirmationDialog(exercise: ExerciseModel) {
-            // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
-            // для положительной и отрицательной кнопок
-            val builder = AlertDialog.Builder(mContext)
-            builder.setMessage("Удалить упражнение?")
-            builder.setPositiveButton(
-                "Удалить"
-            ) { _, _ ->
-                // При нажатии кнопки "Удалить" удаляем запись из списка
-                // и оповещаем адаптер о том, что данные изменились,
-                // чтобы он обновил список на экране
-                // TODO: Добраться до фрагмента и оповестить его о том, что данные изменены
-                // TODO: Изменить данные не только в адаптере, но и в самом источнике данных!
-                data.remove(exercise)
-                notifyDataSetChanged()
-            }
-            builder.setNegativeButton(
-                "Отмена"
-            ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
-                dialog?.dismiss()
-            }
 
-            // Создаём и показываем AlertDialog
-            val alertDialog = builder.create()
-            alertDialog.show()
-        }
     }
 
     fun setOnDeleteButtonClickListener(listener: OnDeleteButtonClickListener) {

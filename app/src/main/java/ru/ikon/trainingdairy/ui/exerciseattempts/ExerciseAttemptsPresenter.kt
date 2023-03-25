@@ -5,13 +5,14 @@ import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
 class ExerciseAttemptsPresenter : ExerciseAttemptsContract.Presenter {
 
     var view: ExerciseAttemptsContract.View? = null
+    private val repository = DummyDiaryEntryRepositoryImpl.newInstance()
 
     override fun attach(view: ExerciseAttemptsContract.View) {
         this.view = view
     }
 
     override fun onCreate(trainingId: Long, exerciseId: Long) {
-        view?.showData(DummyDiaryEntryRepositoryImpl.newInstance().getAttempts(trainingId, exerciseId))
+        view?.showAttempts(repository.getAttempts(trainingId, exerciseId))
     }
 
     override fun detach() {
@@ -19,10 +20,11 @@ class ExerciseAttemptsPresenter : ExerciseAttemptsContract.Presenter {
     }
 
     override fun getExerciseName(trainingId: Long, exerciseId: Long): String {
-        return DummyDiaryEntryRepositoryImpl.newInstance().getExercise(trainingId, exerciseId).name
+        return repository.getExercise(trainingId, exerciseId).name
     }
 
-    override fun deleteAttempt(trainingId: Long, exerciseId: Long, attemptId: Long) {
-        DummyDiaryEntryRepositoryImpl.newInstance().deleteAttempt(trainingId, exerciseId, attemptId)
+    override fun onAttemptDeleted(trainingId: Long, exerciseId: Long, attemptId: Long) {
+        repository.deleteAttempt(trainingId, exerciseId, attemptId)
+        view?.showAttempts(repository.getAttempts(trainingId, exerciseId))
     }
 }

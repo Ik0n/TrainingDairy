@@ -1,5 +1,6 @@
 package ru.ikon.trainingdairy.ui.measure
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
@@ -156,13 +157,43 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onClick(data: ParameterModel) {
-        presenter.deleteParameter(data.id, measureId)
+    override fun onDeleteButtonClick(data: ParameterModel) {
+        showDeleteConfirmationDialog(data)
     }
 
-    override fun showData(data: List<ParameterModel>) {
+    /**
+     * Отображает диалог подтверждения удаления для данного параметра
+     * @param parameter Удаляемый параметр
+     */
+    private fun showDeleteConfirmationDialog(parameter: ParameterModel) {
+        // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
+        // для положительной и отрицательной кнопок
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("Удалить значение?")
+        builder.setPositiveButton(
+            "Удалить"
+        ) { _, _ ->
+            presenter.onParameterDeleted(parameter.id, measureId)
+        }
+        builder.setNegativeButton(
+            "Отмена"
+        ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
+            dialog?.dismiss()
+        }
+
+        // Создаём и показываем AlertDialog
+        val alertDialog = builder.create()
+        alertDialog.show()
+    }
+
+    override fun showParameters(parametersList: List<ParameterModel>) {
+        if (parametersList.isEmpty()) {
+            binding.emptyTitleText.visibility = View.VISIBLE
+        } else {
+            binding.emptyTitleText.visibility = View.GONE
+        }
         binding.listViewParameters.adapter = adapter.apply {
-            setData(data)
+            setData(parametersList)
         }
     }
 

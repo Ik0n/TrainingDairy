@@ -1,9 +1,9 @@
 package ru.ikon.trainingdairy.ui.training
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
@@ -154,24 +154,35 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
         return super.onOptionsItemSelected(item)
     }
 
-    override fun showData(data: TrainingModel) {
+    override fun showData(training: TrainingModel) {
         // Приводим дату к строке для отображения
         // и выводим на экран в элемент
         val outputFormat = SimpleDateFormat("dd.MM.yyyy")
-        val outputDateString = outputFormat.format(data.date)
+        val outputDateString = outputFormat.format(training.date)
 
         with(binding) {
 
-            if (!data.exerciseList.isEmpty()) {
+            if (!training.exerciseList.isEmpty()) {
                 emptyTitleText.visibility = View.GONE
             }
 
-            editTextName.setText(data.name)
+            editTextName.setText(training.name)
             editTextDate.setText(outputDateString)
-            editTextComment.setText(data.comment)
+            editTextComment.setText(training.comment)
             listViewExercises.adapter = adapter.apply {
-                setData(data.exerciseList)
+                setData(training.exerciseList)
             }
+        }
+    }
+
+    override fun showExercises(exerciseList: List<ExerciseModel>) {
+        if (exerciseList.isEmpty()) {
+            binding.emptyTitleText.visibility = View.VISIBLE
+        } else {
+            binding.emptyTitleText.visibility = View.GONE
+        }
+        adapter.apply {
+            setData(exerciseList)
         }
     }
 
@@ -237,8 +248,34 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
             .commit()
     }
 
-    override fun onClick(data: ExerciseModel) {
-        presenter.deleteExercise(data.id, trainingId)
+    override fun onDeleteButtonClick(data: ExerciseModel) {
+        showDeleteConfirmationDialog(data)
+    }
+
+    /**
+     * Отображает диалог подтверждения удаления для данного упражнения
+     * @param exercise Удаляемое упражнение
+     */
+    private fun showDeleteConfirmationDialog(exercise: ExerciseModel) {
+        // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
+        // для положительной и отрицательной кнопок
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("Удалить упражнение?")
+        builder.setPositiveButton(
+            "Удалить"
+        ) { _, _ ->
+            // При нажатии кнопки "Удалить" оповещаем презентер
+            presenter.onExerciseDeleted(exercise.id, trainingId)
+        }
+        builder.setNegativeButton(
+            "Отмена"
+        ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
+            dialog?.dismiss()
+        }
+
+        // Создаём и показываем AlertDialog
+        val alertDialog = builder.create()
+        alertDialog.show()
     }
 
     override fun onItemClick(item: ExerciseModel) {

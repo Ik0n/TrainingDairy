@@ -1,11 +1,13 @@
 package ru.ikon.trainingdairy.ui.training
 
+import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import java.util.*
 
 class TrainingContract {
     interface View {
-        fun showData(data: TrainingModel)
+        fun showData(training: TrainingModel)
+        fun showExercises(exerciseList: List<ExerciseModel>)
     }
 
     interface Presenter {
@@ -15,6 +17,6 @@ class TrainingContract {
         fun detach()
         fun saveTraining(name: String, date: Date, comment: String) : Long
         fun updateTraining(id: Long, name: String, date: Date, comment: String)
-        fun deleteExercise(exerciseId: Long, trainingId: Long)
+        fun onExerciseDeleted(exerciseId: Long, trainingId: Long)
     }
 }

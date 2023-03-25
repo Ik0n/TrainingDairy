@@ -8,6 +8,7 @@ import kotlin.collections.ArrayList
 class MeasurePresenter : MeasureContract.Presenter {
 
     private var view: MeasureContract.View? = null
+    private val repository = DummyDiaryEntryRepositoryImpl.newInstance()
 
     override fun attach(view: MeasureContract.View) {
         this.view = view
@@ -15,9 +16,8 @@ class MeasurePresenter : MeasureContract.Presenter {
 
     override fun onCreate(id: Long) {
         if (id.toInt() != 0) {
-            val repository = DummyDiaryEntryRepositoryImpl.newInstance()
             val parametersList = repository.getParameters(id)
-            view?.showData(parametersList)
+            view?.showParameters(parametersList)
         }
     }
 
@@ -25,19 +25,21 @@ class MeasurePresenter : MeasureContract.Presenter {
         this.view = null
     }
 
-    override fun deleteParameter(parameterId: Long, measureId: Long) {
-        DummyDiaryEntryRepositoryImpl.newInstance().deleteParameter(parameterId, measureId)
+    override fun onParameterDeleted(parameterId: Long, measureId: Long) {
+        repository.deleteParameter(parameterId, measureId)
+        val parametersList = repository.getParameters(measureId)
+        view?.showParameters(parametersList)
     }
 
     override fun getParameters(measureId: Long): List<ParameterModel> {
         return if(measureId.toInt() != 0) {
-            DummyDiaryEntryRepositoryImpl.newInstance().getParameters(measureId)
+            repository.getParameters(measureId)
         } else {
             ArrayList()
         }
     }
 
     override fun saveMeasure(date: Date) : Long {
-        return DummyDiaryEntryRepositoryImpl.newInstance().addMeasure(date)
+        return repository.addMeasure(date)
     }
 }
