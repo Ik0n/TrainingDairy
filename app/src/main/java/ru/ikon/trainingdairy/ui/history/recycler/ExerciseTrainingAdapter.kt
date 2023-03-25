@@ -1,4 +1,4 @@
-package ru.ikon.trainingdairy.ui.training.recycler
+package ru.ikon.trainingdairy.ui.history.recycler
 
 import android.content.Context
 import android.graphics.Typeface
@@ -20,10 +20,6 @@ import kotlin.Int
 class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adapter<ExerciseTrainingAdapter.ViewHolder>() {
 
     private val data : MutableList<ExerciseModel> = mutableListOf()
-
-    private lateinit var onDeleteButtonClickListener: OnDeleteButtonClickListener
-    private lateinit var onHistoryButtonClickListener: OnHistoryButtonClickListener
-    private lateinit var onItemClickListener: OnItemClickListener
 
     fun setData(data: List<ExerciseModel>) {
         this.data.clear()
@@ -72,48 +68,6 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
                 table.visibility = View.GONE
                 binding.buttonExpand.setImageResource(R.drawable.ic_expand_more_black_24dp)
                 binding.buttonExpand.isEnabled = false
-            }
-
-            // Получаем из макета кнопку с тремя точками и настраиваем контекстное меню
-            binding.buttonMenu.setOnClickListener {
-                val popupMenu = PopupMenu(mContext, it)
-                popupMenu.menuInflater.inflate(
-                    R.menu.menu_exercise_popup,
-                    popupMenu.menu
-                )
-                popupMenu.setOnMenuItemClickListener { menuItem ->
-                    when (menuItem.itemId) {
-                        R.id.action_history -> {
-                            //При выборе пункта меню "История" запускаем операцию HistoryActivity,
-                            // предварительно передав название упражнения
-                            onHistoryButtonClickListener.onHistoryButtonClick(exercise)
-                            true
-                        }
-                        R.id.action_edit -> {
-                            // При выборе пункта меню "Редактировать"
-                            // запускаем операцию TrainingActivity,
-                            // предварительно передав ID записи, по которой щёлкнули
-                            onItemClickListener.onItemClick(exercise)
-                            true
-                        }
-                        R.id.action_delete -> {
-                            // При выборе пункта меню "Удалить"
-                            // отображаем диалог подтверждения удаления
-                            onDeleteButtonClickListener.onDeleteButtonClick(exercise)
-                            true
-                        }
-                        else -> false
-                    }
-                }
-                popupMenu.show()
-            }
-
-            // Устанавливаем обработчик нажатия на rootView, то есть, на саму карточку
-            binding.root.setOnClickListener {
-                // Запускаем операцию ExerciseActivity,
-                // предварительно передав в неё имя упражнения для отображения в заголовке
-                // и список подходов
-                onItemClickListener.onItemClick(exercise)
             }
         }
 
@@ -319,19 +273,5 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
             val scale = mContext.resources.displayMetrics.density
             return (dp * scale + 0.5f).toInt()
         }
-
-
-    }
-
-    fun setOnDeleteButtonClickListener(listener: OnDeleteButtonClickListener) {
-        this.onDeleteButtonClickListener = listener
-    }
-
-    fun setOnHistoryButtonClickListener(listener: OnHistoryButtonClickListener) {
-        this.onHistoryButtonClickListener = listener
-    }
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.onItemClickListener = listener
     }
 }

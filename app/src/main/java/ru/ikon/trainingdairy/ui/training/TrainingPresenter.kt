@@ -1,6 +1,5 @@
 package ru.ikon.trainingdairy.ui.training
 
-import android.widget.Toast
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
 import java.util.*

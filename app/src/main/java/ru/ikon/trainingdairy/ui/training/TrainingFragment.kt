@@ -13,8 +13,10 @@ import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.exercise.ExerciseFragment
 import ru.ikon.trainingdairy.ui.exerciseattempts.ExerciseAttemptsFragment
+import ru.ikon.trainingdairy.ui.history.HistoryFragment
 import ru.ikon.trainingdairy.ui.training.recycler.ExerciseTrainingAdapter
 import ru.ikon.trainingdairy.ui.training.recycler.OnDeleteButtonClickListener
+import ru.ikon.trainingdairy.ui.training.recycler.OnHistoryButtonClickListener
 import ru.ikon.trainingdairy.ui.training.recycler.OnItemClickListener
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,7 +24,7 @@ import java.util.*
 private const val ARG_ID = "id"
 private const val ARG_DATE = "date"
 
-class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickListener, OnItemClickListener {
+class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickListener, OnItemClickListener, OnHistoryButtonClickListener {
     private var trainingId: Long = 0
     private lateinit var trainingDate: Date
 
@@ -120,6 +122,7 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
             }
             adapter.setOnDeleteButtonClickListener(this@TrainingFragment)
             adapter.setOnItemClickListener(this@TrainingFragment)
+            adapter.setOnHistoryButtonClickListener(this@TrainingFragment)
         }
     }
 
@@ -282,5 +285,9 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
 
     override fun onItemClick(item: ExerciseModel) {
         startFragment(ExerciseAttemptsFragment.newInstance(item.trainingId, item.id))
+    }
+
+    override fun onHistoryButtonClick(data: ExerciseModel) {
+        startFragment(HistoryFragment.newInstance(data.trainingId.toString(), "str"))
     }
 }

@@ -1,14 +1,18 @@
 package ru.ikon.trainingdairy.ui.exercise.recycler
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.ikon.trainingdairy.databinding.CardExerciseCheckboxBinding
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
+import ru.ikon.trainingdairy.ui.training.recycler.OnHistoryButtonClickListener
 
 class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
 
     private val data : MutableList<ExerciseModel> = mutableListOf()
+
+    private lateinit var onHistoryButtonClickListener: OnHistoryButtonClickListener
 
     fun setData(data: List<ExerciseModel>) {
         this.data.addAll(data)
@@ -38,9 +42,14 @@ class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
                     this@ExerciseAdapter.data[position].isChecked = b
                 }
 
+                buttonHistory.setOnClickListener {
+                    onHistoryButtonClickListener.onHistoryButtonClick(data)
+                }
             }
         }
     }
 
-
+    fun setOnHistoryButtonClickListener(listener: OnHistoryButtonClickListener) {
+        this.onHistoryButtonClickListener = listener
+    }
 }
