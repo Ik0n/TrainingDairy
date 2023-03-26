@@ -194,7 +194,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
         // для положительной и отрицательной кнопок
         val builder = AlertDialog.Builder(context)
-        builder.setMessage("Удалить упражнение?")
+        builder.setMessage("Удалить запись?")
         builder.setPositiveButton(
             "Удалить"
         ) { _, _ ->
