@@ -10,7 +10,6 @@ class ExercisePresenter : ExerciseContract.Presenter {
 
     private var view: ExerciseContract.View? = null
 
-
     override fun attach(view: ExerciseContract.View) {
         this.view = view
     }
@@ -18,7 +17,6 @@ class ExercisePresenter : ExerciseContract.Presenter {
     override fun onCreate(trainingId: Long) {
 
         val checkedExercises = DummyDiaryEntryRepositoryImpl.newInstance().getExercises(trainingId)
-
 
         val exerciseList = ArrayList<ExerciseModel>().apply {
             add(ExerciseModel("Выпады с гантелями"))

@@ -12,12 +12,15 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.CardExerciseLayoutBinding
+import ru.ikon.trainingdairy.databinding.ExerciseHistoryLayoutBinding
 import ru.ikon.trainingdairy.domain.model.AttemptModel
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import java.lang.String
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.Int
 
-class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adapter<ExerciseTrainingAdapter.ViewHolder>() {
+class ExerciseHistoryAdapter(private val mContext: Context) : RecyclerView.Adapter<ExerciseHistoryAdapter.ViewHolder>() {
 
     private val data : MutableList<ExerciseModel> = mutableListOf()
 
@@ -31,7 +34,7 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        return ViewHolder(CardExerciseLayoutBinding.inflate(LayoutInflater.from(parent.context)))
+        return ViewHolder(ExerciseHistoryLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -42,10 +45,11 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
         return data.size
     }
 
-    inner class ViewHolder(private val binding: CardExerciseLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ExerciseHistoryLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(exercise: ExerciseModel) {
             // Получаем из макета элемент TextView и устанавливаем ему текст - название упражнения
-            binding.textViewName.text = exercise.name
+
+            binding.textViewName.text = SimpleDateFormat("dd MMMM yyyy", Locale("ru")).format(exercise.date)
 
             // Инициализируем таблицу подходов и заполняем её данными
             val table = binding.tableLayout
@@ -84,82 +88,6 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
             val rowTitle = binding.rowTitle
             val rowWeight = binding.rowWeight
             val rowCount = binding.rowCount
-
-            // Программно добавляем первый столбец таблицы, в котором указаны наименования строк.
-            val measureHeadingTextView = TextView(mContext)
-            measureHeadingTextView.text = "Мера"
-            measureHeadingTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
-            measureHeadingTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-            measureHeadingTextView.setTextColor(
-                ContextCompat.getColor(
-                    mContext,
-                    R.color.secondary_text
-                )
-            )
-            measureHeadingTextView.setTypeface(Typeface.SANS_SERIF)
-            measureHeadingTextView.gravity = Gravity.CENTER_VERTICAL
-            val params1 = TableRow.LayoutParams()
-            params1.setMargins(
-                convertDpToPx(16),
-                convertDpToPx(4),
-                convertDpToPx(8),
-                convertDpToPx(4)
-            )
-            measureHeadingTextView.layoutParams = params1
-
-            // Добавляем содержимое в строку с весом
-            rowTitle.addView(measureHeadingTextView)
-
-
-            val weightHeadingTextView = TextView(mContext)
-            weightHeadingTextView.text = "Вес (кг)"
-            weightHeadingTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
-            weightHeadingTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-            weightHeadingTextView.setTextColor(
-                ContextCompat.getColor(
-                    mContext,
-                    R.color.primary_text
-                )
-            )
-            weightHeadingTextView.setTypeface(Typeface.SANS_SERIF)
-            weightHeadingTextView.gravity = Gravity.CENTER_VERTICAL
-            val params2 = TableRow.LayoutParams()
-            params2.setMargins(
-                convertDpToPx(16),
-                convertDpToPx(4),
-                convertDpToPx(8),
-                convertDpToPx(4)
-            )
-            weightHeadingTextView.layoutParams = params2
-
-            // Добавляем содержимое в строку с весом
-            rowWeight.addView(weightHeadingTextView)
-
-
-            val countHeadingTextView = TextView(mContext)
-            countHeadingTextView.text = "Повторения (раз)"
-            countHeadingTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
-            countHeadingTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-            countHeadingTextView.setTextColor(
-                ContextCompat.getColor(
-                    mContext,
-                    R.color.primary_text
-                )
-            )
-            countHeadingTextView.setTypeface(Typeface.SANS_SERIF)
-            countHeadingTextView.gravity = Gravity.CENTER_VERTICAL
-            val params3 = TableRow.LayoutParams()
-            params3.setMargins(
-                convertDpToPx(16),
-                convertDpToPx(4),
-                convertDpToPx(8),
-                convertDpToPx(4)
-            )
-            countHeadingTextView.layoutParams = params3
-
-            // Добавляем содержимое в строку с количеством повторений
-            rowCount.addView(countHeadingTextView)
-
 
             // Перебираем коллекцию подходов данного упражнения
             for (i in 0 until exercise.attemptsList.size) {

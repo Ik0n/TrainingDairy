@@ -1,12 +1,10 @@
 package ru.ikon.trainingdairy.ui.exercise.recycler
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.ikon.trainingdairy.databinding.CardExerciseCheckboxBinding
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
-import ru.ikon.trainingdairy.ui.training.recycler.OnHistoryButtonClickListener
 
 class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
 

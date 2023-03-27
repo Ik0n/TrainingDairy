@@ -1,18 +1,24 @@
 package ru.ikon.trainingdairy.ui.history
 
-import ru.ikon.trainingdairy.ui.training.TrainingContract
-import java.util.*
+import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
 
 class HistoryPresenter : HistoryContract.Presenter {
-    override fun attach(view: TrainingContract.View) {
-        TODO("Not yet implemented")
+    private var view: HistoryContract.View? = null
+    private val repository = DummyDiaryEntryRepositoryImpl.newInstance()
+
+    override fun attach(view: HistoryContract.View) {
+        this.view = view
     }
 
-    override fun onCreate(id: Long, date: Date) {
-        TODO("Not yet implemented")
+    override fun onCreate(name: String) {
+        val repository = DummyDiaryEntryRepositoryImpl()
+
+        val history = repository.getHistory(name)
+
+        view?.showExercises(history)
     }
 
     override fun detach() {
-        TODO("Not yet implemented")
+        this.view = null
     }
 }

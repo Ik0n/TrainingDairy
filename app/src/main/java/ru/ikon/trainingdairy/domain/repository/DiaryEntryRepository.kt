@@ -49,5 +49,5 @@ interface DiaryEntryRepository {
     fun updateAttempt(trainingId: Long, exerciseId: Long, attemptId: Long, weight: Int, count: Int)
     fun deleteAttempt(trainingId: Long, exerciseId: Long, attemptId: Long)
 
-
+    fun getHistory(exerciseName: String): List<ExerciseModel>
 }

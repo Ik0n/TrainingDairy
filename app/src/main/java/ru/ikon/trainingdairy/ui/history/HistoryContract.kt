@@ -10,8 +10,8 @@ class HistoryContract {
     }
 
     interface Presenter {
-        fun attach(view: TrainingContract.View)
-        fun onCreate(id: Long, date: Date)
+        fun attach(view: View)
+        fun onCreate(name: String)
         fun detach()
     }
 }

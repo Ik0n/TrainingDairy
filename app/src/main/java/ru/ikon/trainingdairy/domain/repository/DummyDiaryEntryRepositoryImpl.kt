@@ -224,17 +224,18 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
                 ).time, "Руки"
             )
             trainingModel1.comment = "Сегодня первый день весны!"
-            trainingModel1.exerciseList = arrayListOf(ExerciseModel("Выпады с гантелями").apply {
-                trainingId = 13
-                isChecked = true
-                date = trainingModel1.date
-                id = 1
-                attemptsList = arrayListOf(AttemptModel(60, 20).apply {
-                    exerciseId = 1
+            trainingModel1.exerciseList =
+                arrayListOf(ExerciseModel("Выпады с гантелями").apply {
+                    trainingId = 13
+                    isChecked = true
+                    date = trainingModel1.date
                     id = 1
+                    attemptsList = arrayListOf(AttemptModel(60, 20).apply {
+                        exerciseId = 1
+                        id = 1
 
+                    })
                 })
-            })
             entriesList.add(
                 trainingModel1
             )
@@ -499,7 +500,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         return entriesList.find { x -> (x is TrainingModel && x.id == id) } as TrainingModel
     }
 
-    override fun addTraining(name: String, date: Date, comment: String) : Long {
+    override fun addTraining(name: String, date: Date, comment: String): Long {
         val id = Random.nextLong()
         entriesList.add(TrainingModel(id = id, date = date, name = name).apply {
             this.comment = comment
@@ -507,7 +508,12 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         return id
     }
 
-    override fun updateTraining(id: Long, name: String, date: Date, comment: String) {
+    override fun updateTraining(
+        id: Long,
+        name: String,
+        date: Date,
+        comment: String
+    ) {
         getTraining(id).apply {
             this.date = date
             this.name = name
@@ -532,14 +538,16 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
 
     override fun addParameters(measureId: Long, list: List<ParameterModel>) {
         (entriesList.find { x -> x is MeasureModel && x.id == measureId } as MeasureModel).parametersList.clear()
-        (entriesList.find { x -> x is MeasureModel && x.id == measureId } as MeasureModel).parametersList.addAll(list)
+        (entriesList.find { x -> x is MeasureModel && x.id == measureId } as MeasureModel).parametersList.addAll(
+            list
+        )
     }
 
     override fun getMeasure(id: Long): MeasureModel {
         return entriesList.find { x -> (x is MeasureModel && x.id == id) } as MeasureModel
     }
 
-    override fun addMeasure(date: Date) : Long {
+    override fun addMeasure(date: Date): Long {
         val measureId = Random.nextLong()
         entriesList.add(MeasureModel(measureId, date))
         return measureId
@@ -553,33 +561,51 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         return (entriesList.find { x -> (x is TrainingModel) && x.id == trainingId } as TrainingModel).exerciseList
     }
 
-    override fun addExercises(trainingId: Long, exerciseList: ArrayList<ExerciseModel>) {
+    override fun addExercises(
+        trainingId: Long,
+        exerciseList: ArrayList<ExerciseModel>
+    ) {
         getTraining(trainingId).exerciseList = exerciseList
     }
 
     override fun deleteExercise(exerciseId: Long, trainingId: Long) {
         (entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
-            .exerciseList.remove((entriesList.find { x ->  x is TrainingModel && x.id == trainingId } as TrainingModel)
+            .exerciseList.remove((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
                 .exerciseList.find { x -> x.id == exerciseId })
     }
 
-    override fun getExercise(trainingId: Long, exerciseId: Long): ExerciseModel {
+    override fun getExercise(
+        trainingId: Long,
+        exerciseId: Long
+    ): ExerciseModel {
         return ((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
             .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
     }
 
-    override fun getAttempts(trainingId: Long, exerciseId: Long): List<AttemptModel> {
-        return ((entriesList.find { x -> x is TrainingModel && x.id == trainingId} as TrainingModel)
+    override fun getAttempts(
+        trainingId: Long,
+        exerciseId: Long
+    ): List<AttemptModel> {
+        return ((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
             .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel).attemptsList
     }
 
-    override fun getAttempt(trainingId: Long, exerciseId: Long, attemptId: Long): AttemptModel {
-        return (((entriesList.find { x-> x is TrainingModel && x.id == trainingId } as TrainingModel)
+    override fun getAttempt(
+        trainingId: Long,
+        exerciseId: Long,
+        attemptId: Long
+    ): AttemptModel {
+        return (((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
             .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
             .attemptsList.find { x -> x.id == attemptId } as AttemptModel)
     }
 
-    override fun addAttempt(trainingId: Long, exerciseId: Long, weight: Int, count: Int) {
+    override fun addAttempt(
+        trainingId: Long,
+        exerciseId: Long,
+        weight: Int,
+        count: Int
+    ) {
         (((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
             .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
             .attemptsList.add(
@@ -600,19 +626,38 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         (((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
             .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
             .attemptsList.find { x -> x.id == attemptId } as AttemptModel).apply {
-                this.count = count
-                this.weight = weight
+            this.count = count
+            this.weight = weight
         }
 
     }
 
-    override fun deleteAttempt(trainingId: Long, exerciseId: Long, attemptId: Long) {
+    override fun deleteAttempt(
+        trainingId: Long,
+        exerciseId: Long,
+        attemptId: Long
+    ) {
         (((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
             .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
             .attemptsList.remove(
                 ((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
-                .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
-                .attemptsList.find { x -> x.id == attemptId } as AttemptModel))
+                    .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
+                    .attemptsList.find { x -> x.id == attemptId } as AttemptModel))
     }
 
+    override fun getHistory(exerciseName: String): List<ExerciseModel> {
+        val results = ArrayList<ExerciseModel>()
+        val trainingsList = entriesList.filterIsInstance<TrainingModel>()
+        trainingsList.forEach { trainingModel ->
+            (trainingModel.exerciseList.filter { exercise ->
+                exercise.name.equals(
+                    exerciseName
+                )
+            }).forEach { exerciseModel ->
+                exerciseModel.date = trainingModel.date
+                results.add(exerciseModel)
+            }
+        }
+        return results
+    }
 }

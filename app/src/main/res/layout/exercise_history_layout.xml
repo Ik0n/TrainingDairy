@@ -122,5 +122,10 @@
             </TableLayout>
         </HorizontalScrollView>
 
+         <View
+             android:layout_width="match_parent"
+             android:layout_height="0.75dp"
+             android:background="@color/divider" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

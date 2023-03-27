@@ -174,7 +174,7 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
             editTextName.setText(training.name)
             editTextDate.setText(outputDateString)
             editTextComment.setText(training.comment)
-            listViewExercises.adapter = adapter.apply {
+            recyclerViewExercises.adapter = adapter.apply {
                 setData(training.exerciseList)
             }
         }
@@ -288,6 +288,6 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
     }
 
     override fun onHistoryButtonClick(data: ExerciseModel) {
-        startFragment(HistoryFragment.newInstance(data.trainingId.toString(), "str"))
+        startFragment(HistoryFragment.newInstance(data.name.toString()))
     }
 }

@@ -9,11 +9,12 @@ import ru.ikon.trainingdairy.databinding.FragmentExerciseBinding
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.exercise.recycler.ExerciseAdapter
-import ru.ikon.trainingdairy.ui.measure.recycler.ParameterAdapter
-import java.util.*
+import ru.ikon.trainingdairy.ui.exercise.recycler.OnHistoryButtonClickListener
+import ru.ikon.trainingdairy.ui.history.HistoryFragment
 import kotlin.collections.ArrayList
 
-class ExerciseFragment : Fragment(), ExerciseContract.View {
+class ExerciseFragment : Fragment(), ExerciseContract.View,
+    OnHistoryButtonClickListener {
 
     private lateinit var presenter: ExerciseContract.Presenter
 
@@ -63,6 +64,9 @@ class ExerciseFragment : Fragment(), ExerciseContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         presenter.onCreate(trainingId)
+
+        adapter.setOnHistoryButtonClickListener(this@ExerciseFragment)
+
         initializeActionBar()
     }
 
@@ -114,5 +118,17 @@ class ExerciseFragment : Fragment(), ExerciseContract.View {
     override fun onDetach() {
         super.onDetach()
         presenter.detach()
+    }
+
+    private fun startFragment(fragment: Fragment) {
+        parentFragmentManager
+            .beginTransaction()
+            .addToBackStack("")
+            .replace(R.id.fragment_holder, fragment)
+            .commit()
+    }
+
+    override fun onHistoryButtonClick(data: ExerciseModel) {
+        startFragment(HistoryFragment.newInstance(data.name.toString()))
     }
 }

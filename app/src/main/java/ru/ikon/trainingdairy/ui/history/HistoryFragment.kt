@@ -5,33 +5,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.ikon.trainingdairy.R
+import androidx.appcompat.app.AppCompatActivity
+import ru.ikon.trainingdairy.databinding.FragmentHistoryBinding
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
-import ru.ikon.trainingdairy.ui.training.TrainingContract
+import ru.ikon.trainingdairy.ui.MainActivity
+import ru.ikon.trainingdairy.ui.history.recycler.ExerciseHistoryAdapter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_NAME = "name"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HistoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HistoryFragment : Fragment(), HistoryContract.View {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var exerciseName: String = ""
 
     private lateinit var presenter: HistoryContract.Presenter
+
+    private var _binding: FragmentHistoryBinding? = null
+    private val binding: FragmentHistoryBinding get() { return _binding!! }
+
+    private lateinit var adapter: ExerciseHistoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            exerciseName = it.getString(ARG_NAME, "")
         }
+        adapter = ExerciseHistoryAdapter(this.requireContext())
     }
 
     override fun onCreateView(
@@ -39,32 +36,62 @@ class HistoryFragment : Fragment(), HistoryContract.View {
         savedInstanceState: Bundle?
     ): View? {
         presenter = HistoryPresenter()
-        //presenter.attach(this)
+        presenter.attach(this)
 
-        return inflater.inflate(R.layout.fragment_history, container, false)
+        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initializeActionBar()
+
+        presenter.onCreate(exerciseName)
+    }
+
+    private fun initializeActionBar() {
+        // Поскольку этот фрагмент имеет свой собственный Toolbar,
+        // при открытии этого фрагмента мы обращаемся к Activity и скрываем у неё основной Toolbar
+        (activity as MainActivity).hideActionBar()
+
+        // Устанавливаем наш кастомный Toolbar в качестве SupportActionBar,
+        // чтобы отобразить на нём кнопки Назад и Сохранить
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).setTitle(exerciseName)
+
+        // Для отображения системной кнопки Назад
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        // Для отображения меню (которое в нашем случае состоит только из одного пункта - сохранить)
+        setHasOptionsMenu(true)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HistoryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(name: String) =
             HistoryFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString(ARG_NAME, name)
                 }
             }
     }
 
     override fun showExercises(exerciseList: List<ExerciseModel>) {
-        TODO("Not yet implemented")
+        if (exerciseList.isEmpty()) {
+            binding.emptyTitleText.visibility = View.VISIBLE
+        } else {
+            binding.emptyTitleText.visibility = View.GONE
+        }
+        binding.recyclerViewExercises.adapter = adapter.apply {
+            setData(exerciseList)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
