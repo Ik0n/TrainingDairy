@@ -7,6 +7,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentTrainingBinding
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
@@ -20,6 +21,7 @@ import ru.ikon.trainingdairy.ui.training.recycler.OnHistoryButtonClickListener
 import ru.ikon.trainingdairy.ui.training.recycler.OnItemClickListener
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 private const val ARG_ID = "id"
 private const val ARG_DATE = "date"
@@ -28,7 +30,8 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
     private var trainingId: Long = 0
     private lateinit var trainingDate: Date
 
-    private lateinit var presenter: TrainingContract.Presenter
+    @Inject
+    lateinit var presenter: TrainingContract.Presenter
 
     private var _binding: FragmentTrainingBinding? = null
     private val binding: FragmentTrainingBinding
@@ -64,7 +67,7 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        presenter = TrainingPresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         _binding = FragmentTrainingBinding.inflate(inflater, container, false)

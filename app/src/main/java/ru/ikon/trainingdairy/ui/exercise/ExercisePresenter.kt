@@ -1,18 +1,14 @@
 package ru.ikon.trainingdairy.ui.exercise
 
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
 import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
-import java.util.*
-import kotlin.collections.ArrayList
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 import kotlin.random.Random
 
-class ExercisePresenter : ExerciseContract.Presenter {
-
-    private var view: ExerciseContract.View? = null
-
-    override fun attach(view: ExerciseContract.View) {
-        this.view = view
-    }
+class ExercisePresenter(repository: DiaryEntryRepository) : ExerciseContract.Presenter, BasePresenter<ExerciseContract.View>(
+    repository
+) {
 
     override fun onCreate(trainingId: Long) {
 
@@ -53,10 +49,6 @@ class ExercisePresenter : ExerciseContract.Presenter {
         view?.showData(exerciseList)
     }
 
-    override fun detach() {
-        this.view = null
-    }
-
     override fun saveExercises(trainingId: Long, exerciseList: ArrayList<ExerciseModel>) {
 
         val list = ArrayList<ExerciseModel>()
@@ -77,5 +69,4 @@ class ExercisePresenter : ExerciseContract.Presenter {
 
         DummyDiaryEntryRepositoryImpl.newInstance().addExercises(trainingId, list)
     }
-
 }

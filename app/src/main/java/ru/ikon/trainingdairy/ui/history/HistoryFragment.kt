@@ -6,17 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentHistoryBinding
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.history.recycler.ExerciseHistoryAdapter
+import javax.inject.Inject
 
 private const val ARG_NAME = "name"
 
 class HistoryFragment : Fragment(), HistoryContract.View {
     private var exerciseName: String = ""
 
-    private lateinit var presenter: HistoryContract.Presenter
+    @Inject
+    lateinit var presenter: HistoryContract.Presenter
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding: FragmentHistoryBinding get() { return _binding!! }
@@ -35,7 +38,7 @@ class HistoryFragment : Fragment(), HistoryContract.View {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        presenter = HistoryPresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)

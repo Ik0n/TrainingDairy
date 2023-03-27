@@ -7,6 +7,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentMeasureBinding
 import ru.ikon.trainingdairy.domain.model.ParameterModel
 import ru.ikon.trainingdairy.ui.MainActivity
@@ -15,6 +16,7 @@ import ru.ikon.trainingdairy.ui.measure.recycler.ParameterAdapter
 import ru.ikon.trainingdairy.ui.parameters.ParametersFragment
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 private const val ARG_ID = "id"
 private const val ARG_DATE = "date"
@@ -23,7 +25,8 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
 
     private var measureId: Long = 0
 
-    private lateinit var presenter : MeasureContract.Presenter
+    @Inject
+    lateinit var presenter : MeasureContract.Presenter
 
     private var _binding: FragmentMeasureBinding? = null
     private val binding: FragmentMeasureBinding get() { return _binding!! }
@@ -72,7 +75,8 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        presenter = MeasurePresenter()
+        requireContext().app.di.inject(this)
+
         presenter.attach(this)
 
         _binding = FragmentMeasureBinding.inflate(inflater, container, false)

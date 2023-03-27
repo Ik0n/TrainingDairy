@@ -1,22 +1,14 @@
 package ru.ikon.trainingdairy.ui.exerciseattempts
 
-import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 
-class ExerciseAttemptsPresenter : ExerciseAttemptsContract.Presenter {
-
-    var view: ExerciseAttemptsContract.View? = null
-    private val repository = DummyDiaryEntryRepositoryImpl.newInstance()
-
-    override fun attach(view: ExerciseAttemptsContract.View) {
-        this.view = view
-    }
+class ExerciseAttemptsPresenter(repository: DiaryEntryRepository) : ExerciseAttemptsContract.Presenter, BasePresenter<ExerciseAttemptsContract.View>(
+    repository
+) {
 
     override fun onCreate(trainingId: Long, exerciseId: Long) {
         view?.showAttempts(repository.getAttempts(trainingId, exerciseId))
-    }
-
-    override fun detach() {
-        this.view = null
     }
 
     override fun getExerciseName(trainingId: Long, exerciseId: Long): String {

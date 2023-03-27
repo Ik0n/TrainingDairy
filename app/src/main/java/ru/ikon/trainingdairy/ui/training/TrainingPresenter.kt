@@ -1,18 +1,14 @@
 package ru.ikon.trainingdairy.ui.training
 
 import ru.ikon.trainingdairy.domain.model.TrainingModel
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
 import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 import java.util.*
 
-class TrainingPresenter : TrainingContract.Presenter {
-
-    private var view: TrainingContract.View? = null
-    private val repository = DummyDiaryEntryRepositoryImpl.newInstance()
-
-    override fun attach(view: TrainingContract.View) {
-        this.view = view
-    }
-
+class TrainingPresenter(repository: DiaryEntryRepository) : TrainingContract.Presenter, BasePresenter<TrainingContract.View>(
+    repository
+) {
     override fun onCreate(id: Long, date: Date) {
         // Создаём репозиторий с тестовыми данными. Позднее здесь будет загрузка данных
         // из базы, а пока - загрузка из тестового репозитория
@@ -33,10 +29,6 @@ class TrainingPresenter : TrainingContract.Presenter {
 
     override fun getTraining(trainingId: Long): TrainingModel {
         return repository.getTraining(trainingId)
-    }
-
-    override fun detach() {
-        this.view = null
     }
 
     override fun saveTraining(name: String, date: Date, comment: String) : Long {

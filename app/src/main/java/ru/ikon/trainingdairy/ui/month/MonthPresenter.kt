@@ -1,13 +1,11 @@
 package ru.ikon.trainingdairy.ui.month
 
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
 import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 
-class MonthPresenter : MonthContract.Presenter {
-    private var view: MonthContract.View? = null
-
-    override fun attach(view: MonthContract.View) {
-        this.view = view
-    }
+class MonthPresenter(repository: DiaryEntryRepository) : MonthContract.Presenter,
+    BasePresenter<MonthContract.View>(repository) {
 
     override fun onCreate() {
         // Создаём репозиторий с тестовыми данными. Позднее здесь будет загрузка данных
@@ -17,9 +15,5 @@ class MonthPresenter : MonthContract.Presenter {
 
         // Передаём эти данные во View и просим отобразить их в календаре
         view?.showData(entriesList)
-    }
-
-    override fun detach() {
-        view = null
     }
 }

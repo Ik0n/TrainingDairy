@@ -1,23 +1,18 @@
 package ru.ikon.trainingdairy.ui.note
 
-import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.domain.model.NoteModel
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
 import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 import java.util.*
 
-class NotePresenter : NoteContract.Presenter {
-
-    private var view: NoteContract.View? = null
-
-    override fun attach(view: NoteContract.View) {
-        this.view = view
-    }
+class NotePresenter(repository: DiaryEntryRepository) : NoteContract.Presenter, BasePresenter<NoteContract.View>(
+    repository
+) {
 
     override fun onCreate(date: Date) {
         TODO("Not yet implemented")
     }
-
-
 
     override fun saveNote(date: Date, text: String) {
         DummyDiaryEntryRepositoryImpl.newInstance().addNote(date, text)
@@ -29,9 +24,5 @@ class NotePresenter : NoteContract.Presenter {
 
     override fun updateNote(id: Long, date: Date, text: String) {
         DummyDiaryEntryRepositoryImpl.newInstance().updateNote(id, date, text)
-    }
-
-    override fun detach() {
-        this.view = null
     }
 }

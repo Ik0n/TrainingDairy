@@ -6,6 +6,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentExerciseAttemptsBinding
 import ru.ikon.trainingdairy.domain.model.AttemptModel
 import ru.ikon.trainingdairy.ui.MainActivity
@@ -13,10 +14,12 @@ import ru.ikon.trainingdairy.ui.attempt.AttemptFragment
 import ru.ikon.trainingdairy.ui.exerciseattempts.recycler.AttemptsAdapter
 import ru.ikon.trainingdairy.ui.exerciseattempts.recycler.OnDeleteButtonClickListener
 import ru.ikon.trainingdairy.ui.exerciseattempts.recycler.OnItemClickListener
+import javax.inject.Inject
 
 class ExerciseAttemptsFragment : Fragment(), ExerciseAttemptsContract.View, OnItemClickListener, OnDeleteButtonClickListener {
 
-    private lateinit var presenter: ExerciseAttemptsContract.Presenter
+    @Inject
+    lateinit var presenter: ExerciseAttemptsContract.Presenter
 
     private var _binding: FragmentExerciseAttemptsBinding? = null
     private val binding: FragmentExerciseAttemptsBinding get() { return _binding!! }
@@ -66,7 +69,7 @@ class ExerciseAttemptsFragment : Fragment(), ExerciseAttemptsContract.View, OnIt
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        presenter = ExerciseAttemptsPresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         _binding = FragmentExerciseAttemptsBinding.inflate(inflater, container, false)

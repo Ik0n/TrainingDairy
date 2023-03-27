@@ -1,24 +1,14 @@
 package ru.ikon.trainingdairy.ui.history
 
-import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 
-class HistoryPresenter : HistoryContract.Presenter {
-    private var view: HistoryContract.View? = null
-    private val repository = DummyDiaryEntryRepositoryImpl.newInstance()
-
-    override fun attach(view: HistoryContract.View) {
-        this.view = view
-    }
-
+class HistoryPresenter(repository: DiaryEntryRepository) : HistoryContract.Presenter, BasePresenter<HistoryContract.View>(
+    repository
+) {
     override fun onCreate(name: String) {
-        val repository = DummyDiaryEntryRepositoryImpl()
-
         val history = repository.getHistory(name)
 
         view?.showExercises(history)
-    }
-
-    override fun detach() {
-        this.view = null
     }
 }

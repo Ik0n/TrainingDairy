@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.github.sundeepk.compactcalendarview.CompactCalendarView.CompactCalendarViewListener
 import com.github.sundeepk.compactcalendarview.domain.Event
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentMonthBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.domain.model.MeasureModel
@@ -20,10 +21,12 @@ import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 import ru.ikon.trainingdairy.ui.note.OnOkButtonClickListener
 import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.util.*
+import javax.inject.Inject
 
 class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
 
-    private lateinit var presenter: MonthContract.Presenter
+    @Inject
+    lateinit var presenter: MonthContract.Presenter
 
     private var _binding: FragmentMonthBinding? = null
     private val binding: FragmentMonthBinding get() { return _binding!! }
@@ -32,7 +35,7 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        presenter = MonthPresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         _binding = FragmentMonthBinding.inflate(inflater, container, false)

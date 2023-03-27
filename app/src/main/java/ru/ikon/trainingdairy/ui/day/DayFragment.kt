@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentDayBinding
 import ru.ikon.trainingdairy.domain.model.*
 import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
@@ -20,13 +21,15 @@ import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import ru.ikon.trainingdairy.ui.training.recycler.ExerciseTrainingAdapter
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 private const val DATE = "date"
 
 class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButtonClickListener,
     OnDeleteButtonClickListener {
 
-    private lateinit var presenter: DayContract.Presenter
+    @Inject
+    lateinit var presenter: DayContract.Presenter
 
     private var _binding: FragmentDayBinding? = null
     private val binding: FragmentDayBinding
@@ -72,7 +75,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        presenter = DayPresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         _binding = FragmentDayBinding.inflate(inflater, container, false)

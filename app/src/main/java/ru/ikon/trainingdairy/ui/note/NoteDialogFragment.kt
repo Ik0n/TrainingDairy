@@ -12,10 +12,12 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.DialogFragmentNoteBinding
 import ru.ikon.trainingdairy.ui.month.MonthFragment
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 class NoteDialogFragment() :
     DialogFragment(), NoteContract.View {
@@ -26,7 +28,8 @@ class NoteDialogFragment() :
             return _binding!!
         }
 
-    private lateinit var presenter: NoteContract.Presenter
+    @Inject
+    lateinit var presenter: NoteContract.Presenter
 
     private lateinit var currentDate : Date
     private var id : Long? = null
@@ -41,7 +44,7 @@ class NoteDialogFragment() :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = NotePresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         arguments?.let {

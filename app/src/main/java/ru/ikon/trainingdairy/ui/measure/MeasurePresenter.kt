@@ -1,28 +1,20 @@
 package ru.ikon.trainingdairy.ui.measure
 
 import ru.ikon.trainingdairy.domain.model.ParameterModel
-import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MeasurePresenter : MeasureContract.Presenter {
-
-    private var view: MeasureContract.View? = null
-    private val repository = DummyDiaryEntryRepositoryImpl.newInstance()
-
-    override fun attach(view: MeasureContract.View) {
-        this.view = view
-    }
+class MeasurePresenter(repository: DiaryEntryRepository) : MeasureContract.Presenter, BasePresenter<MeasureContract.View>(
+    repository
+) {
 
     override fun onCreate(id: Long) {
         if (id.toInt() != 0) {
             val parametersList = repository.getParameters(id)
             view?.showParameters(parametersList)
         }
-    }
-
-    override fun detach() {
-        this.view = null
     }
 
     override fun onParameterDeleted(parameterId: Long, measureId: Long) {

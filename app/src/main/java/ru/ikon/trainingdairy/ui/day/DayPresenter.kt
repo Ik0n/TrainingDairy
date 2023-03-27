@@ -1,17 +1,13 @@
 package ru.ikon.trainingdairy.ui.day
 
-import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 import java.util.*
 
-class DayPresenter : DayContract.Presenter {
+class DayPresenter(repository: DiaryEntryRepository) : DayContract.Presenter,
+    BasePresenter<DayContract.View>(repository) {
 
-    private var view: DayContract.View? = null
-    private val repository = DummyDiaryEntryRepositoryImpl.newInstance()
     private lateinit var date: Date
-
-    override fun attach(view: DayContract.View) {
-        this.view = view
-    }
 
     override fun onCreate(date: Date) {
         this.date = date
@@ -21,10 +17,6 @@ class DayPresenter : DayContract.Presenter {
 
         // Передаём эти данные во View и просим отобразить их в виде списка
         view?.showData(entriesList)
-    }
-
-    override fun detach() {
-        this.view = null
     }
 
     override fun onTrainingDeleted(trainingId: Long) {

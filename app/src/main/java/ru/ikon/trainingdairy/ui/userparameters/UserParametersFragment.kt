@@ -6,14 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentUserParametersBinding
+import javax.inject.Inject
 
 class UserParametersFragment : Fragment(), UserParametersContract.View {
 
     private var _binding: FragmentUserParametersBinding? = null
     private val binding: FragmentUserParametersBinding get() { return _binding!! }
 
-    private var presenter: UserParametersContract.Presenter = UserParametersPresenter()
+    @Inject
+    lateinit var presenter: UserParametersContract.Presenter
 
     private lateinit var listener : ReadyButtonClickListener
     
@@ -23,7 +26,7 @@ class UserParametersFragment : Fragment(), UserParametersContract.View {
         savedInstanceState: Bundle?
     ): View {
 
-        presenter.attach(this)
+        requireContext().app.di.inject(this)
         presenter.onCreate()
 
         return FragmentUserParametersBinding.inflate(inflater, container, false).also {
@@ -75,13 +78,7 @@ class UserParametersFragment : Fragment(), UserParametersContract.View {
         presenter.savePreferences(name, age, weight)
     }
 
-    interface ReadyButtonClickListener {
-        fun readyButtonClick()
-    }
-
     fun setReadyButtonClickListener(listener : ReadyButtonClickListener) {
         this.listener = listener
     }
-
-
 }
