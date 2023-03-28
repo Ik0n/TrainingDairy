@@ -41,8 +41,7 @@
                     android:layout_marginBottom="0dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:boxBackgroundColor="@android:color/transparent"
-                    android:onClick="onDateEditTextClicked"
-                    app:hintTextAppearance="@style/MyHintStyle">
+                    style="@style/ToolBarInputStyle">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_text_date"
@@ -53,12 +52,10 @@
                         android:hint="Дата и время"
                         android:inputType="none"
                         android:clickable="true"
-                        android:textColor="@color/primary"
                         android:focusableInTouchMode="false"
                         android:editable="false"
                         android:importantForAutofill="noExcludeDescendants"
-                        android:background="@android:color/transparent"
-                        style="@style/TextInputEditTextStyle"/>
+                        android:background="@android:color/transparent" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -70,7 +67,7 @@
                     android:layout_marginRight="16dp"
                     app:boxBackgroundColor="@android:color/transparent"
                     android:layout_marginBottom="8dp"
-                    app:hintTextAppearance="@style/MyHintStyle">
+                    style="@style/ToolBarInputStyle">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_text_comment"
@@ -79,11 +76,9 @@
                         android:focusableInTouchMode="true"
                         android:ems="10"
                         android:textSize="16sp"
-                        android:textColor="@color/primary"
                         android:hint="Комментарий"
                         android:importantForAutofill="noExcludeDescendants"
-                        android:background="@android:color/transparent"
-                        style="@style/TextInputEditTextStyle"/>
+                        android:background="@android:color/transparent" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>

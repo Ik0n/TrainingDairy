@@ -12,4 +12,8 @@
     <string name="label_for_weight_edit_text">Ваш вес</string>
     <string name="ready_button">Готово</string>
     <string name="action_ok_button">ok</string>
+    <string name="training_fragment_edit_text_name">Название</string>
+    <string name="training_fragment_edit_text_date">Дата</string>
+    <string name="training_fragment_edit_text_comment">Комментарий</string>
+    <string name="training_fragment_empty_title_text">Выберите упражнения из списка</string>
 </resources>
