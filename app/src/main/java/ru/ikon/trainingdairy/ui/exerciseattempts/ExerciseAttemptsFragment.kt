@@ -14,6 +14,8 @@ import ru.ikon.trainingdairy.ui.attempt.AttemptFragment
 import ru.ikon.trainingdairy.ui.exerciseattempts.recycler.AttemptsAdapter
 import ru.ikon.trainingdairy.ui.exerciseattempts.recycler.OnDeleteButtonClickListener
 import ru.ikon.trainingdairy.ui.exerciseattempts.recycler.OnItemClickListener
+import ru.ikon.trainingdairy.utils.EXERCISE_ID
+import ru.ikon.trainingdairy.utils.TRAINING_ID
 import javax.inject.Inject
 
 class ExerciseAttemptsFragment : Fragment(), ExerciseAttemptsContract.View, OnItemClickListener, OnDeleteButtonClickListener {
@@ -37,12 +39,10 @@ class ExerciseAttemptsFragment : Fragment(), ExerciseAttemptsContract.View, OnIt
         }
     }
 
-    private var trainingId: Long = 0
-    private var exerciseId: Long = 0
+    private var trainingId: Long = 0L
+    private var exerciseId: Long = 0L
 
     companion object {
-        private const val TRAINING_ID = "training_id"
-        private const val EXERCISE_ID = "exercise_id"
 
         @JvmStatic
         fun newInstance(trainingId: Long, exerciseId: Long): Fragment {
@@ -92,6 +92,11 @@ class ExerciseAttemptsFragment : Fragment(), ExerciseAttemptsContract.View, OnIt
     override fun onDetach() {
         super.onDetach()
         presenter.detach()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     private fun initializeActionBar() {
@@ -156,15 +161,15 @@ class ExerciseAttemptsFragment : Fragment(), ExerciseAttemptsContract.View, OnIt
         // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
         // для положительной и отрицательной кнопок
         val builder = AlertDialog.Builder(context)
-        builder.setMessage("Удалить подход?")
+        builder.setMessage(getString(R.string.exercise_attempts_delete_dialog_message))
         builder.setPositiveButton(
-            "Удалить"
+            getString(R.string.delete_dialog_positive_button)
         ) { _, _ ->
             // При нажатии кнопки "Удалить" оповещаем презентер
             presenter.onAttemptDeleted(trainingId, exerciseId, attempt.id)
         }
         builder.setNegativeButton(
-            "Отмена"
+            getString(R.string.delete_dialog_negative_button)
         ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
             dialog?.dismiss()
         }

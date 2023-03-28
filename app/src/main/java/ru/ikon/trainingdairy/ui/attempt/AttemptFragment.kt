@@ -9,6 +9,9 @@ import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentAttemptBinding
 import ru.ikon.trainingdairy.domain.model.AttemptModel
 import ru.ikon.trainingdairy.ui.MainActivity
+import ru.ikon.trainingdairy.utils.ATTEMPT_ID
+import ru.ikon.trainingdairy.utils.EXERCISE_ID
+import ru.ikon.trainingdairy.utils.TRAINING_ID
 import javax.inject.Inject
 
 class AttemptFragment : Fragment(), AttemptContract.View {
@@ -33,10 +36,6 @@ class AttemptFragment : Fragment(), AttemptContract.View {
     private var attemptId: Long = 0L
 
     companion object {
-
-        private const val TRAINING_ID = "training_id"
-        private const val EXERCISE_ID = "exercise_id"
-        private const val ATTEMPT_ID = "attempt_id"
 
         @JvmStatic
         fun newInstance(trainingId: Long, exerciseId: Long, attemptId: Long) : Fragment {
@@ -86,6 +85,11 @@ class AttemptFragment : Fragment(), AttemptContract.View {
         presenter.detach()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // Используем меню menu_save, в котором присутствует только один пункт - Сохранить
         inflater.inflate(R.menu.menu_save, menu)
@@ -108,7 +112,7 @@ class AttemptFragment : Fragment(), AttemptContract.View {
             // Если какое-либо из них не заполнено, отображаем под ним ошибку.
             val weightLayout = binding.weightLayout
             if (weightString.isEmpty()) {
-                weightLayout.error = "Введите вес"
+                weightLayout.error = getString(R.string.attempt_fragment_weight_layout_error)
                 return false
             } else {
                 weightLayout.error = null
@@ -116,7 +120,7 @@ class AttemptFragment : Fragment(), AttemptContract.View {
 
             val countLayout = binding.countLayout
             if (countString.isEmpty()) {
-                countLayout.error = "Введите количество"
+                countLayout.error = getString(R.string.attempt_fragment_count_layout_error)
                 return false
             } else {
                 countLayout.error = null
@@ -143,7 +147,7 @@ class AttemptFragment : Fragment(), AttemptContract.View {
         // Устанавливаем наш кастомный Toolbar в качестве SupportActionBar,
         // чтобы отобразить на нём кнопки Назад и Сохранить
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        (activity as AppCompatActivity).setTitle("Установите значения")
+        (activity as AppCompatActivity).setTitle(getString(R.string.attempt_fragment_actionbar_title))
 
         // Для отображения системной кнопки Назад
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)

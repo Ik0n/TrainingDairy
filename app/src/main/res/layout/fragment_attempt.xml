@@ -11,7 +11,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
+        android:elevation="@dimen/elevation_4"
         android:layout_alignParentTop="true">
 
         <androidx.appcompat.widget.Toolbar
@@ -27,15 +27,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/default_margin"
         android:layout_below="@+id/appbar">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/weight_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
             android:layout_marginBottom="0dp"
             app:errorEnabled="true">
 
@@ -44,8 +44,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:textSize="16sp"
-                android:hint="Вес (кг)"
+                android:textSize="@dimen/heading_text_size"
+                android:hint="@string/training_fragment_recycler_weight_heading"
                 android:maxLength="6"
                 android:inputType="number"
                 android:maxLines="1"
@@ -56,9 +56,9 @@
             android:id="@+id/count_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin_half"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -66,9 +66,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:textSize="16sp"
+                android:textSize="@dimen/heading_text_size"
                 android:maxLines="1"
-                android:hint="Количество (раз)"
+                android:hint="@string/training_fragment_recycler_count_heading"
                 android:inputType="number"
                 android:maxLength="6"
                 android:clickable="true"

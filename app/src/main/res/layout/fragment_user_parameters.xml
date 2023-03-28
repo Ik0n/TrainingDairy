@@ -26,7 +26,7 @@
             android:hint="@string/label_for_name_edit_text"
             app:layout_constraintTop_toBottomOf="@+id/hello_text"
             app:boxBackgroundColor="@android:color/transparent"
-            android:layout_margin="35pt"
+            android:layout_margin="@dimen/default_margin_double"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -46,7 +46,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_margin="25pt"
+                android:layout_margin="@dimen/default_margin_plus_half"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -65,7 +65,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_margin="25pt"
+                android:layout_margin="@dimen/default_margin_plus_half"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ready_button"
-            android:layout_margin="25pt"
+            android:layout_margin="@dimen/default_margin_plus_half"
             app:layout_constraintTop_toBottomOf="@id/weight_edit_text_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

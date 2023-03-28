@@ -23,21 +23,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin_half">
 
                 <EditText
                     android:id="@+id/edit_text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:inputType="number"
                     android:maxLines="1"
                     android:maxLength="6"
-                    android:hint="Бёдра (см)"
+                    android:hint="@string/parameters_fragment_hips_hint"
                     android:importantForAutofill="noExcludeDescendants"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,21 +46,21 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin_half">
 
                 <EditText
                     android:id="@+id/edit_text2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:inputType="number"
                     android:maxLines="1"
                     android:maxLength="6"
-                    android:hint="Бицепс, лев. (см)"
+                    android:hint="@string/parameters_fragment_left_biceps_hint"
                     android:importantForAutofill="noExcludeDescendants"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,21 +69,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin_half">
 
                 <EditText
                     android:id="@+id/edit_text3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:inputType="number"
                     android:maxLines="1"
                     android:maxLength="6"
-                    android:hint="Бицепс, прав. (см)"
+                    android:hint="@string/parameters_fragment_right_biceps_hint"
                     android:importantForAutofill="noExcludeDescendants"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,21 +92,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin_half">
 
                 <EditText
                     android:id="@+id/edit_text4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:inputType="number"
                     android:maxLines="1"
                     android:maxLength="6"
-                    android:hint="Вес (кг)"
+                    android:hint="@string/parameters_fragment_weight_hint"
                     android:importantForAutofill="noExcludeDescendants"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -115,21 +115,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin_half">
 
                 <EditText
                     android:id="@+id/edit_text5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:inputType="number"
                     android:maxLines="1"
                     android:maxLength="6"
-                    android:hint="Голень, лев. (см)"
+                    android:hint="@string/parameters_fragment_left_shin_hint"
                     android:importantForAutofill="noExcludeDescendants"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,21 +138,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin_half">
 
                 <EditText
                     android:id="@+id/edit_text6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:inputType="number"
                     android:maxLines="1"
                     android:maxLength="6"
-                    android:hint="Голень, прав. (см)"
+                    android:hint="@string/parameters_fragment_right_shin_hint"
                     android:importantForAutofill="noExcludeDescendants"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -161,21 +161,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin_half">
 
                 <EditText
                     android:id="@+id/edit_text7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:inputType="number"
                     android:maxLines="1"
                     android:maxLength="6"
-                    android:hint="Грудь (см)"
+                    android:hint="@string/parameters_fragment_breasts_hint"
                     android:importantForAutofill="noExcludeDescendants"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -184,21 +184,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin_half">
 
                 <EditText
                     android:id="@+id/edit_text8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:inputType="number"
                     android:maxLines="1"
                     android:maxLength="6"
-                    android:hint="Жировая ткань (%)"
+                    android:hint="@string/parameters_fragment_fatty_tissue_hint"
                     android:importantForAutofill="noExcludeDescendants"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -207,10 +207,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin_half">
 
                 <EditText
                     android:id="@+id/edit_text9"
@@ -218,11 +218,11 @@
                     android:layout_height="wrap_content"
                     app:boxBackgroundColor="@android:color/transparent"
                     android:ems="10"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:inputType="number"
                     android:maxLines="1"
                     android:maxLength="6"
-                    android:hint="Мышечная ткань (%)"
+                    android:hint="@string/parameters_fragment_muscle_tissue_hint"
                     android:importantForAutofill="noExcludeDescendants"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -231,21 +231,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin_half">
 
                 <EditText
                     android:id="@+id/edit_text10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:inputType="number"
                     android:maxLines="1"
                     android:maxLength="6"
-                    android:hint="Талия (см)"
+                    android:hint="@string/parameters_fragment_waist_hint"
                     android:importantForAutofill="noExcludeDescendants"/>
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>

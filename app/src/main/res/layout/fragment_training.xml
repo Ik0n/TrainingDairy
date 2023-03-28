@@ -14,7 +14,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="60dp"
+        android:paddingBottom="@dimen/default_margin_double_double"
         android:elevation="4dp"
         >
 
@@ -29,14 +29,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="60dp">
+                android:layout_marginTop="@dimen/default_margin_double_double">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/name_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
                     android:layout_marginBottom="0dp"
                     app:errorEnabled="true"
                     android:hint="@string/training_fragment_edit_text_name"
@@ -58,8 +58,8 @@
                     android:id="@+id/date_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
                     android:layout_marginBottom="0dp"
                     android:hint="@string/training_fragment_edit_text_date"
                     style="@style/ToolBarInputStyle">
@@ -69,7 +69,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/heading_text_size"
                         android:inputType="none"
                         android:clickable="true"
                         android:focusableInTouchMode="false"
@@ -83,9 +83,9 @@
                     android:id="@+id/comment_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginBottom="@dimen/default_margin_half"
                     android:hint="@string/training_fragment_edit_text_comment"
                     style="@style/ToolBarInputStyle">
 
@@ -94,7 +94,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/heading_text_size"
                         android:importantForAutofill="noExcludeDescendants"
                         android:background="@android:color/transparent"
                         />
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:textSize="16sp"
+                android:textSize="@dimen/heading_text_size"
                 android:text="@string/training_fragment_empty_title_text" />
         </RelativeLayout>
 
@@ -136,10 +136,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="-28dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
         android:tint="@android:color/white"
         app:tint="@android:color/white"
         app:srcCompat="@drawable/ic_playlist_add_check_white_24dp"

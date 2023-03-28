@@ -12,6 +12,7 @@ import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.exercise.recycler.ExerciseAdapter
 import ru.ikon.trainingdairy.ui.exercise.recycler.OnHistoryButtonClickListener
 import ru.ikon.trainingdairy.ui.history.HistoryFragment
+import ru.ikon.trainingdairy.utils.TRAINING_ID
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -29,8 +30,6 @@ class ExerciseFragment : Fragment(), ExerciseContract.View,
     private var trainingId: Long = 0
 
     companion object {
-
-        private const val TRAINING_ID = "id"
 
         @JvmStatic
         fun newInstance(trainingId: Long): Fragment {
@@ -87,7 +86,7 @@ class ExerciseFragment : Fragment(), ExerciseContract.View,
         // Устанавливаем наш кастомный Toolbar в качестве SupportActionBar,
         // чтобы отобразить на нём кнопки Назад и Сохранить
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        (activity as AppCompatActivity).setTitle("Выберите упражнения")
+        (activity as AppCompatActivity).setTitle(getString(R.string.exercise_fragment_actionbar_title))
 
         // Для отображения системной кнопки Назад
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -121,6 +120,11 @@ class ExerciseFragment : Fragment(), ExerciseContract.View,
     override fun onDetach() {
         super.onDetach()
         presenter.detach()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     private fun startFragment(fragment: Fragment) {

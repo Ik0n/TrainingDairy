@@ -16,4 +16,63 @@
     <string name="training_fragment_edit_text_date">Дата</string>
     <string name="training_fragment_edit_text_comment">Комментарий</string>
     <string name="training_fragment_empty_title_text">Выберите упражнения из списка</string>
+    <string name="attempt_fragment_weight_layout_error">Введите вес</string>
+    <string name="attempt_fragment_count_layout_error">Введите количество</string>
+    <string name="attempt_fragment_actionbar_title">Установите значения</string>
+    <string name="day_fragment_recycler_measure_heading">Нет значений</string>
+    <string name="date_format">dd.MM.yyyy</string>
+    <string name="date_format_for_actionbar_title">dd MMMM yyyy</string>
+    <string name="locale_ru">ru</string>
+    <string name="delete_dialog_message">Удалить запись?</string>
+    <string name="delete_dialog_positive_button">Удалить</string>
+    <string name="delete_dialog_negative_button">Отмена</string>
+    <string name="exercise_fragment_actionbar_title">Выберите упражнения</string>
+    <string name="exercise_attempts_delete_dialog_message">Удалить подход?</string>
+    <string name="measure_delete_dialog_title">Подтверждение</string>
+    <string name="measure_delete_dialog_message">Вы уверены что хотите удалить?</string>
+    <string name="measure_delete_dialog_error_message">Активити не может быть равна null</string>
+    <string name="note_dialog_fragment_title">Заметка</string>
+    <string name="note_dialog_fragment_positive_button">Сохранить</string>
+    <string name="note_dialog_fragment_negative_button">Отмена</string>
+    <string name="parametrs_fragment_actionbar_title">Задайте значения</string>
+    <string name="training_fragment_recycler_measure_heading">Мера</string>
+    <string name="training_fragment_recycler_weight_heading">Вес (кг)</string>
+    <string name="training_fragment_recycler_count_heading">Повторения (раз)</string>
+    <string name="training_fragment_delete_dialog_message">Удалить упражнение?</string>
+    <string name="exercise_layout_card_button_expand_content_descrition">Свернуть/развернуть</string>
+    <string name="note_dialog_fragment_date_hint">Дата</string>
+    <string name="note_dialog_fragment_body_hint">Текст заметки</string>
+    <string name="day_fragment_emtpy_title">Список событий пуст</string>
+    <string name="exercise_attempts_fragment_empty_title">Добавьте подходы</string>
+    <string name="history_fragment_empty_title">Нет истории</string>
+    <string name="measure_fragment_date_hint">Дата и время</string>
+    <string name="measure_fragment_comment_hint">Комментарий</string>
+    <string name="measure_fragment_empty_title">Задайте значения мер из списка</string>
+    <string name="parameters_fragment_hips_hint">Бёдра (см)</string>
+    <string name="parameters_fragment_left_biceps_hint">Бицепс, лев. (см)</string>
+    <string name="parameters_fragment_right_biceps_hint">Бицепс, прав. (см)</string>
+    <string name="parameters_fragment_weight_hint">Вес (кг)</string>
+    <string name="parameters_fragment_left_shin_hint">Голень, лев. (см)</string>
+    <string name="parameters_fragment_right_shin_hint">Голень, прав. (см)</string>
+    <string name="parameters_fragment_breasts_hint">Грудь (см)</string>
+    <string name="parameters_fragment_fatty_tissue_hint">Жировая ткань (%)</string>
+    <string name="parameters_fragment_muscle_tissue_hint">Мышечная ткань (%)</string>
+    <string name="parameters_fragment_waist_hint">Талия (см)</string>
+
+
+    <string-array name="months">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </string-array>
+
 </resources>

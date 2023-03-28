@@ -11,8 +11,8 @@ import ru.ikon.trainingdairy.ui.month.MonthFragment
 import ru.ikon.trainingdairy.ui.programslist.ProgramsListFragment
 import ru.ikon.trainingdairy.ui.userparameters.ReadyButtonClickListener
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment
-import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES
-import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES_NAME
+import ru.ikon.trainingdairy.utils.APP_PREFERENCES
+import ru.ikon.trainingdairy.utils.APP_PREFERENCES_NAME
 
 class MainActivity : AppCompatActivity(), ReadyButtonClickListener {
 

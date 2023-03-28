@@ -19,11 +19,12 @@ import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 import ru.ikon.trainingdairy.ui.note.OnOkButtonClickListener
 import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import ru.ikon.trainingdairy.ui.training.recycler.ExerciseTrainingAdapter
+import ru.ikon.trainingdairy.utils.DATE
+import ru.ikon.trainingdairy.utils.NOTE_DIALOG_FRAGMENT_TAG
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-private const val DATE = "date"
 
 class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButtonClickListener,
     OnDeleteButtonClickListener {
@@ -99,7 +100,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         (activity as AppCompatActivity).supportActionBar?.show()
 
         (activity as AppCompatActivity).supportActionBar?.title =
-            SimpleDateFormat("dd MMMM yyyy", Locale("ru")).format(date)
+            SimpleDateFormat(getString(R.string.date_format_for_actionbar_title), Locale(getString(R.string.locale_ru))).format(date)
 
     }
 
@@ -112,7 +113,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
             noteButton.setOnClickListener {
                 floatingActionMenu.close(true)
                 NoteDialogFragment.newInstance(date).show(
-                    childFragmentManager, NoteDialogFragment.TAG
+                    childFragmentManager, NOTE_DIALOG_FRAGMENT_TAG
                 )
             }
             trainingButton.setOnClickListener {
@@ -132,6 +133,11 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         super.onResume()
         presenter.onCreate(date)
         adapter.notifyDataSetChanged()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        presenter.detach()
     }
 
     override fun onDestroyView() {
@@ -164,7 +170,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
     override fun onItemClick(item: DiaryEntryModel) {
         if (item is NoteModel) {
             NoteDialogFragment.newInstance(date, item.id).show(
-                childFragmentManager, NoteDialogFragment.TAG
+                childFragmentManager, NOTE_DIALOG_FRAGMENT_TAG
             )
         } else if (item is TrainingModel) {
             val trainingFragment = TrainingFragment.newInstance(item.id, date.time)
@@ -182,7 +188,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         (activity as AppCompatActivity).supportActionBar?.show()
 
         (activity as AppCompatActivity).supportActionBar?.title =
-            SimpleDateFormat("dd MMMM yyyy", Locale("ru")).format(date)
+            SimpleDateFormat(getString(R.string.date_format_for_actionbar_title), Locale(getString(R.string.locale_ru))).format(date)
     }
 
     override fun onDeleteButtonClick(data: DiaryEntryModel) {
@@ -197,9 +203,9 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
         // для положительной и отрицательной кнопок
         val builder = AlertDialog.Builder(context)
-        builder.setMessage("Удалить запись?")
+        builder.setMessage(getString(R.string.delete_dialog_message))
         builder.setPositiveButton(
-            "Удалить"
+            getString(R.string.delete_dialog_positive_button)
         ) { _, _ ->
             when (entry) {
                 is TrainingModel -> {
@@ -214,7 +220,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
             }
         }
         builder.setNegativeButton(
-            "Отмена"
+            getString(R.string.delete_dialog_negative_button)
         ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
             dialog?.dismiss()
         }
