@@ -30,9 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="60dp"
-                android:layout_marginBottom="60dp"
-                >
+                android:layout_marginTop="60dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/date_layout"
@@ -43,9 +41,10 @@
                     android:layout_marginBottom="0dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:boxBackgroundColor="@android:color/transparent"
-                    android:onClick="onDateEditTextClicked">
+                    android:onClick="onDateEditTextClicked"
+                    app:hintTextAppearance="@style/MyHintStyle">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_text_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -57,7 +56,9 @@
                         android:textColor="@color/primary"
                         android:focusableInTouchMode="false"
                         android:editable="false"
-                        android:importantForAutofill="noExcludeDescendants"/>
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:background="@android:color/transparent"
+                        style="@style/TextInputEditTextStyle"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -68,9 +69,10 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     app:boxBackgroundColor="@android:color/transparent"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    app:hintTextAppearance="@style/MyHintStyle">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_text_comment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -79,7 +81,9 @@
                         android:textSize="16sp"
                         android:textColor="@color/primary"
                         android:hint="Комментарий"
-                        android:importantForAutofill="noExcludeDescendants"/>
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:background="@android:color/transparent"
+                        style="@style/TextInputEditTextStyle"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -113,7 +117,7 @@
 
     </FrameLayout>
 
-    <com.github.clans.fab.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -122,9 +126,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:tint="@android:color/white"
+        app:tint="@android:color/white"
         android:src="@drawable/ic_ruler_white_24dp"
-        app:fab_colorNormal="@color/green"
-        app:fab_colorPressed="@color/green"
         app:fab_size="normal"
         android:elevation="8dp"
         android:layout_alignParentEnd="true"

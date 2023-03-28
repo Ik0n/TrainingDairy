@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/background"
     tools:context="ru.ikon.trainingdairy.ui.training.TrainingFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -36,7 +37,8 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="0dp"
-                    app:errorEnabled="true" >
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/MyHintStyle">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_text_name"
@@ -47,7 +49,9 @@
                         android:textSize="24sp"
                         android:hint="Название"
                         android:importantForAutofill="noExcludeDescendants"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        style="@style/TextInputEditTextStyle"
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -57,7 +61,8 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="0dp"
-                    android:onClick="onDateEditTextClicked">
+                    android:onClick="onDateEditTextClicked"
+                    app:hintTextAppearance="@style/MyHintStyle">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_text_date"
@@ -71,7 +76,8 @@
                         android:focusableInTouchMode="false"
                         android:editable="false"
                         android:importantForAutofill="noExcludeDescendants"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        style="@style/TextInputEditTextStyle"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -80,7 +86,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    app:hintTextAppearance="@style/MyHintStyle">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_text_comment"
@@ -90,7 +97,8 @@
                         android:textSize="16sp"
                         android:hint="Комментарий"
                         android:importantForAutofill="noExcludeDescendants"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        style="@style/TextInputEditTextStyle"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -103,7 +111,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_below="@+id/appbar"
-            android:id="@+id/list_view_exercises"
+            android:id="@+id/recycler_view_exercises"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TrainingDairy</string>
+    <string name="app_name">Дневник тренировок</string>
     <string name="action_bottom_navigation_bar_programs">Programs</string>
     <string name="action_bottom_navigation_bar_trainings">Trainings</string>
 

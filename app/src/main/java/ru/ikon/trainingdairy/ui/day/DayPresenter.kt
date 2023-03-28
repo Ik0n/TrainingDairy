@@ -1,20 +1,16 @@
 package ru.ikon.trainingdairy.ui.day
 
-import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 import java.util.*
 
-class DayPresenter : DayContract.Presenter {
+class DayPresenter(repository: DiaryEntryRepository) : DayContract.Presenter,
+    BasePresenter<DayContract.View>(repository) {
 
-    private var  view: DayContract.View? = null
-
-    override fun attach(view: DayContract.View) {
-        this.view = view
-    }
+    private lateinit var date: Date
 
     override fun onCreate(date: Date) {
-        // Создаём репозиторий с тестовыми данными. Позднее здесь будет загрузка данных
-        // из базы, а пока - загрузка из тестового репозитория
-        val repository = DummyDiaryEntryRepositoryImpl.newInstance()
+        this.date = date
 
         // Получаем из репозитория все записи за указанную дату
         val entriesList = repository.getEntries(date)
@@ -23,9 +19,21 @@ class DayPresenter : DayContract.Presenter {
         view?.showData(entriesList)
     }
 
-    override fun detach() {
-        this.view = null
+    override fun onTrainingDeleted(trainingId: Long) {
+        repository.deleteTraining(trainingId)
+        val entriesList = repository.getEntries(date)
+        view?.showData(entriesList)
     }
 
+    override fun onMeasureDeleted(measureId: Long) {
+        repository.deleteMeasure(measureId)
+        val entriesList = repository.getEntries(date)
+        view?.showData(entriesList)
+    }
 
+    override fun onNoteDeleted(noteId: Long) {
+        repository.deleteNote(noteId)
+        val entriesList = repository.getEntries(date)
+        view?.showData(entriesList)
+    }
 }

@@ -5,29 +5,22 @@ import androidx.core.content.edit
 import androidx.fragment.app.FragmentManager
 import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 import ru.ikon.trainingdairy.ui.programslist.ProgramsListFragment
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES
 
-class UserParametersPresenter : UserParametersContract.Presenter {
-
-    private var view : UserParametersContract.View? = null
-
-    override fun attach(view: UserParametersContract.View) {
-        this.view = view
-    }
+class UserParametersPresenter(repository: DiaryEntryRepository) : UserParametersContract.Presenter, BasePresenter<UserParametersContract.View>(
+    repository
+) {
 
     override fun onCreate() {
 
     }
 
-    override fun detach() {
-        view = null
-    }
-
     override fun onReadyButtonClick(manager: FragmentManager) {
         manager
             .beginTransaction()
-            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
             .replace(R.id.fragment_holder, ProgramsListFragment.newInstance())
             .commit()
     }
@@ -39,5 +32,4 @@ class UserParametersPresenter : UserParametersContract.Presenter {
             putString(UserParametersFragment.APP_PREFERENCES_WEIGHT, weight)
         }
     }
-
 }

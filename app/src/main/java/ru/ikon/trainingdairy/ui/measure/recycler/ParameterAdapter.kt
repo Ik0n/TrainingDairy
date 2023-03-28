@@ -1,15 +1,10 @@
 package ru.ikon.trainingdairy.ui.measure.recycler
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import ru.ikon.trainingdairy.App
 import ru.ikon.trainingdairy.databinding.CardMeasureParameterItemBinding
-import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.domain.model.ParameterModel
-import ru.ikon.trainingdairy.ui.measure.DeleteParameterDialogFragment
 
 class ParameterAdapter : RecyclerView.Adapter<ParameterAdapter.ViewHolder>() {
 
@@ -38,12 +33,10 @@ class ParameterAdapter : RecyclerView.Adapter<ParameterAdapter.ViewHolder>() {
     inner class ViewHolder(private val binding: CardMeasureParameterItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ParameterModel) {
             with(binding) {
-                textViewMeasureHeading.text = data.name
-                textViewMeasureSubheading.text = data.value.toString()
+                textViewMeasureHeading.text = data.value.toString()
+                textViewMeasureSubheading.text = data.name
                 buttonDelete.setOnClickListener {
-                    listener.onClick(data)
-                    this@ParameterAdapter.data.removeAt(layoutPosition)
-                    notifyItemRemoved(layoutPosition)
+                    listener.onDeleteButtonClick(data)
                 }
             }
         }
@@ -52,5 +45,4 @@ class ParameterAdapter : RecyclerView.Adapter<ParameterAdapter.ViewHolder>() {
     fun setOnDeleteButtonClickListener(listener: OnDeleteButtonClickListener) {
         this.listener = listener
     }
-
 }

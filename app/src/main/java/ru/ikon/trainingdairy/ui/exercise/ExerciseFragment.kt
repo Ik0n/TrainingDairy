@@ -5,17 +5,21 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentExerciseBinding
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.exercise.recycler.ExerciseAdapter
-import ru.ikon.trainingdairy.ui.measure.recycler.ParameterAdapter
-import java.util.*
+import ru.ikon.trainingdairy.ui.exercise.recycler.OnHistoryButtonClickListener
+import ru.ikon.trainingdairy.ui.history.HistoryFragment
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class ExerciseFragment : Fragment(), ExerciseContract.View {
+class ExerciseFragment : Fragment(), ExerciseContract.View,
+    OnHistoryButtonClickListener {
 
-    private lateinit var presenter: ExerciseContract.Presenter
+    @Inject
+    lateinit var presenter: ExerciseContract.Presenter
 
     private var _binding: FragmentExerciseBinding? = null
     private val binding: FragmentExerciseBinding get() { return _binding!! }
@@ -51,7 +55,7 @@ class ExerciseFragment : Fragment(), ExerciseContract.View {
         savedInstanceState: Bundle?
     ): View {
 
-        presenter = ExercisePresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         _binding = FragmentExerciseBinding.inflate(inflater, container, false)
@@ -63,6 +67,9 @@ class ExerciseFragment : Fragment(), ExerciseContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         presenter.onCreate(trainingId)
+
+        adapter.setOnHistoryButtonClickListener(this@ExerciseFragment)
+
         initializeActionBar()
     }
 
@@ -114,5 +121,17 @@ class ExerciseFragment : Fragment(), ExerciseContract.View {
     override fun onDetach() {
         super.onDetach()
         presenter.detach()
+    }
+
+    private fun startFragment(fragment: Fragment) {
+        parentFragmentManager
+            .beginTransaction()
+            .addToBackStack("")
+            .replace(R.id.fragment_holder, fragment)
+            .commit()
+    }
+
+    override fun onHistoryButtonClick(data: ExerciseModel) {
+        startFragment(HistoryFragment.newInstance(data.name.toString()))
     }
 }

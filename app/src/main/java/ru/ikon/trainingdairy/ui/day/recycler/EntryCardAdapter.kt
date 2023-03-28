@@ -1,25 +1,27 @@
 package ru.ikon.trainingdairy.ui.day.recycler
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.CardMeasureItemBinding
 import ru.ikon.trainingdairy.databinding.CardNoteItemBinding
 import ru.ikon.trainingdairy.databinding.CardTrainingItemBinding
-import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
-import ru.ikon.trainingdairy.domain.model.MeasureModel
-import ru.ikon.trainingdairy.domain.model.NoteModel
-import ru.ikon.trainingdairy.domain.model.TrainingModel
+import ru.ikon.trainingdairy.domain.model.*
+import java.text.SimpleDateFormat
 
 const val TYPE_MEASURE = 0
 const val TYPE_NOTE = 1
 const val TYPE_TRAINING = 2
 
-class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>() {
+class EntryCardAdapter(private val mContext: Context) : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>() {
 
     private val data : MutableList<DiaryEntryModel> = mutableListOf()
 
+    private lateinit var onDeleteButtonClickListener: OnDeleteButtonClickListener
     private lateinit var listener: OnItemClickListener
 
     override fun getItemViewType(position: Int): Int {
@@ -50,9 +52,55 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
 
     inner class MeasureViewHolder(private val binding: CardMeasureItemBinding) : BaseViewHolder(binding.root) {
         override fun bind(data: DiaryEntryModel) {
-            binding.textViewMeasureHeading.text = (data as MeasureModel).date.toString()
+            val measure = data as MeasureModel
+
+            var headingString = ""
+
+            if (measure.parametersList.size == 0) {
+                headingString = "Нет значений"
+            }
+
+            for (i in 0 until measure.parametersList.size) {
+                val parameterModel: ParameterModel = measure.parametersList.get(i)
+                val name: String = parameterModel.name
+                val valueString: String =
+                    java.lang.String.valueOf(parameterModel.value)
+                headingString += "$name: $valueString. "
+            }
+
+            binding.textViewMeasureHeading.text = headingString
+
+            val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+            val dateString = simpleDateFormat.format(measure.date)
+            binding.textViewMeasureSubheading.text = dateString
+
             binding.cardView.setOnClickListener {
                 this@EntryCardAdapter.listener.onItemClick(data)
+            }
+
+            // Получаем из макета кнопку с тремя точками и настраиваем контекстное меню
+            binding.buttonMenu.setOnClickListener {
+                val popupMenu = PopupMenu(mContext, it)
+                popupMenu.menuInflater.inflate(
+                    R.menu.menu_entry_popup,
+                    popupMenu.menu
+                )
+                popupMenu.setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                         R.id.action_edit -> {
+                            this@EntryCardAdapter.listener.onItemClick(data)
+                            true
+                        }
+                        R.id.action_delete -> {
+                            // При выборе пункта меню "Удалить"
+                            // отображаем диалог подтверждения удаления
+                            onDeleteButtonClickListener.onDeleteButtonClick(data)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popupMenu.show()
             }
         }
     }
@@ -63,19 +111,72 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
             binding.cardView.setOnClickListener {
                 this@EntryCardAdapter.listener.onItemClick(data)
             }
+
+            // Получаем из макета кнопку с тремя точками и настраиваем контекстное меню
+            binding.buttonMenu.setOnClickListener {
+                val popupMenu = PopupMenu(mContext, it)
+                popupMenu.menuInflater.inflate(
+                    R.menu.menu_entry_popup,
+                    popupMenu.menu
+                )
+                popupMenu.setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.action_edit -> {
+                            this@EntryCardAdapter.listener.onItemClick(data)
+                            true
+                        }
+                        R.id.action_delete -> {
+                            // При выборе пункта меню "Удалить"
+                            // отображаем диалог подтверждения удаления
+                            onDeleteButtonClickListener.onDeleteButtonClick(data)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popupMenu.show()
+            }
         }
     }
 
     inner class TrainingViewHolder(private val binding: CardTrainingItemBinding) : BaseViewHolder(binding.root) {
         override fun bind(data: DiaryEntryModel) {
-            binding.textViewMeasureHeading.text = (data as TrainingModel).name
-            binding.textViewSubheading.text = data.date.toString()
+            val training = (data as TrainingModel)
+            binding.textViewMeasureHeading.text = training.name
+
+            val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+            val dateString = simpleDateFormat.format(training.date)
+            binding.textViewSubheading.text = dateString
 
             binding.cardView.setOnClickListener {
                 this@EntryCardAdapter.listener.onItemClick(data)
             }
-        }
 
+            // Получаем из макета кнопку с тремя точками и настраиваем контекстное меню
+            binding.buttonMenu.setOnClickListener {
+                val popupMenu = PopupMenu(mContext, it)
+                popupMenu.menuInflater.inflate(
+                    R.menu.menu_entry_popup,
+                    popupMenu.menu
+                )
+                popupMenu.setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.action_edit -> {
+                            this@EntryCardAdapter.listener.onItemClick(data)
+                            true
+                        }
+                        R.id.action_delete -> {
+                            // При выборе пункта меню "Удалить"
+                            // отображаем диалог подтверждения удаления
+                            onDeleteButtonClickListener.onDeleteButtonClick(data)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popupMenu.show()
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -87,7 +188,7 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
                 NoteViewHolder(CardNoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             }
             TYPE_TRAINING -> {
-                TrainingViewHolder(CardTrainingItemBinding.inflate(LayoutInflater.from(parent.context)))
+                TrainingViewHolder(CardTrainingItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             }
             else -> {
                 NoteViewHolder(CardNoteItemBinding.inflate(LayoutInflater.from(parent.context)))
@@ -107,6 +208,8 @@ class EntryCardAdapter : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>()
         this.listener = listener
     }
 
-
+    fun setOnDeleteButtonClickListener(listener: OnDeleteButtonClickListener) {
+        this.onDeleteButtonClickListener = listener
+    }
 }
 

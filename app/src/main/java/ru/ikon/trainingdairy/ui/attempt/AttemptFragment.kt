@@ -5,13 +5,16 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentAttemptBinding
 import ru.ikon.trainingdairy.domain.model.AttemptModel
 import ru.ikon.trainingdairy.ui.MainActivity
+import javax.inject.Inject
 
 class AttemptFragment : Fragment(), AttemptContract.View {
 
-    private lateinit var presenter: AttemptContract.Presenter
+    @Inject
+    lateinit var presenter: AttemptContract.Presenter
 
     private var _binding: FragmentAttemptBinding? = null
     private val binding: FragmentAttemptBinding get() = _binding!!
@@ -61,7 +64,7 @@ class AttemptFragment : Fragment(), AttemptContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        presenter = AttemptPresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         _binding = FragmentAttemptBinding.inflate(inflater, container, false)
@@ -97,6 +100,28 @@ class AttemptFragment : Fragment(), AttemptContract.View {
                 .popBackStack()
         }
         if (item.itemId == R.id.action_save) {
+            // Получаем значения веса и количества из полей ввода
+            val weightString: String = binding.editTextWeight.text.toString()
+            val countString: String = binding.editTextCount.text.toString()
+
+            // Проверяем поля на заполеность.
+            // Если какое-либо из них не заполнено, отображаем под ним ошибку.
+            val weightLayout = binding.weightLayout
+            if (weightString.isEmpty()) {
+                weightLayout.error = "Введите вес"
+                return false
+            } else {
+                weightLayout.error = null
+            }
+
+            val countLayout = binding.countLayout
+            if (countString.isEmpty()) {
+                countLayout.error = "Введите количество"
+                return false
+            } else {
+                countLayout.error = null
+            }
+
             presenter.saveAttempt(
                 trainingId,
                 exerciseId,

@@ -1,32 +1,37 @@
 package ru.ikon.trainingdairy.ui.training
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentTrainingBinding
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.exercise.ExerciseFragment
 import ru.ikon.trainingdairy.ui.exerciseattempts.ExerciseAttemptsFragment
+import ru.ikon.trainingdairy.ui.history.HistoryFragment
 import ru.ikon.trainingdairy.ui.training.recycler.ExerciseTrainingAdapter
 import ru.ikon.trainingdairy.ui.training.recycler.OnDeleteButtonClickListener
+import ru.ikon.trainingdairy.ui.training.recycler.OnHistoryButtonClickListener
 import ru.ikon.trainingdairy.ui.training.recycler.OnItemClickListener
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 private const val ARG_ID = "id"
 private const val ARG_DATE = "date"
 
-class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickListener, OnItemClickListener {
+class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickListener, OnItemClickListener, OnHistoryButtonClickListener {
     private var trainingId: Long = 0
     private lateinit var trainingDate: Date
 
-    private lateinit var presenter: TrainingContract.Presenter
+    @Inject
+    lateinit var presenter: TrainingContract.Presenter
 
     private var _binding: FragmentTrainingBinding? = null
     private val binding: FragmentTrainingBinding
@@ -62,7 +67,7 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        presenter = TrainingPresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         _binding = FragmentTrainingBinding.inflate(inflater, container, false)
@@ -120,6 +125,7 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
             }
             adapter.setOnDeleteButtonClickListener(this@TrainingFragment)
             adapter.setOnItemClickListener(this@TrainingFragment)
+            adapter.setOnHistoryButtonClickListener(this@TrainingFragment)
         }
     }
 
@@ -154,24 +160,37 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
         return super.onOptionsItemSelected(item)
     }
 
-    override fun showData(data: TrainingModel) {
+    override fun showData(training: TrainingModel) {
         // Приводим дату к строке для отображения
         // и выводим на экран в элемент
         val outputFormat = SimpleDateFormat("dd.MM.yyyy")
-        val outputDateString = outputFormat.format(data.date)
+        val outputDateString = outputFormat.format(training.date)
 
         with(binding) {
 
-            if (!data.exerciseList.isEmpty()) {
+            if (training.exerciseList.isEmpty()) {
+                emptyTitleText.visibility = View.VISIBLE
+            } else {
                 emptyTitleText.visibility = View.GONE
             }
 
-            editTextName.setText(data.name)
+            editTextName.setText(training.name)
             editTextDate.setText(outputDateString)
-            editTextComment.setText(data.comment)
-            listViewExercises.adapter = adapter.apply {
-                setData(data.exerciseList)
+            editTextComment.setText(training.comment)
+            recyclerViewExercises.adapter = adapter.apply {
+                setData(training.exerciseList)
             }
+        }
+    }
+
+    override fun showExercises(exerciseList: List<ExerciseModel>) {
+        if (exerciseList.isEmpty()) {
+            binding.emptyTitleText.visibility = View.VISIBLE
+        } else {
+            binding.emptyTitleText.visibility = View.GONE
+        }
+        adapter.apply {
+            setData(exerciseList)
         }
     }
 
@@ -232,17 +251,46 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
     private fun startFragment(fragment: Fragment) {
         parentFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
             .addToBackStack("")
             .replace(R.id.fragment_holder, fragment)
             .commit()
     }
 
-    override fun onClick(data: ExerciseModel) {
-        presenter.deleteExercise(data.id, trainingId)
+    override fun onDeleteButtonClick(data: ExerciseModel) {
+        showDeleteConfirmationDialog(data)
+    }
+
+    /**
+     * Отображает диалог подтверждения удаления для данного упражнения
+     * @param exercise Удаляемое упражнение
+     */
+    private fun showDeleteConfirmationDialog(exercise: ExerciseModel) {
+        // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
+        // для положительной и отрицательной кнопок
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("Удалить упражнение?")
+        builder.setPositiveButton(
+            "Удалить"
+        ) { _, _ ->
+            // При нажатии кнопки "Удалить" оповещаем презентер
+            presenter.onExerciseDeleted(exercise.id, trainingId)
+        }
+        builder.setNegativeButton(
+            "Отмена"
+        ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
+            dialog?.dismiss()
+        }
+
+        // Создаём и показываем AlertDialog
+        val alertDialog = builder.create()
+        alertDialog.show()
     }
 
     override fun onItemClick(item: ExerciseModel) {
         startFragment(ExerciseAttemptsFragment.newInstance(item.trainingId, item.id))
+    }
+
+    override fun onHistoryButtonClick(data: ExerciseModel) {
+        startFragment(HistoryFragment.newInstance(data.name.toString()))
     }
 }

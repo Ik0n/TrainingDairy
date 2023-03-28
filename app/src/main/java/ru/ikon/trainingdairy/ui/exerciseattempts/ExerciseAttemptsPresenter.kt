@@ -1,28 +1,22 @@
 package ru.ikon.trainingdairy.ui.exerciseattempts
 
-import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 
-class ExerciseAttemptsPresenter : ExerciseAttemptsContract.Presenter {
-
-    var view: ExerciseAttemptsContract.View? = null
-
-    override fun attach(view: ExerciseAttemptsContract.View) {
-        this.view = view
-    }
+class ExerciseAttemptsPresenter(repository: DiaryEntryRepository) : ExerciseAttemptsContract.Presenter, BasePresenter<ExerciseAttemptsContract.View>(
+    repository
+) {
 
     override fun onCreate(trainingId: Long, exerciseId: Long) {
-        view?.showData(DummyDiaryEntryRepositoryImpl.newInstance().getAttempts(trainingId, exerciseId))
-    }
-
-    override fun detach() {
-        this.view = null
+        view?.showAttempts(repository.getAttempts(trainingId, exerciseId))
     }
 
     override fun getExerciseName(trainingId: Long, exerciseId: Long): String {
-        return DummyDiaryEntryRepositoryImpl.newInstance().getExercise(trainingId, exerciseId).name
+        return repository.getExercise(trainingId, exerciseId).name
     }
 
-    override fun deleteAttempt(trainingId: Long, exerciseId: Long, attemptId: Long) {
-        DummyDiaryEntryRepositoryImpl.newInstance().deleteAttempt(trainingId, exerciseId, attemptId)
+    override fun onAttemptDeleted(trainingId: Long, exerciseId: Long, attemptId: Long) {
+        repository.deleteAttempt(trainingId, exerciseId, attemptId)
+        view?.showAttempts(repository.getAttempts(trainingId, exerciseId))
     }
 }

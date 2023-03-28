@@ -10,6 +10,8 @@ class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
 
     private val data : MutableList<ExerciseModel> = mutableListOf()
 
+    private lateinit var onHistoryButtonClickListener: OnHistoryButtonClickListener
+
     fun setData(data: List<ExerciseModel>) {
         this.data.addAll(data)
         notifyDataSetChanged()
@@ -38,9 +40,14 @@ class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
                     this@ExerciseAdapter.data[position].isChecked = b
                 }
 
+                buttonHistory.setOnClickListener {
+                    onHistoryButtonClickListener.onHistoryButtonClick(data)
+                }
             }
         }
     }
 
-
+    fun setOnHistoryButtonClickListener(listener: OnHistoryButtonClickListener) {
+        this.onHistoryButtonClickListener = listener
+    }
 }

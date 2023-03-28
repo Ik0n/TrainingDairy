@@ -71,7 +71,6 @@ class AttemptsAdapter(private val context: Context) : RecyclerView.Adapter<Attem
                             R.id.action_delete -> {
                                 // При выборе пункта меню "Удалить"
                                 // отображаем диалог подтверждения удаления
-                                showDeleteConfirmationDialog(attempt)
                                 onDeleteButtonClickListener.onDeleteButtonClick(attempt)
                                 true
                             }
@@ -81,37 +80,6 @@ class AttemptsAdapter(private val context: Context) : RecyclerView.Adapter<Attem
                     popupMenu.show()
                 }
             }
-        }
-
-        /**
-         * Отображает диалог подтверждения удаления для данного упражнения
-         * @param attempt Удаляемое упражнение
-         */
-        private fun showDeleteConfirmationDialog(attempt: AttemptModel) {
-            // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
-            // для положительной и отрицательной кнопок
-            val builder = AlertDialog.Builder(context)
-            builder.setMessage("Удалить подход?")
-            builder.setPositiveButton(
-                "Удалить"
-            ) { _, _ ->
-                // При нажатии кнопки "Удалить" удаляем запись из списка
-                // и оповещаем адаптер о том, что данные изменились,
-                // чтобы он обновил список на экране
-                // TODO: Добраться до фрагмента и оповестить его о том, что данные изменены
-                // TODO: Изменить данные не только в адаптере, но и в самом источнике данных!
-                data.remove(attempt)
-                notifyDataSetChanged()
-            }
-            builder.setNegativeButton(
-                "Отмена"
-            ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
-                dialog?.dismiss()
-            }
-
-            // Создаём и показываем AlertDialog
-            val alertDialog = builder.create()
-            alertDialog.show()
         }
     }
 

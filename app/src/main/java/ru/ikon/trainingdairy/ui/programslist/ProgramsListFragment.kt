@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
+import javax.inject.Inject
 
 class ProgramsListFragment : Fragment(), ProgramsListContract.View {
 
-    private lateinit var presenter: ProgramsListContract.Presenter
+    @Inject
+    lateinit var presenter: ProgramsListContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +23,7 @@ class ProgramsListFragment : Fragment(), ProgramsListContract.View {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        presenter = ProgramsListPresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
         presenter.onCreate()
 

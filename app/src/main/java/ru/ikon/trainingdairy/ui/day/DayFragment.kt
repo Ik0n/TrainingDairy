@@ -1,5 +1,6 @@
 package ru.ikon.trainingdairy.ui.day
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,25 +8,28 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentDayBinding
-import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
-import ru.ikon.trainingdairy.domain.model.MeasureModel
-import ru.ikon.trainingdairy.domain.model.NoteModel
-import ru.ikon.trainingdairy.domain.model.TrainingModel
+import ru.ikon.trainingdairy.domain.model.*
 import ru.ikon.trainingdairy.ui.day.recycler.EntryCardAdapter
+import ru.ikon.trainingdairy.ui.day.recycler.OnDeleteButtonClickListener
 import ru.ikon.trainingdairy.ui.day.recycler.OnItemClickListener
 import ru.ikon.trainingdairy.ui.measure.MeasureFragment
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 import ru.ikon.trainingdairy.ui.note.OnOkButtonClickListener
 import ru.ikon.trainingdairy.ui.training.TrainingFragment
+import ru.ikon.trainingdairy.ui.training.recycler.ExerciseTrainingAdapter
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 private const val DATE = "date"
 
-class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButtonClickListener {
+class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButtonClickListener,
+    OnDeleteButtonClickListener {
 
-    private lateinit var presenter: DayContract.Presenter
+    @Inject
+    lateinit var presenter: DayContract.Presenter
 
     private var _binding: FragmentDayBinding? = null
     private val binding: FragmentDayBinding
@@ -33,7 +37,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
             return _binding!!
         }
 
-    private val adapter = EntryCardAdapter()
+    private lateinit var adapter: EntryCardAdapter
 
     private lateinit var date: Date
 
@@ -62,6 +66,8 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
             val milliseconds = it.getLong(DATE)
             date = Date(milliseconds)
         }
+
+        adapter = EntryCardAdapter(this.requireContext())
     }
 
     override fun onCreateView(
@@ -69,7 +75,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        presenter = DayPresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         _binding = FragmentDayBinding.inflate(inflater, container, false)
@@ -87,6 +93,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         presenter.onCreate(date)
 
         adapter.setOnItemClickListener(this)
+        adapter.setOnDeleteButtonClickListener(this)
         NoteDialogFragment.setOnOkButtonClickListener(this)
 
         (activity as AppCompatActivity).supportActionBar?.show()
@@ -116,7 +123,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
             }
             measureButton.setOnClickListener {
                 floatingActionMenu.close(true)
-                startFragment(MeasureFragment.newInstance())
+                startFragment(MeasureFragment.newInstance(0, date.time))
             }
         }
     }
@@ -134,6 +141,12 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
     }
 
     override fun showData(data: List<DiaryEntryModel>) {
+        if (data.isEmpty()) {
+            binding.emptyTitleText.visibility = View.VISIBLE
+        } else {
+            binding.emptyTitleText.visibility = View.GONE
+        }
+
         // Презентер вернул данные, отображаем их с помошью адаптера
         binding.recyclerView.adapter = adapter.apply {
             setData(data)
@@ -143,7 +156,6 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
     private fun startFragment(fragment: Fragment) {
         parentFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
             .addToBackStack("")
             .replace(R.id.fragment_holder, fragment)
             .commit()
@@ -158,7 +170,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
             val trainingFragment = TrainingFragment.newInstance(item.id, date.time)
             startFragment(trainingFragment)
         } else if (item is MeasureModel) {
-            startFragment(MeasureFragment.newInstance(item.id))
+            startFragment(MeasureFragment.newInstance(item.id, date.time))
         }
     }
 
@@ -171,5 +183,44 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
 
         (activity as AppCompatActivity).supportActionBar?.title =
             SimpleDateFormat("dd MMMM yyyy", Locale("ru")).format(date)
+    }
+
+    override fun onDeleteButtonClick(data: DiaryEntryModel) {
+        showDeleteConfirmationDialog(data)
+    }
+
+    /**
+     * Отображает диалог подтверждения удаления для данной записи
+     * @param entry Удаляемая запись
+     */
+    private fun showDeleteConfirmationDialog(entry: DiaryEntryModel) {
+        // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
+        // для положительной и отрицательной кнопок
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("Удалить запись?")
+        builder.setPositiveButton(
+            "Удалить"
+        ) { _, _ ->
+            when (entry) {
+                is TrainingModel -> {
+                    presenter.onTrainingDeleted(entry.id)
+                }
+                is MeasureModel -> {
+                    presenter.onMeasureDeleted(entry.id)
+                }
+                is NoteModel -> {
+                    presenter.onNoteDeleted(entry.id)
+                }
+            }
+        }
+        builder.setNegativeButton(
+            "Отмена"
+        ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
+            dialog?.dismiss()
+        }
+
+        // Создаём и показываем AlertDialog
+        val alertDialog = builder.create()
+        alertDialog.show()
     }
 }

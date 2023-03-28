@@ -6,17 +6,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentMeasureBinding
 import ru.ikon.trainingdairy.databinding.FragmentParametersBinding
 import ru.ikon.trainingdairy.domain.model.ParameterModel
 import ru.ikon.trainingdairy.ui.measure.MeasureFragment
+import javax.inject.Inject
 import kotlin.random.Random
 
 class ParametersFragment : Fragment(), ParametersContract.View {
 
     private var measureId: Long = 0
 
-    private lateinit var presenter : ParametersContract.Presenter
+    @Inject
+    lateinit var presenter : ParametersContract.Presenter
 
     private var _binding: FragmentParametersBinding? = null
     private val binding: FragmentParametersBinding get() { return _binding!! }
@@ -45,22 +48,12 @@ class ParametersFragment : Fragment(), ParametersContract.View {
         }
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        (activity as AppCompatActivity).supportActionBar?.hide()
-//    }
-//
-//    override fun onStop() {
-//        super.onStop()
-//        (activity as AppCompatActivity).supportActionBar?.show()
-//    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        presenter = ParametersPresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         _binding = FragmentParametersBinding.inflate(inflater, container, false)

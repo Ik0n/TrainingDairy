@@ -1,18 +1,14 @@
 package ru.ikon.trainingdairy.ui.training
 
-import android.widget.Toast
 import ru.ikon.trainingdairy.domain.model.TrainingModel
+import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
 import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
+import ru.ikon.trainingdairy.ui.base.BasePresenter
 import java.util.*
 
-class TrainingPresenter : TrainingContract.Presenter {
-
-    private var view: TrainingContract.View? = null
-
-    override fun attach(view: TrainingContract.View) {
-        this.view = view
-    }
-
+class TrainingPresenter(repository: DiaryEntryRepository) : TrainingContract.Presenter, BasePresenter<TrainingContract.View>(
+    repository
+) {
     override fun onCreate(id: Long, date: Date) {
         // Создаём репозиторий с тестовыми данными. Позднее здесь будет загрузка данных
         // из базы, а пока - загрузка из тестового репозитория
@@ -32,24 +28,20 @@ class TrainingPresenter : TrainingContract.Presenter {
     }
 
     override fun getTraining(trainingId: Long): TrainingModel {
-        return DummyDiaryEntryRepositoryImpl.newInstance().getTraining(trainingId)
-    }
-
-    override fun detach() {
-        this.view = null
+        return repository.getTraining(trainingId)
     }
 
     override fun saveTraining(name: String, date: Date, comment: String) : Long {
-        return DummyDiaryEntryRepositoryImpl.newInstance().addTraining(name, date, comment)
+        return repository.addTraining(name, date, comment)
     }
 
     override fun updateTraining(id: Long, name: String, date: Date, comment: String) {
-        DummyDiaryEntryRepositoryImpl.newInstance().updateTraining(id, name, date, comment)
+        repository.updateTraining(id, name, date, comment)
     }
 
-    override fun deleteExercise(exerciseId: Long, trainingId: Long) {
-        DummyDiaryEntryRepositoryImpl.newInstance().deleteExercise(exerciseId, trainingId)
+    override fun onExerciseDeleted(exerciseId: Long, trainingId: Long) {
+        repository.deleteExercise(exerciseId, trainingId)
+        val exerciseList = repository.getExercises(trainingId)
+        view?.showExercises(exerciseList)
     }
-
-
 }

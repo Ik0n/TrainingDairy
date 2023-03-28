@@ -1,24 +1,32 @@
 package ru.ikon.trainingdairy.ui.measure
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentMeasureBinding
 import ru.ikon.trainingdairy.domain.model.ParameterModel
 import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.measure.recycler.OnDeleteButtonClickListener
 import ru.ikon.trainingdairy.ui.measure.recycler.ParameterAdapter
 import ru.ikon.trainingdairy.ui.parameters.ParametersFragment
+import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
+
+private const val ARG_ID = "id"
+private const val ARG_DATE = "date"
 
 class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickListener {
 
     private var measureId: Long = 0
 
-    private lateinit var presenter : MeasureContract.Presenter
+    @Inject
+    lateinit var presenter : MeasureContract.Presenter
 
     private var _binding: FragmentMeasureBinding? = null
     private val binding: FragmentMeasureBinding get() { return _binding!! }
@@ -27,21 +35,19 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
 
     private lateinit var date: Date
 
+    /** Календарь, который будет использован для выбора даты  */
+    private var mCalendar = Calendar.getInstance()
+
     companion object {
 
-            private const val ARG_ID = "id"
-
             @JvmStatic
-            fun newInstance(measureId: Long) : Fragment {
+            fun newInstance(measureId: Long, date: Long) : Fragment {
                 return MeasureFragment().apply {
                     arguments = Bundle().apply {
                         putLong(ARG_ID, measureId)
+                        putLong(ARG_DATE, date)
                     }
                 }
-            }
-            @JvmStatic
-            fun newInstance() : Fragment {
-                return MeasureFragment()
             }
     }
 
@@ -49,6 +55,8 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         super.onCreate(savedInstanceState)
         arguments?.let {
             measureId = it.getLong(ARG_ID)
+            val dateMillis = it.getLong(ARG_DATE)
+            date = Date(dateMillis)
         }
     }
 
@@ -67,7 +75,8 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        presenter = MeasurePresenter()
+        requireContext().app.di.inject(this)
+
         presenter.attach(this)
 
         _binding = FragmentMeasureBinding.inflate(inflater, container, false)
@@ -103,13 +112,15 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
 
         presenter.onCreate(measureId)
 
-        arguments?.let {
-            binding.emptyTitleText.visibility = View.GONE
-        }
-
         binding.editTextDate.setOnClickListener {
             DatePickerDialog(requireContext(), { _, year, month, day ->
-                binding.editTextDate.setText("" + day + "/" + month + "/" + year)
+                mCalendar[Calendar.YEAR] = year
+                mCalendar[Calendar.MONTH] = month
+                mCalendar[Calendar.DAY_OF_MONTH] = day
+
+                val sdf = SimpleDateFormat("dd.MM.yyyy")
+                val dateFormatted = sdf.format(mCalendar.time)
+                binding.editTextDate.setText(dateFormatted)
 
                 date = GregorianCalendar(year, month, day).time
 
@@ -146,13 +157,43 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onClick(data: ParameterModel) {
-        presenter.deleteParameter(data.id, measureId)
+    override fun onDeleteButtonClick(data: ParameterModel) {
+        showDeleteConfirmationDialog(data)
     }
 
-    override fun showData(data: List<ParameterModel>) {
+    /**
+     * Отображает диалог подтверждения удаления для данного параметра
+     * @param parameter Удаляемый параметр
+     */
+    private fun showDeleteConfirmationDialog(parameter: ParameterModel) {
+        // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
+        // для положительной и отрицательной кнопок
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("Удалить значение?")
+        builder.setPositiveButton(
+            "Удалить"
+        ) { _, _ ->
+            presenter.onParameterDeleted(parameter.id, measureId)
+        }
+        builder.setNegativeButton(
+            "Отмена"
+        ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
+            dialog?.dismiss()
+        }
+
+        // Создаём и показываем AlertDialog
+        val alertDialog = builder.create()
+        alertDialog.show()
+    }
+
+    override fun showParameters(parametersList: List<ParameterModel>) {
+        if (parametersList.isEmpty()) {
+            binding.emptyTitleText.visibility = View.VISIBLE
+        } else {
+            binding.emptyTitleText.visibility = View.GONE
+        }
         binding.listViewParameters.adapter = adapter.apply {
-            setData(data)
+            setData(parametersList)
         }
     }
 
@@ -164,7 +205,6 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
     private fun startFragment(fragment: Fragment) {
         parentFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
             .addToBackStack("")
             .replace(R.id.fragment_holder, fragment)
             .commit()

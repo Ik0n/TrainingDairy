@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.github.sundeepk.compactcalendarview.CompactCalendarView.CompactCalendarViewListener
 import com.github.sundeepk.compactcalendarview.domain.Event
 import ru.ikon.trainingdairy.R
+import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentMonthBinding
 import ru.ikon.trainingdairy.domain.model.DiaryEntryModel
 import ru.ikon.trainingdairy.domain.model.MeasureModel
@@ -20,10 +21,12 @@ import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 import ru.ikon.trainingdairy.ui.note.OnOkButtonClickListener
 import ru.ikon.trainingdairy.ui.training.TrainingFragment
 import java.util.*
+import javax.inject.Inject
 
 class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
 
-    private lateinit var presenter: MonthContract.Presenter
+    @Inject
+    lateinit var presenter: MonthContract.Presenter
 
     private var _binding: FragmentMonthBinding? = null
     private val binding: FragmentMonthBinding get() { return _binding!! }
@@ -32,7 +35,7 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        presenter = MonthPresenter()
+        requireContext().app.di.inject(this)
         presenter.attach(this)
 
         _binding = FragmentMonthBinding.inflate(inflater, container, false)
@@ -151,10 +154,10 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
     private fun initializeFloatingActionButtons() {
         // Устанавливаем обработчики нажатия плавающим кнопкам действия
         with(binding) {
+            val currentDate = Date()
+
             trainingButton.setOnClickListener {
                 floatingActionMenu.close(true)
-
-                val currentDate = Date()
 
                 val trainingFragment = TrainingFragment.newInstance(0, currentDate.time)
                 startFragment(trainingFragment)
@@ -169,7 +172,7 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
             measureButton.setOnClickListener {
                 floatingActionMenu.close(true)
 
-                startFragment(MeasureFragment.newInstance())
+                startFragment(MeasureFragment.newInstance(0, currentDate.time))
             }
         }
     }
@@ -223,7 +226,6 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
     private fun startFragment(fragment: Fragment) {
         parentFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
             .addToBackStack("")
             .replace(R.id.fragment_holder, fragment)
             .commit()

@@ -9,11 +9,12 @@ import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.databinding.ActivityMainBinding
 import ru.ikon.trainingdairy.ui.month.MonthFragment
 import ru.ikon.trainingdairy.ui.programslist.ProgramsListFragment
+import ru.ikon.trainingdairy.ui.userparameters.ReadyButtonClickListener
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES
 import ru.ikon.trainingdairy.ui.userparameters.UserParametersFragment.Companion.APP_PREFERENCES_NAME
 
-class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClickListener {
+class MainActivity : AppCompatActivity(), ReadyButtonClickListener {
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding get() { return _binding!! }
@@ -38,8 +39,8 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
             userParametersFragment.setReadyButtonClickListener(this)
 
         } else {
-            binding.bottomNavigationBar.visibility = View.VISIBLE
-            startFragment(ProgramsListFragment.newInstance())
+            //binding.bottomNavigationBar.visibility = View.VISIBLE
+            startFragment(MonthFragment.newInstance())
         }
 
         setSupportActionBar(binding.toolbar)
@@ -64,7 +65,6 @@ class MainActivity : AppCompatActivity(), UserParametersFragment.ReadyButtonClic
     private fun startFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.animator.fragment_fade_in, R.animator.fragment_fade_out)
             .replace(R.id.fragment_holder, fragment)
             .commit()
     }

@@ -1,6 +1,5 @@
 package ru.ikon.trainingdairy.ui.training.recycler
 
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Typeface
 import android.util.TypedValue
@@ -23,6 +22,7 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
     private val data : MutableList<ExerciseModel> = mutableListOf()
 
     private lateinit var onDeleteButtonClickListener: OnDeleteButtonClickListener
+    private lateinit var onHistoryButtonClickListener: OnHistoryButtonClickListener
     private lateinit var onItemClickListener: OnItemClickListener
 
     fun setData(data: List<ExerciseModel>) {
@@ -86,7 +86,7 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
                         R.id.action_history -> {
                             //При выборе пункта меню "История" запускаем операцию HistoryActivity,
                             // предварительно передав название упражнения
-                            // TODO: Реализовать вызов фрагмента HistoryFragment
+                            onHistoryButtonClickListener.onHistoryButtonClick(exercise)
                             true
                         }
                         R.id.action_edit -> {
@@ -99,8 +99,7 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
                         R.id.action_delete -> {
                             // При выборе пункта меню "Удалить"
                             // отображаем диалог подтверждения удаления
-                            showDeleteConfirmationDialog(exercise)
-                            onDeleteButtonClickListener.onClick(exercise)
+                            onDeleteButtonClickListener.onDeleteButtonClick(exercise)
                             true
                         }
                         else -> false
@@ -131,6 +130,82 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
             val rowTitle = binding.rowTitle
             val rowWeight = binding.rowWeight
             val rowCount = binding.rowCount
+
+            // Программно добавляем первый столбец таблицы, в котором указаны наименования строк.
+            val measureHeadingTextView = TextView(mContext)
+            measureHeadingTextView.text = "Мера"
+            measureHeadingTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
+            measureHeadingTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            measureHeadingTextView.setTextColor(
+                ContextCompat.getColor(
+                    mContext,
+                    R.color.secondary_text
+                )
+            )
+            measureHeadingTextView.setTypeface(Typeface.SANS_SERIF)
+            measureHeadingTextView.gravity = Gravity.CENTER_VERTICAL
+            val params1 = TableRow.LayoutParams()
+            params1.setMargins(
+                convertDpToPx(16),
+                convertDpToPx(4),
+                convertDpToPx(8),
+                convertDpToPx(4)
+            )
+            measureHeadingTextView.layoutParams = params1
+
+            // Добавляем содержимое в строку с весом
+            rowTitle.addView(measureHeadingTextView)
+
+
+            val weightHeadingTextView = TextView(mContext)
+            weightHeadingTextView.text = "Вес (кг)"
+            weightHeadingTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
+            weightHeadingTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            weightHeadingTextView.setTextColor(
+                ContextCompat.getColor(
+                    mContext,
+                    R.color.primary_text
+                )
+            )
+            weightHeadingTextView.setTypeface(Typeface.SANS_SERIF)
+            weightHeadingTextView.gravity = Gravity.CENTER_VERTICAL
+            val params2 = TableRow.LayoutParams()
+            params2.setMargins(
+                convertDpToPx(16),
+                convertDpToPx(4),
+                convertDpToPx(8),
+                convertDpToPx(4)
+            )
+            weightHeadingTextView.layoutParams = params2
+
+            // Добавляем содержимое в строку с весом
+            rowWeight.addView(weightHeadingTextView)
+
+
+            val countHeadingTextView = TextView(mContext)
+            countHeadingTextView.text = "Повторения (раз)"
+            countHeadingTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
+            countHeadingTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            countHeadingTextView.setTextColor(
+                ContextCompat.getColor(
+                    mContext,
+                    R.color.primary_text
+                )
+            )
+            countHeadingTextView.setTypeface(Typeface.SANS_SERIF)
+            countHeadingTextView.gravity = Gravity.CENTER_VERTICAL
+            val params3 = TableRow.LayoutParams()
+            params3.setMargins(
+                convertDpToPx(16),
+                convertDpToPx(4),
+                convertDpToPx(8),
+                convertDpToPx(4)
+            )
+            countHeadingTextView.layoutParams = params3
+
+            // Добавляем содержимое в строку с количеством повторений
+            rowCount.addView(countHeadingTextView)
+
 
             // Перебираем коллекцию подходов данного упражнения
             for (i in 0 until exercise.attemptsList.size) {
@@ -245,40 +320,15 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
             return (dp * scale + 0.5f).toInt()
         }
 
-        /**
-         * Отображает диалог подтверждения удаления для данного упражнения
-         * @param exercise Удаляемое упражнение
-         */
-        private fun showDeleteConfirmationDialog(exercise: ExerciseModel) {
-            // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
-            // для положительной и отрицательной кнопок
-            val builder = AlertDialog.Builder(mContext)
-            builder.setMessage("Удалить упражнение?")
-            builder.setPositiveButton(
-                "Удалить"
-            ) { _, _ ->
-                // При нажатии кнопки "Удалить" удаляем запись из списка
-                // и оповещаем адаптер о том, что данные изменились,
-                // чтобы он обновил список на экране
-                // TODO: Добраться до фрагмента и оповестить его о том, что данные изменены
-                // TODO: Изменить данные не только в адаптере, но и в самом источнике данных!
-                data.remove(exercise)
-                notifyDataSetChanged()
-            }
-            builder.setNegativeButton(
-                "Отмена"
-            ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
-                dialog?.dismiss()
-            }
 
-            // Создаём и показываем AlertDialog
-            val alertDialog = builder.create()
-            alertDialog.show()
-        }
     }
 
     fun setOnDeleteButtonClickListener(listener: OnDeleteButtonClickListener) {
         this.onDeleteButtonClickListener = listener
+    }
+
+    fun setOnHistoryButtonClickListener(listener: OnHistoryButtonClickListener) {
+        this.onHistoryButtonClickListener = listener
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
