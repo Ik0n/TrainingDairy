@@ -19,12 +19,11 @@ import ru.ikon.trainingdairy.ui.training.recycler.ExerciseTrainingAdapter
 import ru.ikon.trainingdairy.ui.training.recycler.OnDeleteButtonClickListener
 import ru.ikon.trainingdairy.ui.training.recycler.OnHistoryButtonClickListener
 import ru.ikon.trainingdairy.ui.training.recycler.OnItemClickListener
+import ru.ikon.trainingdairy.utils.ARG_DATE
+import ru.ikon.trainingdairy.utils.ARG_ID
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-
-private const val ARG_ID = "id"
-private const val ARG_DATE = "date"
 
 class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickListener, OnItemClickListener, OnHistoryButtonClickListener {
     private var trainingId: Long = 0
@@ -46,7 +45,7 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
 
 
     /** Календарь, который будет использован для выбора даты  */
-    private var mCalendar = Calendar.getInstance()
+    private var calendar = Calendar.getInstance()
 
     private var currentDate = Date()
 
@@ -163,7 +162,7 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
     override fun showData(training: TrainingModel) {
         // Приводим дату к строке для отображения
         // и выводим на экран в элемент
-        val outputFormat = SimpleDateFormat("dd.MM.yyyy")
+        val outputFormat = SimpleDateFormat(getString(R.string.date_format))
         val outputDateString = outputFormat.format(training.date)
 
         with(binding) {
@@ -201,12 +200,12 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
         with(binding) {
             val dateSetListener =
                 DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                    mCalendar[Calendar.YEAR] = year
-                    mCalendar[Calendar.MONTH] = monthOfYear
-                    mCalendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+                    calendar[Calendar.YEAR] = year
+                    calendar[Calendar.MONTH] = monthOfYear
+                    calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
 
-                    val sdf = SimpleDateFormat("dd.MM.yyyy")
-                    editTextDate.setText(sdf.format(mCalendar.time))
+                    val sdf = SimpleDateFormat(getString(R.string.date_format))
+                    editTextDate.setText(sdf.format(calendar.time))
 
                     trainingDate = GregorianCalendar(year, monthOfYear, dayOfMonth).time
                 }
@@ -225,6 +224,11 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
         super.onStop()
         // При закрытии этого фрагмента снова отображаем у Activity основной Toolbar
         (activity as MainActivity).showActionBar()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        presenter.detach()
     }
 
     override fun onDestroyView() {
@@ -268,15 +272,15 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
         // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
         // для положительной и отрицательной кнопок
         val builder = AlertDialog.Builder(context)
-        builder.setMessage("Удалить упражнение?")
+        builder.setMessage(getString(R.string.training_fragment_delete_dialog_message))
         builder.setPositiveButton(
-            "Удалить"
+            getString(R.string.delete_dialog_positive_button)
         ) { _, _ ->
             // При нажатии кнопки "Удалить" оповещаем презентер
             presenter.onExerciseDeleted(exercise.id, trainingId)
         }
         builder.setNegativeButton(
-            "Отмена"
+            getString(R.string.delete_dialog_negative_button)
         ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
             dialog?.dismiss()
         }

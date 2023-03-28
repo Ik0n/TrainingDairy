@@ -45,8 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:textSize="16sp"
-                android:text="Нет истории" />
+                android:textSize="@dimen/heading_text_size"
+                android:text="@string/history_fragment_empty_title" />
         </RelativeLayout>
 
     </FrameLayout>

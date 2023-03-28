@@ -11,7 +11,6 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import ru.ikon.trainingdairy.R
-import ru.ikon.trainingdairy.databinding.CardExerciseLayoutBinding
 import ru.ikon.trainingdairy.databinding.ExerciseHistoryLayoutBinding
 import ru.ikon.trainingdairy.domain.model.AttemptModel
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
@@ -20,7 +19,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.Int
 
-class ExerciseHistoryAdapter(private val mContext: Context) : RecyclerView.Adapter<ExerciseHistoryAdapter.ViewHolder>() {
+class ExerciseHistoryAdapter(private val context: Context) : RecyclerView.Adapter<ExerciseHistoryAdapter.ViewHolder>() {
 
     private val data : MutableList<ExerciseModel> = mutableListOf()
 
@@ -49,7 +48,10 @@ class ExerciseHistoryAdapter(private val mContext: Context) : RecyclerView.Adapt
         fun bind(exercise: ExerciseModel) {
             // Получаем из макета элемент TextView и устанавливаем ему текст - название упражнения
 
-            binding.textViewName.text = SimpleDateFormat("dd MMMM yyyy", Locale("ru")).format(exercise.date)
+            binding.textViewName.text = SimpleDateFormat(
+                context.getString(R.string.date_format_for_actionbar_title),
+                Locale(context.getString(R.string.locale_ru))
+            ).format(exercise.date)
 
             // Инициализируем таблицу подходов и заполняем её данными
             val table = binding.tableLayout
@@ -97,7 +99,7 @@ class ExerciseHistoryAdapter(private val mContext: Context) : RecyclerView.Adapt
                 // Это необходимо для коректного отображения кружка,
                 // внутри которого находится номер подхода.
                 // Устанавливаем ему параметры отображения
-                val frameLayout = FrameLayout(mContext)
+                val frameLayout = FrameLayout(context)
                 val params0 = TableRow.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -108,20 +110,20 @@ class ExerciseHistoryAdapter(private val mContext: Context) : RecyclerView.Adapt
 
                 // Инициализируем текстовую надпись, в которой будет отображаться номер подхода.
                 // Устанавливаем ей параметры отображения.
-                val indexTextView = TextView(mContext)
+                val indexTextView = TextView(context)
                 indexTextView.text = (i + 1).toString()
                 indexTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
                 indexTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 indexTextView.setTextColor(
                     ContextCompat.getColor(
-                        mContext,
+                        context,
                         android.R.color.white
                     )
                 )
                 indexTextView.setTypeface(Typeface.SANS_SERIF)
                 indexTextView.gravity = Gravity.CENTER
                 indexTextView.background =
-                    mContext.getDrawable(R.drawable.circle_orange_small)
+                    context.getDrawable(R.drawable.circle_orange_small)
                 val params1 = TableRow.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -140,13 +142,13 @@ class ExerciseHistoryAdapter(private val mContext: Context) : RecyclerView.Adapt
 
                 // Инициализируем текстовую надпись, в которой будет отображаться вес.
                 // Устанавливаем ей параметры отображения.
-                val weightTextView = TextView(mContext)
+                val weightTextView = TextView(context)
                 weightTextView.text = String.valueOf(attempt.weight)
                 weightTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
                 weightTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 weightTextView.setTextColor(
                     ContextCompat.getColor(
-                        mContext,
+                        context,
                         R.color.primary_text
                     )
                 )
@@ -166,13 +168,13 @@ class ExerciseHistoryAdapter(private val mContext: Context) : RecyclerView.Adapt
 
                 // Инициализируем текстовую надпись, в которой будет отображаться количество повторений.
                 // Устанавливаем ей параметры отображения.
-                val countTextView = TextView(mContext)
+                val countTextView = TextView(context)
                 countTextView.text = String.valueOf(attempt.count)
                 countTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
                 countTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 countTextView.setTextColor(
                     ContextCompat.getColor(
-                        mContext,
+                        context,
                         R.color.primary_text
                     )
                 )
@@ -198,7 +200,7 @@ class ExerciseHistoryAdapter(private val mContext: Context) : RecyclerView.Adapt
          * @return Значение в пикселях
          */
         private fun convertDpToPx(dp: Int): Int {
-            val scale = mContext.resources.displayMetrics.density
+            val scale = context.resources.displayMetrics.density
             return (dp * scale + 0.5f).toInt()
         }
     }

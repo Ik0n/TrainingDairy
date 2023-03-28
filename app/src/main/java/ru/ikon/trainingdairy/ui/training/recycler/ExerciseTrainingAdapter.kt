@@ -17,7 +17,7 @@ import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import java.lang.String
 import kotlin.Int
 
-class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adapter<ExerciseTrainingAdapter.ViewHolder>() {
+class ExerciseTrainingAdapter(private val context: Context) : RecyclerView.Adapter<ExerciseTrainingAdapter.ViewHolder>() {
 
     private val data : MutableList<ExerciseModel> = mutableListOf()
 
@@ -76,7 +76,7 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
 
             // Получаем из макета кнопку с тремя точками и настраиваем контекстное меню
             binding.buttonMenu.setOnClickListener {
-                val popupMenu = PopupMenu(mContext, it)
+                val popupMenu = PopupMenu(context, it)
                 popupMenu.menuInflater.inflate(
                     R.menu.menu_exercise_popup,
                     popupMenu.menu
@@ -132,13 +132,13 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
             val rowCount = binding.rowCount
 
             // Программно добавляем первый столбец таблицы, в котором указаны наименования строк.
-            val measureHeadingTextView = TextView(mContext)
-            measureHeadingTextView.text = "Мера"
+            val measureHeadingTextView = TextView(context)
+            measureHeadingTextView.text = context.getString(R.string.training_fragment_recycler_measure_heading)
             measureHeadingTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
             measureHeadingTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
             measureHeadingTextView.setTextColor(
                 ContextCompat.getColor(
-                    mContext,
+                    context,
                     R.color.secondary_text
                 )
             )
@@ -157,13 +157,13 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
             rowTitle.addView(measureHeadingTextView)
 
 
-            val weightHeadingTextView = TextView(mContext)
-            weightHeadingTextView.text = "Вес (кг)"
+            val weightHeadingTextView = TextView(context)
+            weightHeadingTextView.text = context.getString(R.string.training_fragment_recycler_weight_heading)
             weightHeadingTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
             weightHeadingTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
             weightHeadingTextView.setTextColor(
                 ContextCompat.getColor(
-                    mContext,
+                    context,
                     R.color.primary_text
                 )
             )
@@ -182,13 +182,13 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
             rowWeight.addView(weightHeadingTextView)
 
 
-            val countHeadingTextView = TextView(mContext)
-            countHeadingTextView.text = "Повторения (раз)"
+            val countHeadingTextView = TextView(context)
+            countHeadingTextView.text = context.getString(R.string.training_fragment_recycler_count_heading)
             countHeadingTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
             countHeadingTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
             countHeadingTextView.setTextColor(
                 ContextCompat.getColor(
-                    mContext,
+                    context,
                     R.color.primary_text
                 )
             )
@@ -215,7 +215,7 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
                 // Это необходимо для коректного отображения кружка,
                 // внутри которого находится номер подхода.
                 // Устанавливаем ему параметры отображения
-                val frameLayout = FrameLayout(mContext)
+                val frameLayout = FrameLayout(context)
                 val params0 = TableRow.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -226,20 +226,20 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
 
                 // Инициализируем текстовую надпись, в которой будет отображаться номер подхода.
                 // Устанавливаем ей параметры отображения.
-                val indexTextView = TextView(mContext)
+                val indexTextView = TextView(context)
                 indexTextView.text = (i + 1).toString()
                 indexTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
                 indexTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 indexTextView.setTextColor(
                     ContextCompat.getColor(
-                        mContext,
+                        context,
                         android.R.color.white
                     )
                 )
                 indexTextView.setTypeface(Typeface.SANS_SERIF)
                 indexTextView.gravity = Gravity.CENTER
                 indexTextView.background =
-                    mContext.getDrawable(R.drawable.circle_orange_small)
+                    context.getDrawable(R.drawable.circle_orange_small)
                 val params1 = TableRow.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -258,13 +258,13 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
 
                 // Инициализируем текстовую надпись, в которой будет отображаться вес.
                 // Устанавливаем ей параметры отображения.
-                val weightTextView = TextView(mContext)
+                val weightTextView = TextView(context)
                 weightTextView.text = String.valueOf(attempt.weight)
                 weightTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
                 weightTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 weightTextView.setTextColor(
                     ContextCompat.getColor(
-                        mContext,
+                        context,
                         R.color.primary_text
                     )
                 )
@@ -284,13 +284,13 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
 
                 // Инициализируем текстовую надпись, в которой будет отображаться количество повторений.
                 // Устанавливаем ей параметры отображения.
-                val countTextView = TextView(mContext)
+                val countTextView = TextView(context)
                 countTextView.text = String.valueOf(attempt.count)
                 countTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
                 countTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 countTextView.setTextColor(
                     ContextCompat.getColor(
-                        mContext,
+                        context,
                         R.color.primary_text
                     )
                 )
@@ -316,7 +316,7 @@ class ExerciseTrainingAdapter(private val mContext: Context) : RecyclerView.Adap
          * @return Значение в пикселях
          */
         private fun convertDpToPx(dp: Int): Int {
-            val scale = mContext.resources.displayMetrics.density
+            val scale = context.resources.displayMetrics.density
             return (dp * scale + 0.5f).toInt()
         }
 

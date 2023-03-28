@@ -11,9 +11,9 @@ import ru.ikon.trainingdairy.databinding.FragmentHistoryBinding
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.history.recycler.ExerciseHistoryAdapter
+import ru.ikon.trainingdairy.utils.ARG_NAME
 import javax.inject.Inject
 
-private const val ARG_NAME = "name"
 
 class HistoryFragment : Fragment(), HistoryContract.View {
     private var exerciseName: String = ""
@@ -37,7 +37,7 @@ class HistoryFragment : Fragment(), HistoryContract.View {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         requireContext().app.di.inject(this)
         presenter.attach(this)
 
@@ -91,6 +91,11 @@ class HistoryFragment : Fragment(), HistoryContract.View {
         binding.recyclerViewExercises.adapter = adapter.apply {
             setData(exerciseList)
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        presenter.detach()
     }
 
     override fun onDestroyView() {

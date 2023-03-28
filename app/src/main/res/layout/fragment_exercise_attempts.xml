@@ -42,8 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="Добавьте подходы"
-                android:textSize="16sp" />
+                android:text="@string/exercise_attempts_fragment_empty_title"
+                android:textSize="@dimen/heading_text_size" />
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_margin="@dimen/default_margin"
         app:srcCompat="@drawable/fab_add"
         app:tint="@color/white"/>
 

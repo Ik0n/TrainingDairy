@@ -40,4 +40,15 @@ class ProgramsListFragment : Fragment(), ProgramsListContract.View {
             return ProgramsListFragment()
         }
     }
+
+    override fun onDetach() {
+        super.onDetach()
+        presenter.detach()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
+
+
 }

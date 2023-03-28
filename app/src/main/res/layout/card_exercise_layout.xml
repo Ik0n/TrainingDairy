@@ -12,23 +12,23 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="72dp"
+                android:layout_height="@dimen/layout_card_height"
                 android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/button_expand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
                     android:alpha=".54"
                     android:background="?android:attr/selectableItemBackground"
                     android:minHeight="0dp"
                     android:minWidth="0dp"
-                    android:padding="2dp"
+                    android:padding="@dimen/small_padding"
                     android:src="@drawable/ic_expand_less_black_24dp"
                     android:layout_gravity="center_vertical"
-                    android:contentDescription="Свернуть/развернуть" />
+                    android:contentDescription="@string/exercise_layout_card_button_expand_content_descrition" />
 
                 <TextView
                     android:id="@+id/text_view_name"
@@ -37,7 +37,7 @@
                     tools:text="Заголовок"
                     android:maxLines="1"
                     android:fontFamily="sans-serif"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:textColor="@color/primary_text"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"/>
@@ -46,13 +46,13 @@
                     android:id="@+id/button_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
                     android:alpha=".54"
                     android:background="?android:attr/selectableItemBackground"
                     android:minHeight="0dp"
                     android:minWidth="0dp"
-                    android:padding="2dp"
+                    android:padding="@dimen/small_padding"
                     android:src="@drawable/ic_more_vert_black_24dp"
                     android:layout_gravity="center_vertical" />
             </LinearLayout>
@@ -64,7 +64,7 @@
                     android:id="@+id/table_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="@dimen/default_margin">
 
                     <TableRow
                         android:id="@+id/row_title"
@@ -75,19 +75,19 @@
                         <TextView
                             android:visibility="gone"
                             tools:text="Мера"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginBottom="4dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="@dimen/default_margin_half_half"
+                            android:layout_marginBottom="@dimen/default_margin_half_half"
+                            android:layout_marginStart="@dimen/default_margin"
+                            android:layout_marginEnd="@dimen/default_margin_half"
                             android:fontFamily="sans-serif"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/subheading_text_size"
                             android:textColor="@color/secondary_text"/>
                     </TableRow>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.75dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="@dimen/default_margin"
                         android:background="@color/divider" />
 
                     <TableRow
@@ -101,12 +101,12 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             tools:text="Вес (кг)"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginBottom="4dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="@dimen/default_margin_half_half"
+                            android:layout_marginBottom="@dimen/default_margin_half_half"
+                            android:layout_marginStart="@dimen/default_margin"
+                            android:layout_marginEnd="@dimen/default_margin_half"
                             android:fontFamily="sans-serif"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/heading_text_size"
                             android:textColor="@color/primary_text"
                             android:gravity="center_vertical"/>
                     </TableRow>
@@ -114,7 +114,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.75dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="@dimen/default_margin"
                         android:background="@color/divider" />
 
                     <TableRow
@@ -128,12 +128,12 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             tools:text="Повторения (раз)"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginBottom="4dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="@dimen/default_margin_half_half"
+                            android:layout_marginBottom="@dimen/default_margin_half_half"
+                            android:layout_marginStart="@dimen/default_margin"
+                            android:layout_marginEnd="@dimen/default_margin_half"
                             android:fontFamily="sans-serif"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/heading_text_size"
                             android:textColor="@color/primary_text"/>
                     </TableRow>
                 </TableLayout>

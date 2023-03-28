@@ -2,19 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="@dimen/layout_card_height"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:layout_marginBottom="@dimen/default_margin_half"
         app:cardBackgroundColor="@color/cardview_light_background"
-        app:cardElevation="1dp"
-        app:cardCornerRadius="2dp"
+        app:cardElevation="@dimen/elevation"
+        app:cardCornerRadius="@dimen/corner_radius"
         >
 
         <LinearLayout
@@ -24,9 +25,9 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="16dp"
+                android:layout_width="@dimen/image_size"
+                android:layout_height="@dimen/image_size"
+                android:layout_margin="@dimen/default_margin"
                 android:layout_weight="0"
                 android:background="@drawable/circle_green"
                 android:scaleType="center"
@@ -44,11 +45,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="16dp"
-                    android:text="Очень-очень длинный, ну просто длиннющий Заголовок"
+                    android:layout_marginTop="@dimen/default_margin"
+                    tools:text="Очень-очень длинный, ну просто длиннющий Заголовок"
                     android:maxLines="1"
                     android:fontFamily="sans-serif"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/heading_text_size"
                     android:textColor="@color/primary_text"/>
 
                 <TextView
@@ -56,11 +57,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="16dp"
-                    android:text="Подзаголовок"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    tools:text="Подзаголовок"
                     android:maxLines="1"
                     android:fontFamily="sans-serif"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/subheading_text_size"
                     android:textColor="@color/secondary_text"/>
 
             </RelativeLayout>
@@ -69,14 +70,14 @@
                 android:id="@+id/button_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_plus_half"
                 android:alpha=".54"
                 android:background="?android:attr/selectableItemBackground"
                 android:minHeight="0dp"
                 android:minWidth="0dp"
-                android:padding="2dp"
+                android:padding="@dimen/small_padding"
                 android:src="@drawable/ic_more_vert_black_24dp" />
         </LinearLayout>
 

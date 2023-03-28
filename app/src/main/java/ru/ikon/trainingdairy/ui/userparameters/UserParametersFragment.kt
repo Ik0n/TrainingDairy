@@ -54,11 +54,17 @@ class UserParametersFragment : Fragment(), UserParametersContract.View {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        presenter.detach()
+    }
+
     companion object {
-        const val APP_PREFERENCES = "mysettings"
-        const val APP_PREFERENCES_NAME = "name"
-        const val APP_PREFERENCES_AGE = "age"
-        const val APP_PREFERENCES_WEIGHT = "weight"
 
         @JvmStatic
         fun newInstance() : Fragment {

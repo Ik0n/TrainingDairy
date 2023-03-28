@@ -14,12 +14,11 @@ import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.measure.recycler.OnDeleteButtonClickListener
 import ru.ikon.trainingdairy.ui.measure.recycler.ParameterAdapter
 import ru.ikon.trainingdairy.ui.parameters.ParametersFragment
+import ru.ikon.trainingdairy.utils.ARG_DATE
+import ru.ikon.trainingdairy.utils.ARG_ID
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-
-private const val ARG_ID = "id"
-private const val ARG_DATE = "date"
 
 class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickListener {
 
@@ -36,7 +35,7 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
     private lateinit var date: Date
 
     /** Календарь, который будет использован для выбора даты  */
-    private var mCalendar = Calendar.getInstance()
+    private var calendar = Calendar.getInstance()
 
     companion object {
 
@@ -114,12 +113,12 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
 
         binding.editTextDate.setOnClickListener {
             DatePickerDialog(requireContext(), { _, year, month, day ->
-                mCalendar[Calendar.YEAR] = year
-                mCalendar[Calendar.MONTH] = month
-                mCalendar[Calendar.DAY_OF_MONTH] = day
+                calendar[Calendar.YEAR] = year
+                calendar[Calendar.MONTH] = month
+                calendar[Calendar.DAY_OF_MONTH] = day
 
-                val sdf = SimpleDateFormat("dd.MM.yyyy")
-                val dateFormatted = sdf.format(mCalendar.time)
+                val sdf = SimpleDateFormat(getString(R.string.date_format))
+                val dateFormatted = sdf.format(calendar.time)
                 binding.editTextDate.setText(dateFormatted)
 
                 date = GregorianCalendar(year, month, day).time
@@ -169,14 +168,14 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         // Создаём AlertDialog.Builder и устанавливаем сообщение и обработчики нажатий
         // для положительной и отрицательной кнопок
         val builder = AlertDialog.Builder(context)
-        builder.setMessage("Удалить значение?")
+        builder.setMessage(getString(R.string.measure_delete_dialog_message))
         builder.setPositiveButton(
-            "Удалить"
+            getText(R.string.delete_dialog_positive_button)
         ) { _, _ ->
             presenter.onParameterDeleted(parameter.id, measureId)
         }
         builder.setNegativeButton(
-            "Отмена"
+            getText(R.string.delete_dialog_negative_button)
         ) { dialog, id -> // При нажатии кнопки "Отмена" закрываем диалог
             dialog?.dismiss()
         }
@@ -200,6 +199,11 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
     override fun onDetach() {
         super.onDetach()
         presenter.detach()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     private fun startFragment(fragment: Fragment) {

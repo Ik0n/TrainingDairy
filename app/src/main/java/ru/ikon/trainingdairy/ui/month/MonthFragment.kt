@@ -20,6 +20,7 @@ import ru.ikon.trainingdairy.ui.measure.MeasureFragment
 import ru.ikon.trainingdairy.ui.note.NoteDialogFragment
 import ru.ikon.trainingdairy.ui.note.OnOkButtonClickListener
 import ru.ikon.trainingdairy.ui.training.TrainingFragment
+import ru.ikon.trainingdairy.utils.NOTE_DIALOG_FRAGMENT_TAG
 import java.util.*
 import javax.inject.Inject
 
@@ -62,6 +63,11 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
 
         // Передаём в Presenter сообщение о том, что фрагмент создан, чтобы получить данные
         presenter.onCreate()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        presenter.detach()
     }
 
     override fun onDestroyView() {
@@ -118,20 +124,7 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
         var resultString = String()
 
         // Определяем индекс месяца (от 0 до 11)
-        when (firstDayOfMonth.month) {
-            0 -> resultString = "Январь"
-            1 -> resultString = "Февраль"
-            2 -> resultString = "Март"
-            3 -> resultString = "Апрель"
-            4 -> resultString = "Май"
-            5 -> resultString = "Июнь"
-            6 -> resultString = "Июль"
-            7 -> resultString = "Август"
-            8 -> resultString = "Сентябрь"
-            9 -> resultString = "Октябрь"
-            10 -> resultString = "Ноябрь"
-            11 -> resultString = "Декабрь"
-        }
+        resultString = resources.getStringArray(R.array.months)[firstDayOfMonth.month]
 
         // Добавляем пробел между месяцем и годом
         resultString = "$resultString "
@@ -166,7 +159,7 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
                 floatingActionMenu.close(true)
 
                 NoteDialogFragment.newInstance(Calendar.getInstance().time).show(
-                    childFragmentManager, NoteDialogFragment.TAG
+                    childFragmentManager, NOTE_DIALOG_FRAGMENT_TAG
                 )
             }
             measureButton.setOnClickListener {

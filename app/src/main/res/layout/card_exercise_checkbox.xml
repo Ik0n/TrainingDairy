@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/checkbox_card_height"
         android:background="@android:color/background_light"
         android:orientation="horizontal">
 
@@ -15,27 +16,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="@dimen/default_margin"
             android:layout_weight="1"
             android:button="@drawable/check_box_selector"
             android:fontFamily="sans-serif"
-            android:paddingLeft="32dp"
-            android:text="Упражнение"
+            android:paddingLeft="@dimen/default_margin_double"
+            tools:text="Упражнение"
             android:textColor="@color/primary_text"
-            android:textSize="16sp" />
+            android:textSize="@dimen/heading_text_size" />
 
         <ImageButton
             android:id="@+id/button_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
             android:alpha=".54"
             android:background="?android:attr/selectableItemBackground"
             android:minWidth="0dp"
             android:minHeight="0dp"
-            android:padding="2dp"
+            android:padding="@dimen/small_padding"
             android:src="@drawable/ic_history_black_24dp" />
     </LinearLayout>
 

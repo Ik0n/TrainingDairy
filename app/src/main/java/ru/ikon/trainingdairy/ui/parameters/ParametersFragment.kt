@@ -11,6 +11,7 @@ import ru.ikon.trainingdairy.databinding.FragmentMeasureBinding
 import ru.ikon.trainingdairy.databinding.FragmentParametersBinding
 import ru.ikon.trainingdairy.domain.model.ParameterModel
 import ru.ikon.trainingdairy.ui.measure.MeasureFragment
+import ru.ikon.trainingdairy.utils.MEASURE_ID
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -25,13 +26,12 @@ class ParametersFragment : Fragment(), ParametersContract.View {
     private val binding: FragmentParametersBinding get() { return _binding!! }
 
     companion object {
-        private const val ARG_ID = "id"
 
         @JvmStatic
         fun newInstance(measureId: Long) : Fragment {
             return ParametersFragment().apply {
                 arguments = Bundle().apply {
-                    putLong(ARG_ID, measureId)
+                    putLong(MEASURE_ID, measureId)
                 }
             }
         }
@@ -44,7 +44,7 @@ class ParametersFragment : Fragment(), ParametersContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            measureId = it.getLong(ARG_ID)
+            measureId = it.getLong(MEASURE_ID)
         }
     }
 
@@ -86,7 +86,7 @@ class ParametersFragment : Fragment(), ParametersContract.View {
 
     private fun initializeActionBar() {
         setHasOptionsMenu(true)
-        (activity as AppCompatActivity).supportActionBar?.setTitle("Задайте значения")
+        (activity as AppCompatActivity).supportActionBar?.setTitle(getString(R.string.parametrs_fragment_actionbar_title))
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
     }
@@ -146,6 +146,11 @@ class ParametersFragment : Fragment(), ParametersContract.View {
             }
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     override fun onDetach() {

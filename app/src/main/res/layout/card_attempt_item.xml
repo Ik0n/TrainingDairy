@@ -3,20 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/background_light"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="@dimen/layout_card_height"
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="16dp"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
+            android:layout_margin="@dimen/default_margin"
             android:layout_weight="0"
             android:background="@drawable/circle_blue"
             android:scaleType="center"
@@ -33,16 +34,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="@dimen/default_margin">
 
                 <TextView
                     android:id="@+id/text_view_measure_heading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Вес (кг)"
+                    android:text="@string/training_fragment_recycler_weight_heading"
                     android:maxLines="1"
                     android:fontFamily="sans-serif"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/card_text_size"
                     android:textColor="@color/primary_text"
                     android:layout_alignParentStart="true"/>
 
@@ -50,10 +51,10 @@
                     android:id="@+id/text_view_value1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
                     android:maxLines="1"
+                    tools:text="0"
                     android:fontFamily="sans-serif"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/card_text_size"
                     android:textColor="@color/primary_text"
                     android:layout_alignParentEnd="true"/>
 
@@ -63,16 +64,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="@dimen/default_margin">
 
                 <TextView
                     android:id="@+id/text_view_subheading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Количество (раз)"
+                    android:text="@string/training_fragment_recycler_count_heading"
                     android:maxLines="1"
                     android:fontFamily="sans-serif"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/card_text_size"
                     android:textColor="@color/primary_text"
                     android:layout_alignParentStart="true"/>
 
@@ -80,10 +81,10 @@
                     android:id="@+id/text_view_value2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    tools:text="0"
                     android:maxLines="1"
                     android:fontFamily="sans-serif"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/card_text_size"
                     android:textColor="@color/primary_text"
                     android:layout_alignParentEnd="true"/>
             </RelativeLayout>
@@ -93,14 +94,14 @@
             android:id="@+id/button_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin_plus_half"
             android:alpha=".54"
             android:background="?android:attr/selectableItemBackground"
             android:minHeight="0dp"
             android:minWidth="0dp"
-            android:padding="2dp"
+            android:padding="@dimen/small_padding"
             android:src="@drawable/ic_more_vert_black_24dp" />
     </LinearLayout>
 

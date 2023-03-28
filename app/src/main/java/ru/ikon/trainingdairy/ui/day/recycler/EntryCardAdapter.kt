@@ -11,13 +11,12 @@ import ru.ikon.trainingdairy.databinding.CardMeasureItemBinding
 import ru.ikon.trainingdairy.databinding.CardNoteItemBinding
 import ru.ikon.trainingdairy.databinding.CardTrainingItemBinding
 import ru.ikon.trainingdairy.domain.model.*
+import ru.ikon.trainingdairy.utils.TYPE_MEASURE
+import ru.ikon.trainingdairy.utils.TYPE_NOTE
+import ru.ikon.trainingdairy.utils.TYPE_TRAINING
 import java.text.SimpleDateFormat
 
-const val TYPE_MEASURE = 0
-const val TYPE_NOTE = 1
-const val TYPE_TRAINING = 2
-
-class EntryCardAdapter(private val mContext: Context) : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>() {
+class EntryCardAdapter(private val context: Context) : RecyclerView.Adapter<EntryCardAdapter.BaseViewHolder>() {
 
     private val data : MutableList<DiaryEntryModel> = mutableListOf()
 
@@ -57,7 +56,7 @@ class EntryCardAdapter(private val mContext: Context) : RecyclerView.Adapter<Ent
             var headingString = ""
 
             if (measure.parametersList.size == 0) {
-                headingString = "Нет значений"
+                headingString = context.getString(R.string.day_fragment_recycler_measure_heading)
             }
 
             for (i in 0 until measure.parametersList.size) {
@@ -70,7 +69,7 @@ class EntryCardAdapter(private val mContext: Context) : RecyclerView.Adapter<Ent
 
             binding.textViewMeasureHeading.text = headingString
 
-            val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+            val simpleDateFormat = SimpleDateFormat(context.getString(R.string.date_format))
             val dateString = simpleDateFormat.format(measure.date)
             binding.textViewMeasureSubheading.text = dateString
 
@@ -80,7 +79,7 @@ class EntryCardAdapter(private val mContext: Context) : RecyclerView.Adapter<Ent
 
             // Получаем из макета кнопку с тремя точками и настраиваем контекстное меню
             binding.buttonMenu.setOnClickListener {
-                val popupMenu = PopupMenu(mContext, it)
+                val popupMenu = PopupMenu(context, it)
                 popupMenu.menuInflater.inflate(
                     R.menu.menu_entry_popup,
                     popupMenu.menu
@@ -114,7 +113,7 @@ class EntryCardAdapter(private val mContext: Context) : RecyclerView.Adapter<Ent
 
             // Получаем из макета кнопку с тремя точками и настраиваем контекстное меню
             binding.buttonMenu.setOnClickListener {
-                val popupMenu = PopupMenu(mContext, it)
+                val popupMenu = PopupMenu(context, it)
                 popupMenu.menuInflater.inflate(
                     R.menu.menu_entry_popup,
                     popupMenu.menu
@@ -144,7 +143,7 @@ class EntryCardAdapter(private val mContext: Context) : RecyclerView.Adapter<Ent
             val training = (data as TrainingModel)
             binding.textViewMeasureHeading.text = training.name
 
-            val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+            val simpleDateFormat = SimpleDateFormat(context.getString(R.string.date_format))
             val dateString = simpleDateFormat.format(training.date)
             binding.textViewSubheading.text = dateString
 
@@ -154,7 +153,7 @@ class EntryCardAdapter(private val mContext: Context) : RecyclerView.Adapter<Ent
 
             // Получаем из макета кнопку с тремя точками и настраиваем контекстное меню
             binding.buttonMenu.setOnClickListener {
-                val popupMenu = PopupMenu(mContext, it)
+                val popupMenu = PopupMenu(context, it)
                 popupMenu.menuInflater.inflate(
                     R.menu.menu_entry_popup,
                     popupMenu.menu

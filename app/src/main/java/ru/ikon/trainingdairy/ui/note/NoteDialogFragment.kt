@@ -6,15 +6,12 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
+import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.DialogFragmentNoteBinding
-import ru.ikon.trainingdairy.ui.month.MonthFragment
+import ru.ikon.trainingdairy.utils.DATE
+import ru.ikon.trainingdairy.utils.NOTE_ID
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -35,7 +32,7 @@ class NoteDialogFragment() :
     private var id : Long? = null
 
     /** Календарь, который будет использован для выбора даты  */
-    private var mCalendar = Calendar.getInstance()
+    private var calendar = Calendar.getInstance()
 
     override fun showData() {
         TODO("Not yet implemented")
@@ -49,7 +46,7 @@ class NoteDialogFragment() :
 
         arguments?.let {
             currentDate = Date(it.getLong(DATE))
-            it.getLong(ID).let {
+            it.getLong(NOTE_ID).let {
                 id = it
             }
         }
@@ -62,12 +59,12 @@ class NoteDialogFragment() :
         with(binding) {
             val dateSetListener =
                 DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    mCalendar[Calendar.YEAR] = year
-                    mCalendar[Calendar.MONTH] = monthOfYear
-                    mCalendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+                    calendar[Calendar.YEAR] = year
+                    calendar[Calendar.MONTH] = monthOfYear
+                    calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
 
-                    val sdf = SimpleDateFormat("dd.MM.yyyy")
-                    editTextDate.setText(sdf.format(mCalendar.time))
+                    val sdf = SimpleDateFormat(getString(R.string.date_format))
+                    editTextDate.setText(sdf.format(calendar.time))
 
                     currentDate = GregorianCalendar(year, monthOfYear, dayOfMonth).time
                 }
@@ -82,9 +79,6 @@ class NoteDialogFragment() :
     }
 
     companion object {
-        const val TAG = "NoteDialogFragment"
-        const val DATE = "date"
-        const val ID = "id"
 
         private lateinit var listener: OnOkButtonClickListener
 
@@ -92,7 +86,7 @@ class NoteDialogFragment() :
             return NoteDialogFragment().apply {
                 arguments = Bundle().apply {
                     putLong(DATE, currentDate.time)
-                    id?.let { putLong(ID, it) }
+                    id?.let { putLong(NOTE_ID, it) }
                 }
             }
         }
@@ -110,7 +104,7 @@ class NoteDialogFragment() :
 
         editTextDate.setText(
             SimpleDateFormat(
-                "dd.MM.yyyy",
+                getString(R.string.date_format),
                 Locale.ENGLISH
             ).format(currentDate)
         )
@@ -119,7 +113,7 @@ class NoteDialogFragment() :
             if (id != 0.toLong()) {
                 binding.editTextDate.setText(
                     SimpleDateFormat(
-                        "dd.MM.yyyy",
+                        getString(R.string.date_format),
                         Locale.ENGLISH
                     ).format(presenter.getNote(it).date)
                 )
@@ -152,9 +146,9 @@ class NoteDialogFragment() :
         }
 
         return AlertDialog.Builder(requireActivity())
-            .setTitle("Заметка")
+            .setTitle(getString(R.string.note_dialog_fragment_title))
             .setView(binding.root)
-            .setPositiveButton("Сохранить", object : DialogInterface.OnClickListener {
+            .setPositiveButton(getString(R.string.note_dialog_fragment_positive_button), object : DialogInterface.OnClickListener {
                 override fun onClick(p0: DialogInterface?, p1: Int) {
                     if (editTextDate.text.toString() != "" || editTextBody.text.toString() != "") {
                         id?.let { id ->
@@ -170,8 +164,13 @@ class NoteDialogFragment() :
                 }
 
             })
-            .setNegativeButton("Отмена", null)
+            .setNegativeButton(getString(R.string.note_dialog_fragment_negative_button), null)
             .create()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        presenter.detach()
     }
 
     override fun onDestroyView() {

@@ -7,6 +7,6 @@ class ProgramsListPresenter(repository: DiaryEntryRepository) : ProgramsListCont
     repository
 ) {
     override fun onCreate() {
-        view?.showData("ProgramsList fragment presenter")
+        view?.showData("")
     }
 }
