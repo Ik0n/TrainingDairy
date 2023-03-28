@@ -1,6 +1,5 @@
 package ru.ikon.trainingdairy.domain.model
 
-import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
 import java.util.*
 
 /**
