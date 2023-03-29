@@ -26,8 +26,15 @@ class TrainingPresenter(repository: DiaryEntryRepository) : TrainingContract.Pre
         return repository.getTraining(trainingId)
     }
 
-    override fun saveTraining(name: String, date: Date, comment: String) : Long {
-        return repository.addTraining(name, date, comment)
+    override fun onSaveTraining(trainingId: Long, name: String, date: Date, comment: String) : Long {
+        val id: Long
+        if (trainingId == 0L) {
+            id = repository.addTraining(name, date, comment)
+        } else {
+            id = trainingId
+            repository.updateTraining(trainingId, name, date, comment)
+        }
+        return id
     }
 
     override fun updateTraining(id: Long, name: String, date: Date, comment: String) {

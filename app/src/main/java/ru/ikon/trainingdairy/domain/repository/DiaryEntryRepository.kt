@@ -40,7 +40,7 @@ interface DiaryEntryRepository {
     fun deleteMeasure(id: Long)
 
     fun getExercises(trainingId: Long): List<ExerciseModel>
-    fun addExercises(trainingId: Long, exerciseList: ArrayList<ExerciseModel>)
+    fun updateExercises(trainingId: Long, exerciseList: ArrayList<ExerciseModel>)
     fun deleteExercise(exerciseId: Long, trainingId: Long)
     fun getExercise(trainingId: Long, exerciseId: Long): ExerciseModel
 

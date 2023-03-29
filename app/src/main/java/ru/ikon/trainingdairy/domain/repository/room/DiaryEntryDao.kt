@@ -69,8 +69,14 @@ interface DiaryEntryDao {
     @Query("SELECT * FROM exercises WHERE id = :id")
     fun getExercise(id: Long): ExerciseModel
 
+    @Query("DELETE FROM exercises WHERE trainingId = :trainingId")
+    fun deleteExercises(trainingId: Long)
+
     @Delete
     fun deleteExercise(exercise: ExerciseModel)
+
+    @Insert
+    fun insertExercise(exercise: ExerciseModel)
 
 
 

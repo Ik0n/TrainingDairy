@@ -368,10 +368,38 @@ class RoomDiaryEntryRepositoryImpl(
                     1
                 ).time
             )
-            measure1.parametersList.add(ParameterModel(0, measure1.id, "Вес (кг)", 64))
-            measure1.parametersList.add(ParameterModel(1, measure1.id, "Грудь (см)", 89))
-            measure1.parametersList.add(ParameterModel(2, measure1.id, "Талия (см)", 59))
-            measure1.parametersList.add(ParameterModel(3, measure1.id, "Бёдра (см)", 89))
+            measure1.parametersList.add(
+                ParameterModel(
+                    0,
+                    measure1.id,
+                    "Вес (кг)",
+                    64
+                )
+            )
+            measure1.parametersList.add(
+                ParameterModel(
+                    1,
+                    measure1.id,
+                    "Грудь (см)",
+                    89
+                )
+            )
+            measure1.parametersList.add(
+                ParameterModel(
+                    2,
+                    measure1.id,
+                    "Талия (см)",
+                    59
+                )
+            )
+            measure1.parametersList.add(
+                ParameterModel(
+                    3,
+                    measure1.id,
+                    "Бёдра (см)",
+                    89
+                )
+            )
             entriesList.add(measure1)
 
             val measure2 = MeasureModel(
@@ -382,10 +410,38 @@ class RoomDiaryEntryRepositoryImpl(
                     8
                 ).time
             )
-            measure2.parametersList.add(ParameterModel(4, measure2.id, "Вес (кг)", 63))
-            measure2.parametersList.add(ParameterModel(5, measure2.id, "Грудь (см)", 88))
-            measure2.parametersList.add(ParameterModel(6, measure2.id, "Талия (см)", 58))
-            measure2.parametersList.add(ParameterModel(7, measure2.id, "Бёдра (см)", 88))
+            measure2.parametersList.add(
+                ParameterModel(
+                    4,
+                    measure2.id,
+                    "Вес (кг)",
+                    63
+                )
+            )
+            measure2.parametersList.add(
+                ParameterModel(
+                    5,
+                    measure2.id,
+                    "Грудь (см)",
+                    88
+                )
+            )
+            measure2.parametersList.add(
+                ParameterModel(
+                    6,
+                    measure2.id,
+                    "Талия (см)",
+                    58
+                )
+            )
+            measure2.parametersList.add(
+                ParameterModel(
+                    7,
+                    measure2.id,
+                    "Бёдра (см)",
+                    88
+                )
+            )
             entriesList.add(measure2)
 
             val measure3 = MeasureModel(
@@ -396,10 +452,38 @@ class RoomDiaryEntryRepositoryImpl(
                     15
                 ).time
             )
-            measure3.parametersList.add(ParameterModel(8, measure3.id, "Вес (кг)", 62))
-            measure3.parametersList.add(ParameterModel(9, measure3.id, "Грудь (см)", 87))
-            measure3.parametersList.add(ParameterModel(10, measure3.id, "Талия (см)", 57))
-            measure3.parametersList.add(ParameterModel(11, measure3.id, "Бёдра (см)", 87))
+            measure3.parametersList.add(
+                ParameterModel(
+                    8,
+                    measure3.id,
+                    "Вес (кг)",
+                    62
+                )
+            )
+            measure3.parametersList.add(
+                ParameterModel(
+                    9,
+                    measure3.id,
+                    "Грудь (см)",
+                    87
+                )
+            )
+            measure3.parametersList.add(
+                ParameterModel(
+                    10,
+                    measure3.id,
+                    "Талия (см)",
+                    57
+                )
+            )
+            measure3.parametersList.add(
+                ParameterModel(
+                    11,
+                    measure3.id,
+                    "Бёдра (см)",
+                    87
+                )
+            )
             entriesList.add(measure3)
 
             val measure4 = MeasureModel(
@@ -410,10 +494,38 @@ class RoomDiaryEntryRepositoryImpl(
                     22
                 ).time
             )
-            measure4.parametersList.add(ParameterModel(12, measure4.id, "Вес (кг)", 61))
-            measure4.parametersList.add(ParameterModel(13, measure4.id, "Грудь (см)", 86))
-            measure4.parametersList.add(ParameterModel(14, measure4.id, "Талия (см)", 56))
-            measure4.parametersList.add(ParameterModel(15, measure4.id, "Бёдра (см)", 86))
+            measure4.parametersList.add(
+                ParameterModel(
+                    12,
+                    measure4.id,
+                    "Вес (кг)",
+                    61
+                )
+            )
+            measure4.parametersList.add(
+                ParameterModel(
+                    13,
+                    measure4.id,
+                    "Грудь (см)",
+                    86
+                )
+            )
+            measure4.parametersList.add(
+                ParameterModel(
+                    14,
+                    measure4.id,
+                    "Талия (см)",
+                    56
+                )
+            )
+            measure4.parametersList.add(
+                ParameterModel(
+                    15,
+                    measure4.id,
+                    "Бёдра (см)",
+                    86
+                )
+            )
             entriesList.add(measure4)
 
             val measure5 = MeasureModel(
@@ -424,10 +536,38 @@ class RoomDiaryEntryRepositoryImpl(
                     22
                 ).time
             )
-            measure5.parametersList.add(ParameterModel(16, measure5.id, "Вес (кг)", 60))
-            measure5.parametersList.add(ParameterModel(17, measure5.id, "Грудь (см)", 85))
-            measure5.parametersList.add(ParameterModel(18, measure5.id, "Талия (см)", 55))
-            measure5.parametersList.add(ParameterModel(19, measure5.id, "Бёдра (см)", 85))
+            measure5.parametersList.add(
+                ParameterModel(
+                    16,
+                    measure5.id,
+                    "Вес (кг)",
+                    60
+                )
+            )
+            measure5.parametersList.add(
+                ParameterModel(
+                    17,
+                    measure5.id,
+                    "Грудь (см)",
+                    85
+                )
+            )
+            measure5.parametersList.add(
+                ParameterModel(
+                    18,
+                    measure5.id,
+                    "Талия (см)",
+                    55
+                )
+            )
+            measure5.parametersList.add(
+                ParameterModel(
+                    19,
+                    measure5.id,
+                    "Бёдра (см)",
+                    85
+                )
+            )
             entriesList.add(measure5)
 
             entriesList.add(
@@ -518,11 +658,15 @@ class RoomDiaryEntryRepositoryImpl(
     }
 
     override fun getTraining(id: Long): TrainingModel {
-        return dao.getTraining(id)
+        val training = dao.getTraining(id)
+        val exerciseList = getExercises(id)
+        training.exerciseList.addAll(exerciseList)
+        return training
     }
 
     override fun addTraining(name: String, date: Date, comment: String): Long {
-        val trainingToAdd = TrainingModel(0, date, comment)
+        val trainingToAdd = TrainingModel(0, date, name)
+        trainingToAdd.comment = comment
         return dao.insertTraining(trainingToAdd)
     }
 
@@ -590,16 +734,18 @@ class RoomDiaryEntryRepositoryImpl(
         return dao.getExercises(trainingId)
     }
 
-    override fun addExercises(
+    override fun updateExercises(
         trainingId: Long,
         exerciseList: ArrayList<ExerciseModel>
     ) {
-        // TODO: Доделать!
-        getTraining(trainingId).exerciseList = exerciseList
+        dao.deleteExercises(trainingId)
+        exerciseList.forEach {
+            dao.insertExercise(it)
+        }
     }
 
     override fun deleteExercise(exerciseId: Long, trainingId: Long) {
-        val exerciseToDelete = getExercise(exerciseId, trainingId)
+        val exerciseToDelete = getExercise(trainingId, exerciseId)
         dao.deleteExercise(exerciseToDelete)
     }
 

@@ -25,7 +25,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickListener, OnItemClickListener, OnHistoryButtonClickListener {
+class TrainingFragment : Fragment(), TrainingContract.View,
+    OnDeleteButtonClickListener, OnItemClickListener,
+    OnHistoryButtonClickListener {
     private var trainingId: Long = 0
     private lateinit var trainingDate: Date
 
@@ -38,19 +40,10 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
             return _binding!!
         }
 
-    //private val adapter = ExerciseTrainingAdapter(this?.context)
-
     private lateinit var adapter: ExerciseTrainingAdapter
-
-
 
     /** Календарь, который будет использован для выбора даты  */
     private var calendar = Calendar.getInstance()
-
-    private var currentDate = Date()
-
-    /** Модель тренировки, данные которой отображаются на экране  */
-    var mTraining: TrainingModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,8 +83,12 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         // Для отображения системной кнопки Назад
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(
+            true
+        )
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(
+            true
+        )
 
         // Для отображения меню (которое в нашем случае состоит только из одного пункта - сохранить)
         setHasOptionsMenu(true)
@@ -111,16 +108,13 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
                 onDateEditTextClicked()
             }
             fab.setOnClickListener {
-                if (trainingId != 0L) {
-                    startFragment(ExerciseFragment.newInstance(trainingId))
-                } else {
-                    trainingId = presenter.saveTraining(
-                        name = editTextName.text.toString(),
-                        date = trainingDate,
-                        comment = editTextComment.text.toString()
-                    )
-                    startFragment(ExerciseFragment.newInstance(trainingId))
-                }
+                trainingId = presenter.onSaveTraining(
+                    trainingId = trainingId,
+                    name = editTextName.text.toString(),
+                    date = trainingDate,
+                    comment = editTextComment.text.toString()
+                )
+                startFragment(ExerciseFragment.newInstance(trainingId))
             }
             adapter.setOnDeleteButtonClickListener(this@TrainingFragment)
             adapter.setOnItemClickListener(this@TrainingFragment)
@@ -142,15 +136,13 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
                 .popBackStack()
         }
         if (item.itemId == R.id.action_save) {
-            if (trainingId != 0L) {
-                presenter.updateTraining(trainingId, binding.editTextName.text.toString(), trainingDate, binding.editTextComment.text.toString())
-            } else {
-                presenter.saveTraining(
-                    name = binding.editTextName.text.toString(),
-                    date = trainingDate,
-                    comment = binding.editTextComment.text.toString()
-                )
-            }
+            presenter.onSaveTraining(
+                trainingId,
+                name = binding.editTextName.text.toString(),
+                date = trainingDate,
+                comment = binding.editTextComment.text.toString()
+            )
+
             (activity as AppCompatActivity)
                 .supportFragmentManager
                 .popBackStack()
@@ -166,7 +158,6 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
         val outputDateString = outputFormat.format(training.date)
 
         with(binding) {
-
             if (training.exerciseList.isEmpty()) {
                 emptyTitleText.visibility = View.VISIBLE
             } else {
@@ -176,9 +167,7 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
             editTextName.setText(training.name)
             editTextDate.setText(outputDateString)
             editTextComment.setText(training.comment)
-            recyclerViewExercises.adapter = adapter.apply {
-                setData(training.exerciseList)
-            }
+            showExercises(training.exerciseList)
         }
     }
 
@@ -188,7 +177,7 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
         } else {
             binding.emptyTitleText.visibility = View.GONE
         }
-        adapter.apply {
+        binding.recyclerViewExercises.adapter = adapter.apply {
             setData(exerciseList)
         }
     }
@@ -207,7 +196,8 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
                     val sdf = SimpleDateFormat(getString(R.string.date_format))
                     editTextDate.setText(sdf.format(calendar.time))
 
-                    trainingDate = GregorianCalendar(year, monthOfYear, dayOfMonth).time
+                    trainingDate =
+                        GregorianCalendar(year, monthOfYear, dayOfMonth).time
                 }
 
             DatePickerDialog(
@@ -291,7 +281,12 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
     }
 
     override fun onItemClick(item: ExerciseModel) {
-        startFragment(ExerciseAttemptsFragment.newInstance(item.trainingId, item.id))
+        startFragment(
+            ExerciseAttemptsFragment.newInstance(
+                item.trainingId,
+                item.id
+            )
+        )
     }
 
     override fun onHistoryButtonClick(data: ExerciseModel) {

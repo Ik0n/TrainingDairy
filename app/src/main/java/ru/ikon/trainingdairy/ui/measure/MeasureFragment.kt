@@ -64,7 +64,7 @@ class MeasureFragment : Fragment(), MeasureContract.View,
 
     override fun onResume() {
         super.onResume()
-        adapter.setData(presenter.getParameters(measureId)) // TODO: Вот это убрать. Вместо этого - получение полных данных об измерении
+        //adapter.setData(presenter.getParameters(measureId)) // TODO: Вот это убрать. Вместо этого - получение полных данных об измерении
     }
 
     override fun onStop() {

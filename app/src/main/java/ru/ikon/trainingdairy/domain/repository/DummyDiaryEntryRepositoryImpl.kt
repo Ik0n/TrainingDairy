@@ -567,7 +567,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         return (entriesList.find { x -> (x is TrainingModel) && x.id == trainingId } as TrainingModel).exerciseList
     }
 
-    override fun addExercises(
+    override fun updateExercises(
         trainingId: Long,
         exerciseList: ArrayList<ExerciseModel>
     ) {
