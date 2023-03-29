@@ -14,7 +14,7 @@ class ParametersPresenter(repository: DiaryEntryRepository) : ParametersContract
         }
     }
 
-    override fun saveParametersList(id: Long, list: List<ParameterModel>) {
-        repository.addParameters(id, list)
+    override fun onSaveParametersList(id: Long, list: List<ParameterModel>) {
+        repository.updateParameters(id, list)
     }
 }

@@ -29,7 +29,7 @@
     <string name="exercise_fragment_actionbar_title">Выберите упражнения</string>
     <string name="exercise_attempts_delete_dialog_message">Удалить подход?</string>
     <string name="measure_delete_dialog_title">Подтверждение</string>
-    <string name="measure_delete_dialog_message">Вы уверены что хотите удалить?</string>
+    <string name="measure_delete_dialog_message">Удалить параметр?</string>
     <string name="measure_delete_dialog_error_message">Активити не может быть равна null</string>
     <string name="note_dialog_fragment_title">Заметка</string>
     <string name="note_dialog_fragment_positive_button">Сохранить</string>

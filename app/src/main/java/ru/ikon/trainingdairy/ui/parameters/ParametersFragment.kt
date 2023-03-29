@@ -2,15 +2,12 @@ package ru.ikon.trainingdairy.ui.parameters
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.app
-import ru.ikon.trainingdairy.databinding.FragmentMeasureBinding
 import ru.ikon.trainingdairy.databinding.FragmentParametersBinding
 import ru.ikon.trainingdairy.domain.model.ParameterModel
-import ru.ikon.trainingdairy.ui.measure.MeasureFragment
 import ru.ikon.trainingdairy.utils.MEASURE_ID
 import javax.inject.Inject
 import kotlin.random.Random
@@ -99,7 +96,7 @@ class ParametersFragment : Fragment(), ParametersContract.View {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_save -> {
-                presenter.saveParametersList(measureId, createParametersList())
+                presenter.onSaveParametersList(measureId, createParametersList())
                 parentFragmentManager.popBackStack()
             }
             android.R.id.home -> {
@@ -114,38 +111,37 @@ class ParametersFragment : Fragment(), ParametersContract.View {
         return ArrayList<ParameterModel>().apply {
             with(binding) {
                 if (editText1.text.toString() != "") {
-                    add(ParameterModel(Random.nextLong(), editTextLayout1.hint.toString(), editText1.text.toString().toInt()))
+                    add(ParameterModel(Random.nextLong(), measureId, editTextLayout1.hint.toString(), editText1.text.toString().toInt()))
                 }
                 if (editText2.text.toString() != "") {
-                    add(ParameterModel(Random.nextLong(), editTextLayout2.hint.toString(), editText2.text.toString().toInt()))
+                    add(ParameterModel(Random.nextLong(), measureId, editTextLayout2.hint.toString(), editText2.text.toString().toInt()))
                 }
                 if (editText3.text.toString() != "") {
-                    add(ParameterModel(Random.nextLong(), editTextLayout3.hint.toString(), editText3.text.toString().toInt()))
+                    add(ParameterModel(Random.nextLong(), measureId, editTextLayout3.hint.toString(), editText3.text.toString().toInt()))
                 }
                 if (editText4.text.toString() != "") {
-                    add(ParameterModel(Random.nextLong(), editTextLayout4.hint.toString(), editText4.text.toString().toInt()))
+                    add(ParameterModel(Random.nextLong(), measureId, editTextLayout4.hint.toString(), editText4.text.toString().toInt()))
                 }
                 if (editText5.text.toString() != "") {
-                    add(ParameterModel(Random.nextLong(), editTextLayout5.hint.toString(), editText5.text.toString().toInt()))
+                    add(ParameterModel(Random.nextLong(), measureId, editTextLayout5.hint.toString(), editText5.text.toString().toInt()))
                 }
                 if (editText6.text.toString() != "") {
-                    add(ParameterModel(Random.nextLong(), editTextLayout6.hint.toString(), editText6.text.toString().toInt()))
+                    add(ParameterModel(Random.nextLong(), measureId, editTextLayout6.hint.toString(), editText6.text.toString().toInt()))
                 }
                 if (editText7.text.toString() != "") {
-                    add(ParameterModel(Random.nextLong(), editTextLayout7.hint.toString(), editText7.text.toString().toInt()))
+                    add(ParameterModel(Random.nextLong(), measureId, editTextLayout7.hint.toString(), editText7.text.toString().toInt()))
                 }
                 if (editText8.text.toString() != "") {
-                    add(ParameterModel(Random.nextLong(), editTextLayout8.hint.toString(), editText8.text.toString().toInt()))
+                    add(ParameterModel(Random.nextLong(), measureId, editTextLayout8.hint.toString(), editText8.text.toString().toInt()))
                 }
                 if (editText9.text.toString() != "") {
-                    add(ParameterModel(Random.nextLong(), editTextLayout9.hint.toString(), editText9.text.toString().toInt()))
+                    add(ParameterModel(Random.nextLong(), measureId, editTextLayout9.hint.toString(), editText9.text.toString().toInt()))
                 }
                 if (editText10.text.toString() != "") {
-                    add(ParameterModel(Random.nextLong(), editTextLayout10.hint.toString(), editText10.text.toString().toInt()))
+                    add(ParameterModel(Random.nextLong(), measureId, editTextLayout10.hint.toString(), editText10.text.toString().toInt()))
                 }
             }
         }
-
     }
 
     override fun onDestroy() {
@@ -157,6 +153,4 @@ class ParametersFragment : Fragment(), ParametersContract.View {
         super.onDetach()
         presenter.detach()
     }
-
-
 }

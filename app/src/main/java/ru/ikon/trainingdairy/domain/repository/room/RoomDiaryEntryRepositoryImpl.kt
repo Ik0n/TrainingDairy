@@ -1,6 +1,5 @@
 package ru.ikon.trainingdairy.domain.repository.room
 
-import android.os.Handler
 import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
 
 import ru.ikon.trainingdairy.domain.model.*
@@ -369,10 +368,10 @@ class RoomDiaryEntryRepositoryImpl(
                     1
                 ).time
             )
-            measure1.parametersList.add(ParameterModel(0, "Вес (кг)", 64))
-            measure1.parametersList.add(ParameterModel(1, "Грудь (см)", 89))
-            measure1.parametersList.add(ParameterModel(2, "Талия (см)", 59))
-            measure1.parametersList.add(ParameterModel(3, "Бёдра (см)", 89))
+            measure1.parametersList.add(ParameterModel(0, measure1.id, "Вес (кг)", 64))
+            measure1.parametersList.add(ParameterModel(1, measure1.id, "Грудь (см)", 89))
+            measure1.parametersList.add(ParameterModel(2, measure1.id, "Талия (см)", 59))
+            measure1.parametersList.add(ParameterModel(3, measure1.id, "Бёдра (см)", 89))
             entriesList.add(measure1)
 
             val measure2 = MeasureModel(
@@ -383,10 +382,10 @@ class RoomDiaryEntryRepositoryImpl(
                     8
                 ).time
             )
-            measure2.parametersList.add(ParameterModel(4, "Вес (кг)", 63))
-            measure2.parametersList.add(ParameterModel(5, "Грудь (см)", 88))
-            measure2.parametersList.add(ParameterModel(6, "Талия (см)", 58))
-            measure2.parametersList.add(ParameterModel(7, "Бёдра (см)", 88))
+            measure2.parametersList.add(ParameterModel(4, measure2.id, "Вес (кг)", 63))
+            measure2.parametersList.add(ParameterModel(5, measure2.id, "Грудь (см)", 88))
+            measure2.parametersList.add(ParameterModel(6, measure2.id, "Талия (см)", 58))
+            measure2.parametersList.add(ParameterModel(7, measure2.id, "Бёдра (см)", 88))
             entriesList.add(measure2)
 
             val measure3 = MeasureModel(
@@ -397,10 +396,10 @@ class RoomDiaryEntryRepositoryImpl(
                     15
                 ).time
             )
-            measure3.parametersList.add(ParameterModel(8, "Вес (кг)", 62))
-            measure3.parametersList.add(ParameterModel(9, "Грудь (см)", 87))
-            measure3.parametersList.add(ParameterModel(10, "Талия (см)", 57))
-            measure3.parametersList.add(ParameterModel(11, "Бёдра (см)", 87))
+            measure3.parametersList.add(ParameterModel(8, measure3.id, "Вес (кг)", 62))
+            measure3.parametersList.add(ParameterModel(9, measure3.id, "Грудь (см)", 87))
+            measure3.parametersList.add(ParameterModel(10, measure3.id, "Талия (см)", 57))
+            measure3.parametersList.add(ParameterModel(11, measure3.id, "Бёдра (см)", 87))
             entriesList.add(measure3)
 
             val measure4 = MeasureModel(
@@ -411,10 +410,10 @@ class RoomDiaryEntryRepositoryImpl(
                     22
                 ).time
             )
-            measure4.parametersList.add(ParameterModel(12, "Вес (кг)", 61))
-            measure4.parametersList.add(ParameterModel(13, "Грудь (см)", 86))
-            measure4.parametersList.add(ParameterModel(14, "Талия (см)", 56))
-            measure4.parametersList.add(ParameterModel(15, "Бёдра (см)", 86))
+            measure4.parametersList.add(ParameterModel(12, measure4.id, "Вес (кг)", 61))
+            measure4.parametersList.add(ParameterModel(13, measure4.id, "Грудь (см)", 86))
+            measure4.parametersList.add(ParameterModel(14, measure4.id, "Талия (см)", 56))
+            measure4.parametersList.add(ParameterModel(15, measure4.id, "Бёдра (см)", 86))
             entriesList.add(measure4)
 
             val measure5 = MeasureModel(
@@ -425,10 +424,10 @@ class RoomDiaryEntryRepositoryImpl(
                     22
                 ).time
             )
-            measure5.parametersList.add(ParameterModel(16, "Вес (кг)", 60))
-            measure5.parametersList.add(ParameterModel(17, "Грудь (см)", 85))
-            measure5.parametersList.add(ParameterModel(18, "Талия (см)", 55))
-            measure5.parametersList.add(ParameterModel(19, "Бёдра (см)", 85))
+            measure5.parametersList.add(ParameterModel(16, measure5.id, "Вес (кг)", 60))
+            measure5.parametersList.add(ParameterModel(17, measure5.id, "Грудь (см)", 85))
+            measure5.parametersList.add(ParameterModel(18, measure5.id, "Талия (см)", 55))
+            measure5.parametersList.add(ParameterModel(19, measure5.id, "Бёдра (см)", 85))
             entriesList.add(measure5)
 
             entriesList.add(
@@ -471,11 +470,31 @@ class RoomDiaryEntryRepositoryImpl(
     }
 
     override fun getEntries(): List<DiaryEntryModel> {
-        return dao.getNotes()           // TODO: Добавить возврат не только заметок, но и записей двух других типов
+        val result = ArrayList<DiaryEntryModel>()
+        result.addAll(dao.getNotes())
+        result.addAll(dao.getMeasures())
+        result.addAll(dao.getTrainings())
+        return result
     }
 
     override fun getEntries(date: Date): List<DiaryEntryModel> {
-        return dao.getNotes(date.time)  // TODO: Добавить возврат не только заметок, но и записей двух других типов
+        val result = ArrayList<DiaryEntryModel>()
+        result.addAll(dao.getNotes(date.time))
+
+        val measures = dao.getMeasures(date.time)
+
+        measures.forEach {
+            addParametersToMeasure(it)
+        }
+
+        result.addAll(measures)
+        result.addAll(dao.getTrainings(date.time))
+        return result
+    }
+
+    private fun addParametersToMeasure(measure: MeasureModel) {
+        val parameters = getParameters(measure.id)
+        measure.parametersList.addAll(parameters)
     }
 
     override fun addNote(date: Date, text: String) {
@@ -488,7 +507,9 @@ class RoomDiaryEntryRepositoryImpl(
     }
 
     override fun updateNote(id: Long, date: Date, text: String) {
-        val noteToUpdate = NoteModel(id, date, text)
+        val noteToUpdate = getNote(id)
+        noteToUpdate.date = date
+        noteToUpdate.text = text
         dao.updateNote(noteToUpdate)
     }
 
@@ -497,15 +518,12 @@ class RoomDiaryEntryRepositoryImpl(
     }
 
     override fun getTraining(id: Long): TrainingModel {
-        return entriesList.find { x -> (x is TrainingModel && x.id == id) } as TrainingModel
+        return dao.getTraining(id)
     }
 
     override fun addTraining(name: String, date: Date, comment: String): Long {
-        val id = Random.nextLong()
-        entriesList.add(TrainingModel(id = id, date = date, name = name).apply {
-            this.comment = comment
-        })
-        return id
+        val trainingToAdd = TrainingModel(0, date, comment)
+        return dao.insertTraining(trainingToAdd)
     }
 
     override fun updateTraining(
@@ -514,80 +532,89 @@ class RoomDiaryEntryRepositoryImpl(
         date: Date,
         comment: String
     ) {
-        getTraining(id).apply {
-            this.date = date
-            this.name = name
-            this.comment = comment
-        }
+        val trainingToUpdate = getTraining(id)
+        trainingToUpdate.name = name
+        trainingToUpdate.date = date
+        trainingToUpdate.comment = comment
+        dao.updateTraining(trainingToUpdate)
     }
 
     override fun deleteTraining(id: Long) {
-        entriesList.remove(getTraining(id))
+        val trainingToRemove = getTraining(id)
+        dao.deleteTraining(trainingToRemove)
     }
 
 
-    override fun getParameters(id: Long): List<ParameterModel> {
-        return (entriesList.find { x -> (x is MeasureModel && x.id == id) } as MeasureModel).parametersList
+    override fun getParameters(measureId: Long): List<ParameterModel> {
+        return dao.getParameters(measureId)
+        //return ArrayList<ParameterModel>() // TODO: Реализовать как надо!
     }
 
     override fun deleteParameter(parameterId: Long, measureId: Long) {
-        (entriesList.find { x -> x is MeasureModel && x.id == measureId } as MeasureModel)
-            .parametersList.remove((entriesList.find { x -> x is MeasureModel && x.id == measureId } as MeasureModel)
-                .parametersList.find { x -> x.id == parameterId })
+        val parameterToDelete = dao.getParameter(parameterId)
+        dao.deleteParameter(parameterToDelete)
     }
 
-    override fun addParameters(measureId: Long, list: List<ParameterModel>) {
-        (entriesList.find { x -> x is MeasureModel && x.id == measureId } as MeasureModel).parametersList.clear()
-        (entriesList.find { x -> x is MeasureModel && x.id == measureId } as MeasureModel).parametersList.addAll(
-            list
-        )
+    override fun updateParameters(measureId: Long, list: List<ParameterModel>) {
+        dao.deleteParameters(measureId)
+        list.forEach {
+            dao.insertParameter(it)
+        }
     }
 
     override fun getMeasure(id: Long): MeasureModel {
-        return entriesList.find { x -> (x is MeasureModel && x.id == id) } as MeasureModel
+        val measure = dao.getMeasure(id)
+        val parametersList = dao.getParameters(id)
+        measure.parametersList.addAll(parametersList)
+        return measure
     }
 
-    override fun addMeasure(date: Date): Long {
-        val measureId = Random.nextLong()
-        entriesList.add(MeasureModel(measureId, date))
-        return measureId
+    override fun addMeasure(date: Date, comment: String): Long {
+        val measure = MeasureModel(0, date)
+        measure.comment = comment
+        return dao.insertMeasure(measure)
+    }
+
+    override fun updateMeasure(id: Long, date: Date, comment: String) {
+        val measureToUpdate = getMeasure(id)
+        measureToUpdate.date = date
+        measureToUpdate.comment = comment
+        dao.updateMeasure(measureToUpdate)
     }
 
     override fun deleteMeasure(id: Long) {
-        entriesList.remove(getMeasure(id))
+        dao.deleteMeasure(getMeasure(id))
     }
 
     override fun getExercises(trainingId: Long): List<ExerciseModel> {
-        return (entriesList.find { x -> (x is TrainingModel) && x.id == trainingId } as TrainingModel).exerciseList
+        return dao.getExercises(trainingId)
     }
 
     override fun addExercises(
         trainingId: Long,
         exerciseList: ArrayList<ExerciseModel>
     ) {
+        // TODO: Доделать!
         getTraining(trainingId).exerciseList = exerciseList
     }
 
     override fun deleteExercise(exerciseId: Long, trainingId: Long) {
-        (entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
-            .exerciseList.remove((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
-                .exerciseList.find { x -> x.id == exerciseId })
+        val exerciseToDelete = getExercise(exerciseId, trainingId)
+        dao.deleteExercise(exerciseToDelete)
     }
 
     override fun getExercise(
         trainingId: Long,
         exerciseId: Long
     ): ExerciseModel {
-        return ((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
-            .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
+        return dao.getExercise(exerciseId)
     }
 
     override fun getAttempts(
         trainingId: Long,
         exerciseId: Long
     ): List<AttemptModel> {
-        return ((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
-            .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel).attemptsList
+        return dao.getAttempts(exerciseId)
     }
 
     override fun getAttempt(
@@ -595,9 +622,7 @@ class RoomDiaryEntryRepositoryImpl(
         exerciseId: Long,
         attemptId: Long
     ): AttemptModel {
-        return (((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
-            .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
-            .attemptsList.find { x -> x.id == attemptId } as AttemptModel)
+        return dao.getAttempt(attemptId)
     }
 
     override fun addAttempt(
@@ -606,14 +631,9 @@ class RoomDiaryEntryRepositoryImpl(
         weight: Int,
         count: Int
     ) {
-        (((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
-            .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
-            .attemptsList.add(
-                AttemptModel(weight, count).apply {
-                    id = Random.nextLong()
-                    this.exerciseId = exerciseId
-                }
-            ))
+        val attemptToAdd = AttemptModel(weight, count)
+        dao.insertAttempt(attemptToAdd)
+        // TODO: Прикрепить к упражнению!
     }
 
     override fun updateAttempt(
@@ -623,13 +643,10 @@ class RoomDiaryEntryRepositoryImpl(
         weight: Int,
         count: Int
     ) {
-        (((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
-            .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
-            .attemptsList.find { x -> x.id == attemptId } as AttemptModel).apply {
-            this.count = count
-            this.weight = weight
-        }
-
+        val attemptToUpdate = getAttempt(trainingId, exerciseId, attemptId)
+        attemptToUpdate.weight = weight
+        attemptToUpdate.count = count
+        dao.updateAttempt(attemptToUpdate)
     }
 
     override fun deleteAttempt(
@@ -637,12 +654,8 @@ class RoomDiaryEntryRepositoryImpl(
         exerciseId: Long,
         attemptId: Long
     ) {
-        (((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
-            .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
-            .attemptsList.remove(
-                ((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
-                    .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
-                    .attemptsList.find { x -> x.id == attemptId } as AttemptModel))
+        val attemptToDelete = getAttempt(trainingId, exerciseId, attemptId)
+        dao.deleteAttempt(attemptToDelete)
     }
 
     override fun getHistory(exerciseName: String): List<ExerciseModel> {
@@ -659,5 +672,6 @@ class RoomDiaryEntryRepositoryImpl(
             }
         }
         return results
+        // TODO: Реализовать!
     }
 }
