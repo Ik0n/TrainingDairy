@@ -230,7 +230,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
                     isChecked = true
                     date = trainingModel1.date
                     id = 1
-                    attemptsList = arrayListOf(AttemptModel(60, 20).apply {
+                    attemptsList = arrayListOf(AttemptModel(1, 1, 60, 20).apply {
                         exerciseId = 1
                         id = 1
 
@@ -615,8 +615,7 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         (((entriesList.find { x -> x is TrainingModel && x.id == trainingId } as TrainingModel)
             .exerciseList.find { x -> x.id == exerciseId } as ExerciseModel)
             .attemptsList.add(
-                AttemptModel(weight, count).apply {
-                    id = Random.nextLong()
+                AttemptModel(Random.nextLong(), exerciseId, weight, count).apply {
                     this.exerciseId = exerciseId
                 }
             ))

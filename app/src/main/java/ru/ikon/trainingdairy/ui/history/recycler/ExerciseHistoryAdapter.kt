@@ -33,7 +33,7 @@ class ExerciseHistoryAdapter(private val context: Context) : RecyclerView.Adapte
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        return ViewHolder(ExerciseHistoryLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ViewHolder(ExerciseHistoryLayoutBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

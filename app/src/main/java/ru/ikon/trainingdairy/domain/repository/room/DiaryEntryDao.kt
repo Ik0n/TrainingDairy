@@ -66,6 +66,9 @@ interface DiaryEntryDao {
     @Query("SELECT * FROM exercises WHERE trainingId = :trainingId")
     fun getExercises(trainingId: Long): List<ExerciseModel>
 
+    @Query("SELECT * FROM exercises WHERE name = :exerciseName")
+    fun getExercises(exerciseName: String): List<ExerciseModel>
+
     @Query("SELECT * FROM exercises WHERE id = :id")
     fun getExercise(id: Long): ExerciseModel
 

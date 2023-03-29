@@ -230,11 +230,7 @@ class RoomDiaryEntryRepositoryImpl(
                     isChecked = true
                     date = trainingModel1.date
                     id = 1
-                    attemptsList = arrayListOf(AttemptModel(60, 20).apply {
-                        exerciseId = 1
-                        id = 1
-
-                    })
+                    attemptsList = arrayListOf(AttemptModel(1, 1, 60, 20))
                 })
             entriesList.add(
                 trainingModel1
@@ -731,7 +727,16 @@ class RoomDiaryEntryRepositoryImpl(
     }
 
     override fun getExercises(trainingId: Long): List<ExerciseModel> {
-        return dao.getExercises(trainingId)
+        val exercises = dao.getExercises(trainingId)
+        exercises.forEach {
+            addAttemptsToExercise(it)
+        }
+        return exercises
+    }
+
+    private fun addAttemptsToExercise(exercise: ExerciseModel) {
+        val attempts = getAttempts(exercise.trainingId, exercise.id)
+        exercise.attemptsList.addAll(attempts)
     }
 
     override fun updateExercises(
@@ -753,7 +758,10 @@ class RoomDiaryEntryRepositoryImpl(
         trainingId: Long,
         exerciseId: Long
     ): ExerciseModel {
-        return dao.getExercise(exerciseId)
+        val exercise = dao.getExercise(exerciseId)
+        val attempts = getAttempts(trainingId, exerciseId)
+        exercise.attemptsList.addAll(attempts)
+        return exercise
     }
 
     override fun getAttempts(
@@ -777,7 +785,7 @@ class RoomDiaryEntryRepositoryImpl(
         weight: Int,
         count: Int
     ) {
-        val attemptToAdd = AttemptModel(weight, count)
+        val attemptToAdd = AttemptModel(0, exerciseId, weight, count)
         dao.insertAttempt(attemptToAdd)
         // TODO: Прикрепить к упражнению!
     }
@@ -805,19 +813,14 @@ class RoomDiaryEntryRepositoryImpl(
     }
 
     override fun getHistory(exerciseName: String): List<ExerciseModel> {
-        val results = ArrayList<ExerciseModel>()
-        val trainingsList = entriesList.filterIsInstance<TrainingModel>()
-        trainingsList.forEach { trainingModel ->
-            (trainingModel.exerciseList.filter { exercise ->
-                exercise.name.equals(
-                    exerciseName
-                )
-            }).forEach { exerciseModel ->
-                exerciseModel.date = trainingModel.date
-                results.add(exerciseModel)
-            }
+        val results = dao.getExercises(exerciseName)
+        results.forEach {
+            val training = getTraining(it.trainingId)
+            it.date = training.date
+
+            val attempts = getAttempts(it.trainingId, it.id)
+            it.attemptsList.addAll(attempts)
         }
         return results
-        // TODO: Реализовать!
     }
 }
