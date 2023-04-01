@@ -5,6 +5,7 @@ import ru.ikon.trainingdairy.domain.model.ParameterModel
 import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
 import ru.ikon.trainingdairy.ui.base.BasePresenter
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MeasurePresenter(repository: DiaryEntryRepository) :
     MeasureContract.Presenter, BasePresenter<MeasureContract.View>(
@@ -28,7 +29,7 @@ class MeasurePresenter(repository: DiaryEntryRepository) :
     }
 
     override fun getParameters(measureId: Long): List<ParameterModel> {
-        return if (measureId.toInt() != 0) {
+        return if(measureId.toInt() != 0) {
             repository.getParameters(measureId)
         } else {
             ArrayList()
@@ -44,5 +45,13 @@ class MeasurePresenter(repository: DiaryEntryRepository) :
             repository.updateMeasure(measureId, date, comment)
         }
         return id
+    }
+
+    override fun getMeasure(measureId: Long): MeasureModel {
+        return repository.getMeasure(measureId)
+    }
+
+    override fun updateMeasure(measureId: Long, date: Date, comment: String) {
+        repository.updateMeasure(measureId, date, comment)
     }
 }

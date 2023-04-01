@@ -97,12 +97,6 @@ class AttemptFragment : Fragment(), AttemptContract.View {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            // При нажатии на кнопку Назад "закрываем" текущий фрагмент, удаляя его из бэк-стека
-            (activity as AppCompatActivity)
-                .supportFragmentManager
-                .popBackStack()
-        }
         if (item.itemId == R.id.action_save) {
             // Получаем значения веса и количества из полей ввода
             val weightString: String = binding.editTextWeight.text.toString()

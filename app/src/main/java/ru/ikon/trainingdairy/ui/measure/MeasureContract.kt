@@ -17,5 +17,7 @@ class MeasureContract {
         fun onParameterDeleted(parameterId: Long, measureId: Long)
         fun getParameters(measureId: Long): List<ParameterModel>
         fun onSaveMeasure(date: Date, measureId: Long, comment: String) : Long
+        fun getMeasure(measureId: Long): MeasureModel
+        fun updateMeasure(measureId: Long, date: Date, comment: String)
     }
 }

@@ -181,7 +181,7 @@ class EntryCardAdapter(private val context: Context) : RecyclerView.Adapter<Entr
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when(viewType) {
             TYPE_MEASURE -> {
-                MeasureViewHolder(CardMeasureItemBinding.inflate(LayoutInflater.from(parent.context)))
+                MeasureViewHolder(CardMeasureItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             }
             TYPE_NOTE -> {
                 NoteViewHolder(CardNoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -190,7 +190,7 @@ class EntryCardAdapter(private val context: Context) : RecyclerView.Adapter<Entr
                 TrainingViewHolder(CardTrainingItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             }
             else -> {
-                NoteViewHolder(CardNoteItemBinding.inflate(LayoutInflater.from(parent.context)))
+                NoteViewHolder(CardNoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             }
         }
     }

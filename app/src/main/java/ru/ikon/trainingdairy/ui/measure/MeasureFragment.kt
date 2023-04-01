@@ -119,17 +119,16 @@ class MeasureFragment : Fragment(), MeasureContract.View,
         presenter.onCreate(measureId, date)
 
         binding.editTextDate.setOnClickListener {
-            DatePickerDialog(
-                requireContext(), { _, year, month, day ->
-                    calendar[Calendar.YEAR] = year
-                    calendar[Calendar.MONTH] = month
-                    calendar[Calendar.DAY_OF_MONTH] = day
+            DatePickerDialog(requireContext(), { _, year, month, day ->
+                calendar[Calendar.YEAR] = year
+                calendar[Calendar.MONTH] = month
+                calendar[Calendar.DAY_OF_MONTH] = day
 
-                    val sdf = SimpleDateFormat(getString(R.string.date_format))
-                    val dateFormatted = sdf.format(calendar.time)
-                    binding.editTextDate.setText(dateFormatted)
+                val sdf = SimpleDateFormat(getString(R.string.date_format))
+                val dateFormatted = sdf.format(calendar.time)
+                binding.editTextDate.setText(dateFormatted)
 
-                    date = GregorianCalendar(year, month, day).time
+                date = GregorianCalendar(year, month, day).time
 
                 }, Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),

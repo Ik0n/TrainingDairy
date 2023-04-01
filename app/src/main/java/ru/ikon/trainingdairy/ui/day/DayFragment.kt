@@ -3,6 +3,7 @@ package ru.ikon.trainingdairy.ui.day
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -98,6 +99,8 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         NoteDialogFragment.setOnOkButtonClickListener(this)
 
         (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
 
         (activity as AppCompatActivity).supportActionBar?.title =
             SimpleDateFormat(getString(R.string.date_format_for_actionbar_title), Locale(getString(R.string.locale_ru))).format(date)
@@ -112,7 +115,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         with(binding) {
             noteButton.setOnClickListener {
                 floatingActionMenu.close(true)
-                NoteDialogFragment.newInstance(date).show(
+                NoteDialogFragment.newInstance(date.time).show(
                     childFragmentManager, NOTE_DIALOG_FRAGMENT_TAG
                 )
             }
@@ -169,7 +172,7 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
 
     override fun onItemClick(item: DiaryEntryModel) {
         if (item is NoteModel) {
-            NoteDialogFragment.newInstance(date, item.id).show(
+            NoteDialogFragment.newInstance(date.time, item.id).show(
                 childFragmentManager, NOTE_DIALOG_FRAGMENT_TAG
             )
         } else if (item is TrainingModel) {
@@ -186,6 +189,8 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
         adapter.notifyDataSetChanged()
 
         (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
 
         (activity as AppCompatActivity).supportActionBar?.title =
             SimpleDateFormat(getString(R.string.date_format_for_actionbar_title), Locale(getString(R.string.locale_ru))).format(date)
@@ -193,6 +198,10 @@ class DayFragment : Fragment(), DayContract.View, OnItemClickListener, OnOkButto
 
     override fun onDeleteButtonClick(data: DiaryEntryModel) {
         showDeleteConfirmationDialog(data)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
     }
 
     /**
