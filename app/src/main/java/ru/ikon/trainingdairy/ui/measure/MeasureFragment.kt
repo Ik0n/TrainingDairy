@@ -111,31 +111,39 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
 
         presenter.onCreate(measureId)
 
-        binding.editTextDate.setOnClickListener {
-            DatePickerDialog(requireContext(), { _, year, month, day ->
-                calendar[Calendar.YEAR] = year
-                calendar[Calendar.MONTH] = month
-                calendar[Calendar.DAY_OF_MONTH] = day
+        with(binding) {
 
-                val sdf = SimpleDateFormat(getString(R.string.date_format))
-                val dateFormatted = sdf.format(calendar.time)
-                binding.editTextDate.setText(dateFormatted)
-
-                date = GregorianCalendar(year, month, day).time
-
-            }, Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
-
-        binding.fab.setOnClickListener {
-            if (measureId.toInt() == 0) {
-                measureId = presenter.saveMeasure(date)
+            if (measureId == 0L) {
+                editTextDate.setText(SimpleDateFormat(getString(R.string.date_format)).format(date))
+            } else {
+                editTextComment.setText(presenter.getMeasure(measureId).comment)
+                editTextDate.setText(SimpleDateFormat(getString(R.string.date_format)).format(presenter.getMeasure(measureId).date))
             }
-            startFragment(ParametersFragment.newInstance(measureId))
-        }
 
+            editTextDate.setOnClickListener {
+                DatePickerDialog(requireContext(), { _, year, month, day ->
+                    calendar[Calendar.YEAR] = year
+                    calendar[Calendar.MONTH] = month
+                    calendar[Calendar.DAY_OF_MONTH] = day
+
+                    val sdf = SimpleDateFormat(getString(R.string.date_format))
+                    val dateFormatted = sdf.format(calendar.time)
+                    binding.editTextDate.setText(dateFormatted)
+
+                    date = GregorianCalendar(year, month, day).time
+
+                }, Calendar.getInstance().get(Calendar.YEAR),
+                    Calendar.getInstance().get(Calendar.MONTH),
+                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
+            fab.setOnClickListener {
+                if (measureId.toInt() == 0) {
+                    measureId = presenter.saveMeasure(date, binding.editTextComment.text.toString())
+                }
+                startFragment(ParametersFragment.newInstance(measureId))
+            }
+        }
         adapter.setOnDeleteButtonClickListener(this)
     }
 
@@ -146,11 +154,15 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            // При нажатии на кнопку Назад "закрываем" текущий фрагмент, удаляя его из бэк-стека
-            (activity as AppCompatActivity)
-                .supportFragmentManager
-                .popBackStack()
+
+        if (item.itemId == R.id.action_save) {
+            if (measureId == 0L) {
+                presenter.saveMeasure(date, binding.editTextComment.text.toString())
+            } else {
+                presenter.updateMeasure(measureId, date, binding.editTextComment.text.toString())
+            }
+
+            parentFragmentManager.popBackStack()
         }
 
         return super.onOptionsItemSelected(item)

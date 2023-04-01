@@ -1,5 +1,6 @@
 package ru.ikon.trainingdairy.ui.measure
 
+import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.ParameterModel
 import java.util.*
 
@@ -14,6 +15,8 @@ class MeasureContract {
         fun detach()
         fun onParameterDeleted(parameterId: Long, measureId: Long)
         fun getParameters(measureId: Long): List<ParameterModel>
-        fun saveMeasure(date: Date) : Long
+        fun getMeasure(measureId: Long): MeasureModel
+        fun saveMeasure(date: Date, comment: String) : Long
+        fun updateMeasure(measureId: Long, date: Date, comment: String)
     }
 }

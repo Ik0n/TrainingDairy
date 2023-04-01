@@ -82,10 +82,10 @@ class NoteDialogFragment() :
 
         private lateinit var listener: OnOkButtonClickListener
 
-        fun newInstance(currentDate: Date, id: Long? = null) : DialogFragment {
+        fun newInstance(currentDate: Long, id: Long? = null) : DialogFragment {
             return NoteDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putLong(DATE, currentDate.time)
+                    putLong(DATE, currentDate)
                     id?.let { putLong(NOTE_ID, it) }
                 }
             }

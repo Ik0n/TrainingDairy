@@ -1,6 +1,7 @@
 package ru.ikon.trainingdairy.ui
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -44,6 +45,8 @@ class MainActivity : AppCompatActivity(), ReadyButtonClickListener {
         }
 
         setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         initBottomNavigationBar()
     }
@@ -61,6 +64,18 @@ class MainActivity : AppCompatActivity(), ReadyButtonClickListener {
             true
         }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (item.itemId == android.R.id.home) {
+            // При нажатии на кнопку Назад "закрываем" текущий фрагмент, удаляя его из бэк-стека
+                supportFragmentManager
+                .popBackStack()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
 
     private fun startFragment(fragment: Fragment) {
         supportFragmentManager

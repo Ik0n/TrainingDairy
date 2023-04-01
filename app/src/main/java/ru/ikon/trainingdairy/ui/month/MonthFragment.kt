@@ -158,7 +158,7 @@ class MonthFragment : Fragment(), MonthContract.View, OnOkButtonClickListener {
             noteButton.setOnClickListener {
                 floatingActionMenu.close(true)
 
-                NoteDialogFragment.newInstance(Calendar.getInstance().time).show(
+                NoteDialogFragment.newInstance(currentDate.time).show(
                     childFragmentManager, NOTE_DIALOG_FRAGMENT_TAG
                 )
             }

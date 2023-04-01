@@ -7,5 +7,6 @@ import java.util.*
  */
 class MeasureModel(override val id: Long, date: Date) : DiaryEntryModel(id, date) {
     /** Список параметров для этого измерения */
+    var comment: String = ""
     var parametersList: ArrayList<ParameterModel> = ArrayList()
 }
