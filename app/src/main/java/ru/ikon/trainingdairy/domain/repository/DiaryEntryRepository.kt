@@ -35,7 +35,8 @@ interface DiaryEntryRepository {
     fun addParameters(measureId: Long,list: List<ParameterModel>)
 
     fun getMeasure(id: Long): MeasureModel
-    fun addMeasure(date: Date): Long
+    fun addMeasure(date: Date, comment: String): Long
+    fun updateMeasure(id: Long, date: Date, comment: String)
     fun deleteMeasure(id: Long)
 
     fun getExercises(trainingId: Long): List<ExerciseModel>

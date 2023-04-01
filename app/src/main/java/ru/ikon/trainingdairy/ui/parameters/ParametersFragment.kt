@@ -102,10 +102,6 @@ class ParametersFragment : Fragment(), ParametersContract.View {
                 presenter.saveParametersList(measureId, createParametersList())
                 parentFragmentManager.popBackStack()
             }
-            android.R.id.home -> {
-                parentFragmentManager.popBackStack()
-            }
-
         }
         return super.onOptionsItemSelected(item)
     }

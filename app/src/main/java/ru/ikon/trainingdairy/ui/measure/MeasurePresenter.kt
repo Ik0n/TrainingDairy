@@ -1,7 +1,9 @@
 package ru.ikon.trainingdairy.ui.measure
 
+import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.ParameterModel
 import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
+import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
 import ru.ikon.trainingdairy.ui.base.BasePresenter
 import java.util.*
 import kotlin.collections.ArrayList
@@ -31,7 +33,15 @@ class MeasurePresenter(repository: DiaryEntryRepository) : MeasureContract.Prese
         }
     }
 
-    override fun saveMeasure(date: Date) : Long {
-        return repository.addMeasure(date)
+    override fun getMeasure(measureId: Long): MeasureModel {
+        return repository.getMeasure(measureId)
+    }
+
+    override fun saveMeasure(date: Date, comment: String) : Long {
+        return repository.addMeasure(date, comment)
+    }
+
+    override fun updateMeasure(measureId: Long, date: Date, comment: String) {
+        repository.updateMeasure(measureId, date, comment)
     }
 }

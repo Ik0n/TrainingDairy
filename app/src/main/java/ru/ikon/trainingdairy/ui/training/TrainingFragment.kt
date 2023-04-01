@@ -135,12 +135,6 @@ class TrainingFragment : Fragment(), TrainingContract.View, OnDeleteButtonClickL
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            // При нажатии на кнопку Назад "закрываем" текущий фрагмент, удаляя его из бэк-стека
-            (activity as AppCompatActivity)
-                .supportFragmentManager
-                .popBackStack()
-        }
         if (item.itemId == R.id.action_save) {
             if (trainingId != 0L) {
                 presenter.updateTraining(trainingId, binding.editTextName.text.toString(), trainingDate, binding.editTextComment.text.toString())

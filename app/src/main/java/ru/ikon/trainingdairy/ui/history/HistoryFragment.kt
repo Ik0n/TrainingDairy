@@ -3,6 +3,7 @@ package ru.ikon.trainingdairy.ui.history
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -70,6 +71,10 @@ class HistoryFragment : Fragment(), HistoryContract.View {
 
         // Для отображения меню (которое в нашем случае состоит только из одного пункта - сохранить)
         setHasOptionsMenu(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {

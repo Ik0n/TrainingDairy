@@ -547,10 +547,19 @@ class DummyDiaryEntryRepositoryImpl : DiaryEntryRepository {
         return entriesList.find { x -> (x is MeasureModel && x.id == id) } as MeasureModel
     }
 
-    override fun addMeasure(date: Date): Long {
+    override fun addMeasure(date: Date, comment: String): Long {
         val measureId = Random.nextLong()
-        entriesList.add(MeasureModel(measureId, date))
+        entriesList.add(MeasureModel(measureId, date).apply {
+            this.comment = comment
+        })
         return measureId
+    }
+
+    override fun updateMeasure(id: Long, date: Date, comment: String) {
+        (entriesList.find { x -> (x is MeasureModel && x.id == id) } as MeasureModel).apply {
+            this.date = date
+            this.comment = comment
+        }
     }
 
     override fun deleteMeasure(id: Long) {
