@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.DialogFragmentNoteBinding
+import ru.ikon.trainingdairy.domain.model.NoteModel
 import ru.ikon.trainingdairy.utils.DATE
 import ru.ikon.trainingdairy.utils.NOTE_ID
 import java.text.SimpleDateFormat
@@ -29,13 +30,19 @@ class NoteDialogFragment() :
     lateinit var presenter: NoteContract.Presenter
 
     private lateinit var currentDate : Date
-    private var id : Long? = null
+    private var id : Long = 0
 
     /** Календарь, который будет использован для выбора даты  */
     private var calendar = Calendar.getInstance()
 
-    override fun showData() {
-        TODO("Not yet implemented")
+    override fun showData(note: NoteModel) {
+        binding.editTextDate.setText(
+            SimpleDateFormat(
+                getString(R.string.date_format),
+                Locale.ENGLISH
+            ).format(note.date)
+        )
+        binding.editTextBody.setText(note.text)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +57,10 @@ class NoteDialogFragment() :
                 id = it
             }
         }
+
+        _binding = DialogFragmentNoteBinding.inflate(LayoutInflater.from(context))
+
+        presenter.onCreate(id, currentDate)
     }
 
     /**
@@ -97,19 +108,19 @@ class NoteDialogFragment() :
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = DialogFragmentNoteBinding.inflate(LayoutInflater.from(context))
+
 
         val editTextBody = binding.editTextBody
         val editTextDate = binding.editTextDate
 
-        editTextDate.setText(
+        /* editTextDate.setText(
             SimpleDateFormat(
                 getString(R.string.date_format),
                 Locale.ENGLISH
             ).format(currentDate)
         )
 
-        id?.let {
+        id.let {
             if (id != 0.toLong()) {
                 binding.editTextDate.setText(
                     SimpleDateFormat(
@@ -119,7 +130,7 @@ class NoteDialogFragment() :
                 )
                 binding.editTextBody.setText(presenter.getNote(it).text)
             }
-        }
+        } */
 
         with(binding) {
             noteDateLayout.setOnClickListener {

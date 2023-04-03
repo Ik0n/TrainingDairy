@@ -12,6 +12,6 @@ class ParametersContract {
         fun attach(view: View)
         fun onCreate(id: Long)
         fun detach()
-        fun saveParametersList(id: Long,list: List<ParameterModel>)
+        fun onSaveParametersList(id: Long, list: List<ParameterModel>)
     }
 }

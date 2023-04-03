@@ -32,7 +32,7 @@ interface DiaryEntryRepository {
 
     fun getParameters(id: Long) : List<ParameterModel>
     fun deleteParameter(parameterId: Long, measureId: Long)
-    fun addParameters(measureId: Long,list: List<ParameterModel>)
+    fun updateParameters(measureId: Long, list: List<ParameterModel>)
 
     fun getMeasure(id: Long): MeasureModel
     fun addMeasure(date: Date, comment: String): Long
@@ -40,7 +40,7 @@ interface DiaryEntryRepository {
     fun deleteMeasure(id: Long)
 
     fun getExercises(trainingId: Long): List<ExerciseModel>
-    fun addExercises(trainingId: Long, exerciseList: ArrayList<ExerciseModel>)
+    fun updateExercises(trainingId: Long, exerciseList: ArrayList<ExerciseModel>)
     fun deleteExercise(exerciseId: Long, trainingId: Long)
     fun getExercise(trainingId: Long, exerciseId: Long): ExerciseModel
 

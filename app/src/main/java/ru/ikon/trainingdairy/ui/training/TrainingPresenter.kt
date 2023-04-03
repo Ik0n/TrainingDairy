@@ -2,7 +2,6 @@ package ru.ikon.trainingdairy.ui.training
 
 import ru.ikon.trainingdairy.domain.model.TrainingModel
 import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
-import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
 import ru.ikon.trainingdairy.ui.base.BasePresenter
 import java.util.*
 
@@ -10,10 +9,6 @@ class TrainingPresenter(repository: DiaryEntryRepository) : TrainingContract.Pre
     repository
 ) {
     override fun onCreate(id: Long, date: Date) {
-        // Создаём репозиторий с тестовыми данными. Позднее здесь будет загрузка данных
-        // из базы, а пока - загрузка из тестового репозитория
-        val repository = DummyDiaryEntryRepositoryImpl()
-
         val trainingModel =
             if (id != 0L) {
                 // Получаем тренировку с указанным ID
@@ -31,8 +26,15 @@ class TrainingPresenter(repository: DiaryEntryRepository) : TrainingContract.Pre
         return repository.getTraining(trainingId)
     }
 
-    override fun saveTraining(name: String, date: Date, comment: String) : Long {
-        return repository.addTraining(name, date, comment)
+    override fun onSaveTraining(trainingId: Long, name: String, date: Date, comment: String) : Long {
+        val id: Long
+        if (trainingId == 0L) {
+            id = repository.addTraining(name, date, comment)
+        } else {
+            id = trainingId
+            repository.updateTraining(trainingId, name, date, comment)
+        }
+        return id
     }
 
     override fun updateTraining(id: Long, name: String, date: Date, comment: String) {

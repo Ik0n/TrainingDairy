@@ -1,9 +1,13 @@
 package ru.ikon.trainingdairy.di
 
+import android.content.Context
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
-import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
+import ru.ikon.trainingdairy.domain.repository.room.DiaryEntryDao
+import ru.ikon.trainingdairy.domain.repository.room.DiaryEntryDatabase
+import ru.ikon.trainingdairy.domain.repository.room.RoomDiaryEntryRepositoryImpl
 import ru.ikon.trainingdairy.ui.attempt.AttemptContract
 import ru.ikon.trainingdairy.ui.attempt.AttemptPresenter
 import ru.ikon.trainingdairy.ui.day.DayContract
@@ -32,11 +36,32 @@ import ru.ikon.trainingdairy.utils.REPOSITORY
 import javax.inject.Named
 
 @Module
-class DbModule {
+class DbModule(private val context: Context) {
+
+    @Provides
+    fun provideContext(): Context = context
+
+    @Provides
+    fun provideDiaryDb(context: Context): DiaryEntryDatabase =
+        Room.databaseBuilder(
+            context,
+            DiaryEntryDatabase::class.java, "diary-db"
+        )
+            .allowMainThreadQueries()
+            .build()
+
+    @Provides
+    fun provideDiaryDao(diaryDb: DiaryEntryDatabase) = diaryDb.diaryEntryDao()
+
     @Provides
     @Named(REPOSITORY)
-    fun providesRepository(): DiaryEntryRepository =
-        DummyDiaryEntryRepositoryImpl()
+    fun providesRepository(diaryDao: DiaryEntryDao): DiaryEntryRepository = RoomDiaryEntryRepositoryImpl(diaryDao)
+
+
+
+//    @Provides
+//    @Named(REPOSITORY)
+//    fun providesRepository(): DiaryEntryRepository = DummyDiaryEntryRepositoryImpl()
 
     @Provides
     fun providesAttemptPresenter(@Named(REPOSITORY) repo: DiaryEntryRepository):
@@ -85,13 +110,6 @@ class DbModule {
     @Provides
     fun providesUserParametersPresenter(@Named(REPOSITORY) repo: DiaryEntryRepository):
             UserParametersContract.Presenter = UserParametersPresenter(repo)
-
-
-
-
-
-
-
 
 
 }

@@ -2,9 +2,7 @@ package ru.ikon.trainingdairy.ui.exercise
 
 import ru.ikon.trainingdairy.domain.model.ExerciseModel
 import ru.ikon.trainingdairy.domain.repository.DiaryEntryRepository
-import ru.ikon.trainingdairy.domain.repository.DummyDiaryEntryRepositoryImpl
 import ru.ikon.trainingdairy.ui.base.BasePresenter
-import kotlin.random.Random
 
 class ExercisePresenter(repository: DiaryEntryRepository) : ExerciseContract.Presenter, BasePresenter<ExerciseContract.View>(
     repository
@@ -12,7 +10,7 @@ class ExercisePresenter(repository: DiaryEntryRepository) : ExerciseContract.Pre
 
     override fun onCreate(trainingId: Long) {
 
-        val checkedExercises = DummyDiaryEntryRepositoryImpl.newInstance().getExercises(trainingId)
+        val checkedExercises = repository.getExercises(trainingId)
 
         val exerciseList = ArrayList<ExerciseModel>().apply {
             add(ExerciseModel("Выпады с гантелями"))
@@ -58,7 +56,6 @@ class ExercisePresenter(repository: DiaryEntryRepository) : ExerciseContract.Pre
                 list.apply {
                     add(
                         ExerciseModel(it.name).apply {
-                        this.id = Random.nextLong()
                             this.isChecked = it.isChecked
                             this.trainingId = trainingId
                         }
@@ -67,6 +64,6 @@ class ExercisePresenter(repository: DiaryEntryRepository) : ExerciseContract.Pre
             }
         }
 
-        DummyDiaryEntryRepositoryImpl.newInstance().addExercises(trainingId, list)
+        repository.updateExercises(trainingId, list)
     }
 }

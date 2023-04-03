@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import ru.ikon.trainingdairy.R
 import ru.ikon.trainingdairy.app
 import ru.ikon.trainingdairy.databinding.FragmentMeasureBinding
+import ru.ikon.trainingdairy.domain.model.MeasureModel
 import ru.ikon.trainingdairy.domain.model.ParameterModel
 import ru.ikon.trainingdairy.ui.MainActivity
 import ru.ikon.trainingdairy.ui.measure.recycler.OnDeleteButtonClickListener
@@ -20,34 +21,36 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickListener {
-
-    private var measureId: Long = 0
+class MeasureFragment : Fragment(), MeasureContract.View,
+    OnDeleteButtonClickListener {
 
     @Inject
-    lateinit var presenter : MeasureContract.Presenter
+    lateinit var presenter: MeasureContract.Presenter
 
     private var _binding: FragmentMeasureBinding? = null
-    private val binding: FragmentMeasureBinding get() { return _binding!! }
+    private val binding: FragmentMeasureBinding
+        get() {
+            return _binding!!
+        }
 
     private val adapter = ParameterAdapter()
 
+    private var measureId: Long = 0
     private lateinit var date: Date
 
     /** Календарь, который будет использован для выбора даты  */
     private var calendar = Calendar.getInstance()
 
     companion object {
-
-            @JvmStatic
-            fun newInstance(measureId: Long, date: Long) : Fragment {
-                return MeasureFragment().apply {
-                    arguments = Bundle().apply {
-                        putLong(ARG_ID, measureId)
-                        putLong(ARG_DATE, date)
-                    }
+        @JvmStatic
+        fun newInstance(measureId: Long, date: Long): Fragment {
+            return MeasureFragment().apply {
+                arguments = Bundle().apply {
+                    putLong(ARG_ID, measureId)
+                    putLong(ARG_DATE, date)
                 }
             }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +64,7 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
 
     override fun onResume() {
         super.onResume()
-        adapter.setData(presenter.getParameters(measureId))
+        //adapter.setData(presenter.getParameters(measureId)) // TODO: Вот это убрать. Вместо этого - получение полных данных об измерении
     }
 
     override fun onStop() {
@@ -99,8 +102,12 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         // Для отображения системной кнопки Назад
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(
+            true
+        )
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(
+            true
+        )
 
         // Для отображения меню (которое в нашем случае состоит только из одного пункта - сохранить)
         setHasOptionsMenu(true)
@@ -109,41 +116,34 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter.onCreate(measureId)
+        presenter.onCreate(measureId, date)
 
-        with(binding) {
+        binding.editTextDate.setOnClickListener {
+            DatePickerDialog(requireContext(), { _, year, month, day ->
+                calendar[Calendar.YEAR] = year
+                calendar[Calendar.MONTH] = month
+                calendar[Calendar.DAY_OF_MONTH] = day
 
-            if (measureId == 0L) {
-                editTextDate.setText(SimpleDateFormat(getString(R.string.date_format)).format(date))
-            } else {
-                editTextComment.setText(presenter.getMeasure(measureId).comment)
-                editTextDate.setText(SimpleDateFormat(getString(R.string.date_format)).format(presenter.getMeasure(measureId).date))
-            }
+                val sdf = SimpleDateFormat(getString(R.string.date_format))
+                val dateFormatted = sdf.format(calendar.time)
+                binding.editTextDate.setText(dateFormatted)
 
-            editTextDate.setOnClickListener {
-                DatePickerDialog(requireContext(), { _, year, month, day ->
-                    calendar[Calendar.YEAR] = year
-                    calendar[Calendar.MONTH] = month
-                    calendar[Calendar.DAY_OF_MONTH] = day
-
-                    val sdf = SimpleDateFormat(getString(R.string.date_format))
-                    val dateFormatted = sdf.format(calendar.time)
-                    binding.editTextDate.setText(dateFormatted)
-
-                    date = GregorianCalendar(year, month, day).time
+                date = GregorianCalendar(year, month, day).time
 
                 }, Calendar.getInstance().get(Calendar.YEAR),
-                    Calendar.getInstance().get(Calendar.MONTH),
-                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-                ).show()
-            }
-            fab.setOnClickListener {
-                if (measureId.toInt() == 0) {
-                    measureId = presenter.saveMeasure(date, binding.editTextComment.text.toString())
-                }
-                startFragment(ParametersFragment.newInstance(measureId))
-            }
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
+
+        binding.fab.setOnClickListener {
+            if (measureId.toInt() == 0) {
+                val comment = binding.editTextComment.text.toString()
+                measureId = presenter.onSaveMeasure(date, measureId, comment)
+            }
+            startFragment(ParametersFragment.newInstance(measureId))
+        }
+
         adapter.setOnDeleteButtonClickListener(this)
     }
 
@@ -154,15 +154,18 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            // При нажатии на кнопку Назад "закрываем" текущий фрагмент, удаляя его из бэк-стека
+            (activity as AppCompatActivity)
+                .supportFragmentManager
+                .popBackStack()
+        } else if (item.itemId == R.id.action_save) {
+            val comment = binding.editTextComment.text.toString()
+            presenter.onSaveMeasure(date, measureId, comment)
 
-        if (item.itemId == R.id.action_save) {
-            if (measureId == 0L) {
-                presenter.saveMeasure(date, binding.editTextComment.text.toString())
-            } else {
-                presenter.updateMeasure(measureId, date, binding.editTextComment.text.toString())
-            }
-
-            parentFragmentManager.popBackStack()
+            (activity as AppCompatActivity)
+                .supportFragmentManager
+                .popBackStack()
         }
 
         return super.onOptionsItemSelected(item)
@@ -195,6 +198,16 @@ class MeasureFragment : Fragment(), MeasureContract.View, OnDeleteButtonClickLis
         // Создаём и показываем AlertDialog
         val alertDialog = builder.create()
         alertDialog.show()
+    }
+
+    override fun showData(data: MeasureModel) {
+        binding.editTextComment.setText(data.comment.toString())
+
+        val sdf = SimpleDateFormat(getString(R.string.date_format))
+        val dateFormatted = sdf.format(data.date)
+        binding.editTextDate.setText(dateFormatted)
+
+        showParameters(data.parametersList)
     }
 
     override fun showParameters(parametersList: List<ParameterModel>) {
